@@ -79,7 +79,7 @@ The app is a standalone Windows desktop application. It requires no internet con
 | Breed List | Aggregated, sorted view of all eggs still needed |
 | Progress Tracking | Increment bred counts per egg type via click |
 | Undo / Redo | Reverse or replay any user action |
-| Database Updates | Pull new monster data and images from wiki |
+| Database Updates | Download and apply prebuilt content database updates |
 
 ### 2.3 User Characteristics
 
@@ -98,7 +98,7 @@ The app is a standalone Windows desktop application. It requires no internet con
 ### 2.5 Assumptions
 
 - The player understands MSM awakening mechanics and will accurately log their breeds manually
-- MSM Wiki (Fandom) remains accessible and structurally consistent for the update scraper
+- A project maintainer produces and publishes prebuilt content database updates when game content changes
 - BBB Fan Kit assets are available for all monsters included at launch; placeholders are acceptable for newly released monsters not yet in the Fan Kit
 
 ---
@@ -329,23 +329,27 @@ The app shall include a Settings screen accessible from the main navigation. It 
 #### FR-702 — Check for Updates Trigger
 The update process shall only run when explicitly triggered by the user via the "Check for Updates" button. It does not run automatically on launch.
 
-#### FR-703 — Update Process: New Monster Discovery
-The update scraper shall:
-1. Query the MSM Wiki (Fandom) via the MediaWiki API
-2. Identify any Wublins, Celestials, or Amber Vessels not currently present in the local database
-3. Retrieve egg requirement data and breeding times for newly discovered monsters
-4. Add new monster entries to the local database
+#### FR-703 — Update Process: Content Database Replacement
+The update process shall:
+1. Fetch a manifest from a known remote URL describing the available content database version
+2. If a newer version is available, download the prebuilt `content.db` artifact
+3. Validate the downloaded database (schema, row counts, metadata)
+4. Replace the local `content.db` with the validated download
 
-#### FR-704 — Update Process: Existing Entry Changes
-The update scraper shall:
-1. Compare retrieved data against local records for all existing monsters
-2. Update any entries where egg requirements or breeding times have changed
-3. Update associated monster and egg images where newer versions are available
+> **Scope note (v1):** New monster discovery, requirement changes, and image updates are performed by the project maintainer in a content-production pipeline. The desktop client receives these changes as a prebuilt `content.db` package. The client does not scrape external sources or download individual assets at runtime.
 
-#### FR-705 — Update Process: Image Handling
-- Where BBB Fan Kit assets are available for new/updated monsters, those assets shall be downloaded and stored locally
-- Where Fan Kit assets are not available (e.g., very newly released monsters), a **placeholder** shall be used: an egg silhouette graphic with the monster's initials overlaid
-- Placeholders shall be automatically replaced by real assets on a subsequent update once the Fan Kit is updated
+#### FR-704 — Update Process: Post-Update Finalization
+After a successful content database replacement, the app shall:
+1. Reopen the content database connection and rebind all dependent services
+2. Run a reconciliation pass against the updated content to clip or remove invalid user progress
+3. Clear the undo/redo history (stale commands may reference outdated content)
+4. Refresh all UI panels to reflect the new content immediately, without requiring a restart
+
+#### FR-705 — Bundled Assets as v1 Media Source
+- All monster images, egg icons, and UI assets are bundled at install time and sourced exclusively from the official BBB Fan Kit
+- The v1 update process replaces content data only; it does not download or replace image assets at runtime
+- Placeholder images are used where Fan Kit assets are not yet available at build time
+- Updated media is delivered in subsequent application releases (new installer builds), not via the in-app update mechanism
 
 #### FR-706 — BBB Disclaimer (Required)
 The Settings/About section shall display the following (or substantially equivalent) disclaimer:
@@ -353,9 +357,9 @@ The Settings/About section shall display the following (or substantially equival
 > *This app is an unofficial fan creation and is not affiliated with, endorsed by, or sponsored by Big Blue Bubble Inc. All My Singing Monsters assets used in this app are sourced from the official Big Blue Bubble Fan Kit and are used in accordance with the BBB Fan Content Policy. My Singing Monsters is a trademark of Big Blue Bubble Inc.*
 
 #### FR-707 — Update Failure Handling
-If the update process fails (network unavailable, wiki unreachable, parsing error), the app shall:
+If the update process fails (network unavailable, download error, validation failure, replacement error), the app shall:
 - Display a user-friendly error message indicating the update could not be completed
-- Leave the existing local database untouched
+- Leave the existing local database untouched (restore from backup if replacement was attempted)
 - Allow the user to retry
 
 #### FR-708 — No Auto-Update
@@ -757,7 +761,7 @@ The following scenarios shall pass in testing to confirm correct Reconciliation 
 | Audio Playback | PySide6 `QSoundEffect` or `QMediaPlayer` |
 | Packaging | PyInstaller (single-dir or onefile) |
 | Installer | Inno Setup or NSIS |
-| Update Scraper | Python `requests` + MediaWiki API (Fandom) |
+| Content Updater | Manifest-driven content DB download and replacement |
 
 ### 10.3 Installation
 

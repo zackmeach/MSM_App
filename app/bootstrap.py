@@ -57,6 +57,14 @@ def _setup_logging(data_dir: Path) -> None:
     root.addHandler(console)
 
 
+def open_content_db(db_path: Path) -> sqlite3.Connection:
+    """Open (or reopen) a content.db file with standard pragmas."""
+    conn = sqlite3.connect(str(db_path))
+    conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA foreign_keys=ON")
+    return conn
+
+
 def _init_content_db(data_dir: Path, bundle_dir: Path) -> sqlite3.Connection:
     db_path = data_dir / "content.db"
     bundled = bundle_dir / "db" / "content.db"
@@ -70,10 +78,7 @@ def _init_content_db(data_dir: Path, bundle_dir: Path) -> sqlite3.Connection:
                 "No bundled content.db found at %s — creating empty", bundled
             )
 
-    conn = sqlite3.connect(str(db_path))
-    conn.execute("PRAGMA journal_mode=WAL")
-    conn.execute("PRAGMA foreign_keys=ON")
-    return conn
+    return open_content_db(db_path)
 
 
 def _init_userstate_db(data_dir: Path) -> sqlite3.Connection:

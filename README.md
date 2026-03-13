@@ -71,6 +71,13 @@ The packaged app will be in `dist/MSMAwakeningTracker/`.
 | `content.db` | `%APPDATA%\MSMAwakeningTracker\` | Read-only at runtime; written by seed/update only |
 | `userstate.db` | `%APPDATA%\MSMAwakeningTracker\` | Read-write; user progress and preferences |
 
+## Content Updates
+
+The app includes an in-app "Check for Updates" feature that downloads and applies prebuilt
+content database updates. This mechanism replaces content data only (monster records,
+requirements, breeding times). Media assets (images, audio) are bundled at install time and
+updated via new installer releases.
+
 ## Tech Stack
 
 - Python 3.10+

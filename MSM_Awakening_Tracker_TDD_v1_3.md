@@ -160,8 +160,8 @@ The following constraints shape every significant design decision in this docume
 | Reliable persisted state               | State must survive crash (NFR-201)                                                | Every command persists before UI acknowledges; write-then-confirm pattern                                                                    |
 | Breed List validity invariant          | No orphaned rows at any time (FR-401)                                             | Reconciliation embedded atomically in all commands that change target set                                                                    |
 | Undo/redo correctness                  | Commands must fully reverse prior state including Reconciliation effects (FR-505) | Command objects capture full snapshot of pre-execute state for rollback                                                                      |
-| Bundled assets with updateable content | Baseline assets at install; new assets via update (FR-804, FR-705)                | Two-path asset resolution: downloaded cache → install bundle → placeholder fallback (cache wins so updated assets override bundled baseline) |
-| Maintainability of update scraper      | Scraper is modular and independently testable (NFR-403)                           | Updater is an isolated module with no direct coupling to UI or domain commands                                                               |
+| Bundled assets with updateable content | Baseline assets at install; content data updateable via DB replacement (FR-804, FR-705) | Two-path asset resolution: cache → install bundle → placeholder (v1 uses install bundle only; cache reserved for future) |
+| Maintainability of content updater     | Updater is modular and independently testable (NFR-403)                                | Updater is an isolated module with no direct coupling to UI or domain commands                                            |
 | Strict Reconciliation reuse            | Reconciliation is a single reusable function (NFR-404)                            | `reconcile()` lives in the domain service layer, not inside any command class                                                                |
 | Windows-only packaging                 | PyInstaller + Inno Setup/NSIS; bundled runtime (SRS §10.2–10.5)                   | All paths use `pathlib` with Windows conventions; asset paths use relative refs from app root                                                |
 
@@ -177,9 +177,8 @@ The following constraints shape every significant design decision in this docume
 | Content DB (`content.db`)      | Read-only SQLite; monsters, egg types, requirements, asset paths |
 | User State DB (`userstate.db`) | Read-write SQLite; active targets, breed progress, settings      |
 | Bundled Asset Store            | App install directory; egg icons, monster images, ding audio     |
-| Downloaded Asset Cache         | `%APPDATA%\MSMAwakeningTracker\assets\`; post-update images      |
-| MSM Wiki (Fandom)              | Remote; MediaWiki API; queried only during "Check for Updates"   |
-| BBB Fan Kit                    | Remote; image assets; queried only during "Check for Updates"    |
+| Downloaded Asset Cache         | `%APPDATA%\MSMAwakeningTracker\assets\`; reserved for future use (not populated in v1) |
+| Content Update Server          | Remote; hosts manifest.json and prebuilt content.db artifacts    |
 
 ### System Context Diagram
 
@@ -285,29 +284,33 @@ The application is structured in four primary layers with two supporting subsyst
 
 #### 6.5 Update Subsystem (`app/updater/`)
 
-**Responsibility:** Fetch data from the MSM Wiki MediaWiki API and the BBB Fan Kit; parse and validate responses; stage new content; commit to `content.db` and downloaded asset cache on success; roll back on failure. Never touches `userstate.db`.
+**Responsibility:** Fetch a remote manifest, download a prebuilt `content.db` artifact, validate it, stage it, and replace the local content database. Trigger post-update finalization (reconnect, reconcile, refresh). Roll back on failure. Never touches `userstate.db` directly — userstate modifications happen only during the post-update finalization pass (Section 18.13).
 
 **Key inputs:** User trigger from Settings screen; current DB version metadata.
 
-**Key outputs:** Updated `content.db` records; updated asset files in cache; update result (success/failure/no-change) reported to UI.
+**Key outputs:** Replaced `content.db` on disk; update result (success/failure/no-change) reported to UI; finalization signal to main thread.
 
-**Dependencies:** `requests` library; content DB repository; asset pipeline.
+**Dependencies:** `urllib`; content DB validator; bootstrap connection helper.
 
-**Stateful:** Maintains a staging area during active update; discards staging on failure.
+**Stateful:** Maintains a staging area (`content_staging.db`) and backup (`content_backup.db`) during active update; discards staging on completion or failure.
+
+> **v1 scope note:** The desktop updater installs prebuilt content database packages only. New monster discovery, requirement scraping, and image assembly are handled by the project maintainer's content-production pipeline, not by the installed client.
 
 ---
 
 #### 6.6 Asset Management Layer (`app/assets/`)
 
-**Responsibility:** Resolve asset paths at runtime using a two-tier lookup: downloaded asset cache first, bundled install assets second, placeholder third. Cache wins so updated assets override the bundled baseline. Placeholder generation is handled here.
+**Responsibility:** Resolve asset paths at runtime using a two-tier lookup: asset cache first, bundled install assets second, placeholder third. In v1 the cache tier exists architecturally but is not populated by the updater; all media ships in the install bundle. Placeholder fallback is used for any asset not found in either location.
 
-**Key inputs:** Monster ID or egg type ID, asset type request (monster image, egg icon).
+**Key inputs:** Relative asset path from `content.db` (e.g., `images/monsters/zynth.png`).
 
 **Key outputs:** Absolute path to the correct image file.
 
-**Dependencies:** Bundled asset directory (relative to app root); downloaded asset cache in `%APPDATA%`.
+**Dependencies:** Bundled asset directory (relative to app root); cache directory in `%APPDATA%` (unused in v1 but structurally present).
 
 **Stateful:** No — pure lookup logic against the filesystem.
+
+> **v1 scope note:** Installer-bundled assets are the sole media source of truth in v1. The cache directory path is wired but not populated by the update process. Future versions may populate it with downloaded assets.
 
 ---
 
@@ -1984,32 +1987,35 @@ BreedListPanel.refresh():
 User clicks "Check for Updates" in Settings
   │
   ▼
-SettingsPanel emits: update_requested()
+SettingsPanel emits: check_update_requested()
   │
   ▼
-AppService.handle_update_request():
-  Disable "Check for Updates" button
-  Show progress indicator
-  Run UpdateOrchestrator in background thread (QThread)
-    │
-    ├── connectivity_check()  → OK
-    ├── scraper.fetch_wiki_data() → UpdateManifest
-    ├── validator.validate(manifest) → OK
-    ├── asset_fetcher.download_images(manifest.images_to_fetch) → to staging dir
-    ├── commit.apply_to_content_db(conn_content, manifest)
-    │     UPDATE/INSERT monsters, egg_types, monster_requirements
-    │     UPDATE update_metadata (version, timestamp)
-    │     COMMIT
-    ├── Move staged assets to %APPDATA%\MSMAwakeningTracker\assets\
-    ├── Optionally run reconcile() once for safety (post-update pass)
-    └── Emit update_complete(success=True, new_count=N, updated_count=M)
+MainWindow disables update button, runs UpdateService.check_for_update()
+  UpdateWorker thread:
+    ├── Fetch manifest.json → remote content_version
+    └── Emit check_finished(available=True, remote_version)
   │
   ▼
-AppService receives update_complete on main thread:
-  Re-enable button
-  Hide progress indicator
-  Show success message ("N new monsters, M updated")
-  emit_state_changed() (catalog may have new entries)
+User clicks "Install Update"
+  │
+  ▼
+UpdateWorker thread:
+    ├── Download content_staging.db
+    ├── validate_content_db(staging) → OK
+    └── Emit apply_finished(success=True, new_version)
+  │
+  ▼
+MainWindow._on_update_apply_result (main thread finalization):
+    ├── Close live content.db connection
+    ├── Handle WAL/SHM sidecars
+    ├── Back up current content.db
+    ├── Replace content.db with staging (os.replace)
+    ├── Reopen content.db connection
+    ├── Rebind AppService + UpdateService
+    ├── Run post-update reconciliation (Section 18.13)
+    ├── Clear undo/redo stacks
+    ├── Refresh catalog, breed list, in-work, settings
+    └── Show success: "Updated to <version>."
 ```
 
 ---
@@ -2017,15 +2023,17 @@ AppService receives update_complete on main thread:
 ### 14.12 Check for Updates — Failure
 
 ```
-UpdateOrchestrator encounters error at any stage:
-  ├── Network failure → rollback staged assets → emit update_complete(success=False, reason="Network unavailable")
-  ├── Parse error → rollback staged → emit update_complete(success=False, reason="Parse error")
-  └── DB write error → DB transaction rolled back → emit update_complete(success=False, reason="DB error")
+UpdateWorker encounters error:
+  ├── Network failure → emit apply_finished(success=False, error="Network unavailable")
+  ├── Validation failure → delete staging → emit apply_finished(success=False, error="Invalid content")
+  └── Download error → emit apply_finished(success=False, error="Download failed")
 
-AppService receives update_complete(success=False):
-  Re-enable button
-  Show user-friendly error: "Update could not be completed. [Reason]. Your data is unchanged."
-  content.db: unmodified
+Main thread finalization encounters error:
+  ├── Replacement failure → restore backup → reopen prior connection → rebind services
+  ├── Reopen failure → restore backup → reopen prior connection → rebind services
+  └── Reconciliation failure → restore backup → reopen prior connection → rebind services
+  Show: "Update failed: [Reason]. Your data is unchanged."
+  content.db: restored from backup
   userstate.db: unmodified
 ```
 
@@ -2332,93 +2340,60 @@ The `completion_event` is emitted **before** `state_changed`. This ensures:
 
 The update process is triggered exclusively by the user clicking "Check for Updates" in the Settings panel (FR-702). No automatic or background updates.
 
-### 18.2 Update Orchestrator
+### 18.2 Update Worker
 
-The `UpdateOrchestrator` class (in `updater/`) runs in a `QThread` to keep the UI responsive. It emits `progress` signals back to the main thread for the Settings panel to display. It emits a final `complete` signal on success or failure.
+The `_UpdateWorker` (in `updater/update_service.py`) runs in a `QThread` to keep the UI responsive. It emits `progress` signals back to the main thread for the Settings panel to display. It emits a final `apply_finished` signal on success or failure. The worker handles **staging only** (download + validation); finalization (replace + reconnect + reconcile) is performed on the main thread.
 
-### 18.3 Connectivity Check
+### 18.3 Manifest and Download
 
-Before any network request:
+The worker fetches a remote `manifest.json` containing at minimum:
 
-```python
-def check_connectivity() -> bool:
-    try:
-        requests.head("https://www.fandom.com", timeout=5)
-        return True
-    except requests.RequestException:
-        return False
-```
+- `content_version`: string label for the available content version
+- `content_db_url`: URL to the prebuilt `content.db` artifact
 
-If connectivity check fails, emit `complete(success=False, reason="No internet connection")` immediately.
+If the remote `content_version` matches the local version, no update is available. Otherwise the worker downloads the artifact to `content_staging.db`.
 
-### 18.4 Wiki API Endpoints
+### 18.4 Staged DB Validation
 
-The MSM Wiki uses the MediaWiki API on Fandom:
+The downloaded `content_staging.db` is validated before any replacement:
 
-```
-Base: https://mysingingmonsters.fandom.com/api.php
-Query for category members:
-  ?action=query&list=categorymembers&cmtitle=Category:Wublins&cmlimit=500&format=json
-Query for page content (for requirements):
-  ?action=parse&page=<wiki_slug>&prop=wikitext&format=json
-```
+- Required tables exist (`monsters`, `egg_types`, `monster_requirements`, `update_metadata`)
+- At least one monster and one egg type row exist
+- `update_metadata` contains valid `content_version` and `last_updated_utc` entries
 
-**Recommended Technical Decision:** Parse Infobox wikitext from page content rather than relying on semantic data, as the MSM wiki does not have structured semantic markup. The scraper must be resilient to minor wikitext formatting changes — use regex patterns that match the field name, not absolute character positions.
+If validation fails, the staged file is deleted and the update is aborted.
 
-### 18.5 Data Discovery Process
+### 18.5 Stage-and-Replace Strategy
 
 ```
-1. Fetch category pages for Wublins, Celestials, Amber Vessels
-2. For each page:
-   a. Fetch page wikitext
-   b. Parse Infobox for: egg requirements (type + qty), breeding times
-   c. Compare against local content.db record
-   d. If new: add to UpdateManifest.new_monsters
-   e. If changed: add to UpdateManifest.updated_monsters
-   f. Identify Fan Kit image URL if available
-3. Build UpdateManifest
-```
+Worker thread (staging):
+  1. Fetch manifest.json
+  2. Download content_staging.db
+  3. Validate staged DB (schema, data, metadata)
+  4. If validation fails: delete staging; emit failure
 
-### 18.6 Image Refresh Strategy
+Main thread (finalization, after worker signals success):
+  5. Close the live content.db connection
+  6. Handle WAL/SHM sidecars
+  7. Back up current content.db to content_backup.db
+  8. Replace content.db with content_staging.db (os.replace)
+  9. Reopen content.db connection
+  10. Rebind AppService, UpdateService, and AppContext
+  11. Run post-update reconciliation (Section 18.13)
+  12. Clear undo/redo stacks
+  13. Refresh all UI panels
+  14. Delete staging and backup files
 
-- **Fan Kit images:** Download from the BBB Fan Kit URL. Store to staging directory first. File naming: `<wiki_slug>_egg.png` for egg icons, `<wiki_slug>.png` for monster images.
-- **Placeholder generation:** If no Fan Kit image URL is found, `placeholder.py` generates a placeholder using Pillow: base silhouette graphic + monster initials overlay. Store as PNG.
-- **Replacement lifecycle:** On each update run, if a monster was previously `is_placeholder=True` and a Fan Kit image is now found, download the real image and update `is_placeholder=False` in content DB.
-
-### 18.7 Validation Before Commit
-
-Before committing any parsed data to the content DB:
-
-- All monster entries have non-empty `name`, valid `monster_type`, at least one requirement.
-- All egg type entries have `breeding_time_seconds > 0`.
-- All requirements have `quantity >= 1`.
-- No circular references or self-references.
-
-If validation fails for any entry, the entire update is aborted (fail fast). The specific validation error is logged.
-
-### 18.8 Stage-and-Commit Strategy
-
-```
-Staging phase (before touching content.db):
-  1. Download all images to STAGING_DIR = %APPDATA%\MSMAwakeningTracker\staging\
-  2. Parse and validate all data (in-memory only)
-  3. If any download or parse failure: DELETE STAGING_DIR; abort with error
-
-Commit phase (all-or-nothing on content.db):
-  4. BEGIN TRANSACTION on content.db
-  5. Apply all INSERT/UPDATE for monsters, egg_types, requirements
-  6. UPDATE update_metadata (version, timestamp)
-  7. COMMIT
-  8. Move images from STAGING_DIR to asset cache directory
-  9. DELETE STAGING_DIR
-
-Rollback (if step 4-7 fails):
-  ROLLBACK content.db transaction (content.db unchanged)
-  DELETE STAGING_DIR (staged images discarded)
+Rollback (if steps 5-11 fail):
+  Restore content_backup.db to content.db
+  Reopen the prior content connection
+  Rebind services to restored connection
   Emit failure result
 ```
 
-`userstate.db` is only modified during the post-update finalization pass described in Section 18.13. The content DB commit itself (steps 4-7 above) never touches `userstate.db`.
+`userstate.db` is only modified during the post-update finalization pass described in Section 18.13.
+
+> **v1 scope note:** The v1 updater replaces the content database only. It does not download, stage, or cache image assets. Media updates are delivered in new installer builds.
 
 ### 18.9 Post-Update Reconciliation
 
@@ -2495,13 +2470,15 @@ On receipt of content_update_complete signal (main thread):
 
 ### 19.1 Asset Categories
 
-| Category           | Files                             | Bundled?                | Updateable?                             |
-| ------------------ | --------------------------------- | ----------------------- | --------------------------------------- |
-| Monster images     | `images/monsters/<wiki_slug>.png` | Yes                     | Yes (via update)                        |
-| Egg icons          | `images/eggs/<wiki_slug>_egg.png` | Yes                     | Yes (via update)                        |
-| UI icons / logo    | `images/ui/*.png`, `*.ico`        | Yes                     | No (part of app build)                  |
-| Ding audio         | `audio/ding.wav`                  | Yes                     | No                                      |
-| Placeholder images | `images/placeholders/*.png`       | Generated at build time | Yes (replaced by real images on update) |
+| Category           | Files                             | Bundled?                | Updateable in v1?                          |
+| ------------------ | --------------------------------- | ----------------------- | ------------------------------------------ |
+| Monster images     | `images/monsters/<name>.png`      | Yes                     | No (updated via new installer builds only) |
+| Egg icons          | `images/eggs/<name>_egg.png`      | Yes                     | No (updated via new installer builds only) |
+| UI icons / logo    | `images/ui/*.png`, `*.ico`        | Yes                     | No (part of app build)                     |
+| Ding audio         | `audio/ding.wav`                  | Yes                     | No                                         |
+| Placeholder images | `images/ui/placeholder.png`       | Generated at build time | No                                         |
+
+> **v1 scope note:** All media assets are delivered in the installer bundle. The in-app updater replaces content data only. Future versions may add runtime asset downloading to the cache directory.
 
 ### 19.2 Two-Tier Lookup Strategy
 

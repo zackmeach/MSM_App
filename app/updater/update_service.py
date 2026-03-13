@@ -1,16 +1,22 @@
-"""Content update orchestration — check, download, validate, stage, apply.
+"""Content update orchestration — check, download, validate, stage, finalize.
+
+The update flow has two phases:
+  1. Worker thread: fetch manifest, download staged DB, validate it.
+  2. Main thread (finalization): close old connection, replace content.db,
+     reopen, rebind services, reconcile userstate, clear undo/redo.
 
 Safety guarantees:
-- Failed updates leave prior content.db intact.
-- User state (userstate.db) is never modified by the updater directly.
-- Post-update reconciliation clips any progress rows that exceed new requirements.
-- Undo/redo history is cleared after a successful update.
+- Failed staging leaves prior content.db intact.
+- Failed finalization restores the backup and reopens the prior connection.
+- User state (userstate.db) is only modified during post-update reconciliation.
+- Undo/redo history is cleared after a successful finalization.
 """
 
 from __future__ import annotations
 
 import json
 import logging
+import os
 import shutil
 import sqlite3
 import urllib.error
@@ -49,10 +55,11 @@ class UpdateApplyResult:
 
 
 class _UpdateWorker(QObject):
-    """Runs update operations off the main thread."""
+    """Runs staging operations off the main thread."""
 
     check_finished = Signal(object)  # UpdateCheckResult
-    apply_finished = Signal(object)  # UpdateApplyResult
+    staging_ready = Signal(str)  # new_version — staged DB validated and ready
+    staging_failed = Signal(str)  # error message
     progress = Signal(str)  # status message
 
     def __init__(
@@ -94,19 +101,18 @@ class _UpdateWorker(QObject):
                 UpdateCheckResult(False, self._current_version, error=str(exc))
             )
 
-    def do_apply(self) -> None:
+    def do_stage(self) -> None:
+        """Download and validate the staged DB. Does NOT replace content.db."""
         if not self._manifest_data:
-            self.apply_finished.emit(UpdateApplyResult(False, error="No manifest data"))
+            self.staging_failed.emit("No manifest data")
             return
 
         db_url = self._manifest_data.get("content_db_url", "")
         if not db_url:
-            self.apply_finished.emit(UpdateApplyResult(False, error="No download URL in manifest"))
+            self.staging_failed.emit("No download URL in manifest")
             return
 
         staging = self._data_dir / "content_staging.db"
-        current = self._data_dir / "content.db"
-        backup = self._data_dir / "content_backup.db"
 
         try:
             self.progress.emit("Downloading update...")
@@ -118,26 +124,15 @@ class _UpdateWorker(QObject):
             self.progress.emit("Validating...")
             validate_content_db(str(staging))
 
-            self.progress.emit("Applying update...")
-            if current.exists():
-                shutil.copy2(current, backup)
-
-            shutil.move(str(staging), str(current))
-
             new_version = self._manifest_data.get("content_version", "unknown")
-            logger.info("Content updated to %s", new_version)
-            self.apply_finished.emit(UpdateApplyResult(True, new_version))
+            logger.info("Staged content DB validated: %s", new_version)
+            self.staging_ready.emit(new_version)
 
         except (ValidationError, urllib.error.URLError, OSError) as exc:
-            logger.error("Update apply failed: %s", exc, exc_info=True)
-            self.progress.emit("Update failed — restoring backup...")
-
+            logger.error("Staging failed: %s", exc, exc_info=True)
             if staging.exists():
                 staging.unlink(missing_ok=True)
-            if backup.exists() and not current.exists():
-                shutil.move(str(backup), str(current))
-
-            self.apply_finished.emit(UpdateApplyResult(False, error=str(exc)))
+            self.staging_failed.emit(str(exc))
 
 
 class UpdateService(QObject):
@@ -159,6 +154,10 @@ class UpdateService(QObject):
         self._manifest_url = manifest_url
         self._thread: QThread | None = None
         self._worker: _UpdateWorker | None = None
+
+    def rebind_content(self, conn_content: sqlite3.Connection) -> None:
+        """Update the content connection after finalization."""
+        self._conn_content = conn_content
 
     @property
     def current_version(self) -> str:
@@ -186,27 +185,109 @@ class UpdateService(QObject):
         self._thread.start()
 
     def apply_update(self) -> None:
+        """Start the staging phase (download + validate) on a worker thread.
+
+        When staging succeeds, ``staging_ready`` is emitted. The caller
+        (MainWindow) is responsible for wiring that to the finalization path.
+        """
         if not self._worker or (self._thread and self._thread.isRunning()):
             return
 
         self._thread = QThread()
         self._worker.moveToThread(self._thread)
 
-        self._thread.started.connect(self._worker.do_apply)
-        self._worker.apply_finished.connect(self._on_apply_finished)
+        self._thread.started.connect(self._worker.do_stage)
+        self._worker.staging_ready.connect(self._on_staging_ready)
+        self._worker.staging_failed.connect(self._on_staging_failed)
         self._worker.progress.connect(self.status_message.emit)
         self._thread.start()
+
+    # ── Finalization (called on main thread) ──────────────────────────
+
+    def finalize_update(self, conn_content: sqlite3.Connection) -> sqlite3.Connection:
+        """Replace content.db with staged DB and reopen.
+
+        Closes *conn_content*, swaps the file, and returns a new connection.
+        Raises on failure (caller must handle rollback).
+        """
+        staging = self._data_dir / "content_staging.db"
+        current = self._data_dir / "content.db"
+        backup = self._data_dir / "content_backup.db"
+
+        self.status_message.emit("Applying update...")
+
+        try:
+            conn_content.close()
+        except sqlite3.Error:
+            pass
+
+        _remove_wal_sidecars(current)
+
+        if current.exists():
+            shutil.copy2(current, backup)
+
+        try:
+            os.replace(str(staging), str(current))
+        except OSError:
+            shutil.move(str(staging), str(current))
+
+        from app.bootstrap import open_content_db
+
+        new_conn = open_content_db(current)
+        return new_conn
+
+    def rollback_update(self) -> sqlite3.Connection | None:
+        """Restore backup and reopen the prior content connection.
+
+        Returns the restored connection or None if backup is missing.
+        """
+        current = self._data_dir / "content.db"
+        backup = self._data_dir / "content_backup.db"
+
+        if not backup.exists():
+            return None
+
+        _remove_wal_sidecars(current)
+
+        try:
+            os.replace(str(backup), str(current))
+        except OSError:
+            shutil.move(str(backup), str(current))
+
+        from app.bootstrap import open_content_db
+
+        return open_content_db(current)
+
+    def cleanup_staging_files(self) -> None:
+        """Remove staging and backup files after a successful update."""
+        for name in ("content_staging.db", "content_backup.db"):
+            p = self._data_dir / name
+            p.unlink(missing_ok=True)
+
+    # ── Internal ──────────────────────────────────────────────────────
 
     def _on_check_finished(self, result: UpdateCheckResult) -> None:
         self._cleanup_thread()
         self.check_result.emit(result)
 
-    def _on_apply_finished(self, result: UpdateApplyResult) -> None:
+    def _on_staging_ready(self, new_version: str) -> None:
         self._cleanup_thread()
-        self.apply_result.emit(result)
+        self.apply_result.emit(UpdateApplyResult(True, new_version))
+
+    def _on_staging_failed(self, error: str) -> None:
+        self._cleanup_thread()
+        self.status_message.emit("Update failed — your content is unchanged.")
+        self.apply_result.emit(UpdateApplyResult(False, error=error))
 
     def _cleanup_thread(self) -> None:
         if self._thread:
             self._thread.quit()
             self._thread.wait(5000)
             self._thread = None
+
+
+def _remove_wal_sidecars(db_path: Path) -> None:
+    """Delete WAL and SHM sidecars for a SQLite DB so replacement is safe."""
+    for suffix in ("-wal", "-shm"):
+        sidecar = db_path.parent / (db_path.name + suffix)
+        sidecar.unlink(missing_ok=True)

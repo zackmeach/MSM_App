@@ -17,6 +17,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+import logging
+
 from app.assets import resolver
 from app.services.app_service import AppService
 from app.services.audio_player import AudioPlayer
@@ -29,6 +31,8 @@ from app.updater.update_service import UpdateService
 if TYPE_CHECKING:
     from app.bootstrap import AppContext
     from app.updater.update_service import UpdateApplyResult, UpdateCheckResult
+
+logger = logging.getLogger(__name__)
 
 
 class MainWindow(QMainWindow):
@@ -184,13 +188,65 @@ class MainWindow(QMainWindow):
 
     def _on_update_apply_result(self, result: UpdateApplyResult) -> None:
         self._settings.set_busy(False)
-        if result.success:
-            self._settings.set_status(f"Updated to {result.new_version}. Restart recommended.")
-            self._settings.set_update_available(False)
-            self._service.clear_undo_redo()
-            self._settings.refresh(self._service.get_settings_viewmodel())
-        else:
+        if not result.success:
             self._settings.set_status(f"Update failed: {result.error}")
+            return
+
+        try:
+            new_conn = self._updater.finalize_update(self._ctx.conn_content)
+        except Exception as exc:
+            logger.error("Finalization failed, rolling back: %s", exc, exc_info=True)
+            restored = self._updater.rollback_update()
+            if restored:
+                self._ctx.conn_content = restored
+                self._service.rebind_content(restored)
+                self._updater.rebind_content(restored)
+            self._settings.set_status(f"Update failed during apply: {exc}")
+            return
+
+        self._ctx.conn_content = new_conn
+        self._service.rebind_content(new_conn)
+        self._updater.rebind_content(new_conn)
+
+        self._run_post_update_reconciliation(new_conn)
+
+        self._service.clear_undo_redo()
+
+        self._catalog.load_catalog(self._service.get_catalog_items())
+        self._settings.set_update_available(False)
+        self._settings.refresh(self._service.get_settings_viewmodel())
+        self._settings.set_status(f"Updated to {result.new_version}.")
+
+        self._updater.cleanup_staging_files()
+
+    def _run_post_update_reconciliation(self, conn_content: 'sqlite3.Connection') -> None:
+        """Clip/purge userstate progress that exceeds updated requirements."""
+        import sqlite3
+
+        from app.domain.reconciliation import reconcile
+        from app.repositories import monster_repo, target_repo
+
+        targets = target_repo.fetch_all_targets(self._ctx.conn_userstate)
+
+        deprecated_ids = []
+        for t in targets:
+            if not monster_repo.monster_exists_and_active(conn_content, t.monster_id):
+                deprecated_ids.append(t.id)
+
+        if deprecated_ids:
+            for tid in deprecated_ids:
+                target_repo.delete_progress_for_target(self._ctx.conn_userstate, tid)
+                target_repo.delete_target(self._ctx.conn_userstate, tid)
+            self._ctx.conn_userstate.commit()
+
+        progress = target_repo.fetch_all_progress(self._ctx.conn_userstate)
+        clips = reconcile(progress)
+        if clips:
+            for target_id, egg_type_id, clipped_val in clips:
+                target_repo.set_progress(
+                    self._ctx.conn_userstate, target_id, egg_type_id, clipped_val
+                )
+            self._ctx.conn_userstate.commit()
 
     def _apply_stylesheet(self) -> None:
         self.setStyleSheet("""

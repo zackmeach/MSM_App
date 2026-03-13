@@ -139,6 +139,16 @@ class AppService(QObject):
         )
         self.execute_command(cmd)
 
+    def rebind_content(self, conn_content: sqlite3.Connection) -> None:
+        """Swap the content DB connection and refresh all caches.
+
+        Called after a successful content update replaces content.db on disk
+        and reopens the connection.
+        """
+        self._conn_content = conn_content
+        self._requirements_cache = monster_repo.fetch_all_requirements(conn_content)
+        self._egg_types_map = monster_repo.fetch_egg_types_map(conn_content)
+
     def clear_undo_redo(self) -> None:
         """Clear undo/redo stacks (e.g. after a content update)."""
         self._undo_stack.clear()

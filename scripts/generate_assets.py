@@ -1,7 +1,9 @@
-"""Generate minimum viable bundled assets: placeholder image and ding audio.
+"""Generate bundled assets: UI placeholder, ding audio, and placeholder PNGs
+for every egg/monster image path referenced in the seed data.
 
-These are development placeholders. Official assets from the BBB Fan Kit
-should replace them before release.
+Official assets from the BBB Fan Kit should replace the generated egg/monster
+placeholders before final release. The generator will skip files that already
+exist so hand-placed official assets are preserved.
 
 Run:  python scripts/generate_assets.py
 """
@@ -9,25 +11,25 @@ Run:  python scripts/generate_assets.py
 from __future__ import annotations
 
 import math
+import sqlite3
 import struct
 import wave
+import zlib
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 RESOURCES = ROOT / "resources"
 
 
-def _generate_placeholder_png(path: Path, size: int = 64) -> None:
-    """Write a minimal valid PNG with a solid mid-grey square and a '?' glyph."""
-    import zlib
-
-    bg = (0x45, 0x47, 0x5A)  # matches the app's dark card background
-    fg = (0x89, 0xB4, 0xFA)  # accent blue
+def _generate_placeholder_png(path: Path, size: int = 64, label: str = "?") -> None:
+    """Write a minimal valid PNG with a solid dark square and centered initials."""
+    bg = (0x45, 0x47, 0x5A)
+    fg = (0x89, 0xB4, 0xFA)
 
     rows = []
     for y in range(size):
         row = bytearray()
-        row.append(0)  # filter byte
+        row.append(0)
         for x in range(size):
             cx, cy = x - size // 2, y - size // 2
             dist = math.sqrt(cx * cx + cy * cy)
@@ -81,6 +83,36 @@ def _generate_ding_wav(path: Path) -> None:
         wf.writeframes(bytes(frames))
 
 
+def _generate_db_referenced_assets(db_path: Path) -> int:
+    """Generate placeholder PNGs for every image path in the content DB.
+
+    Skips files that already exist so hand-placed official assets are
+    preserved. Returns the number of files created.
+    """
+    if not db_path.exists():
+        print(f"  SKIP  content.db not found at {db_path} — run seed_content_db.py first")
+        return 0
+
+    conn = sqlite3.connect(str(db_path))
+    paths: set[str] = set()
+
+    for row in conn.execute("SELECT image_path FROM monsters WHERE image_path != ''"):
+        paths.add(row[0])
+    for row in conn.execute("SELECT egg_image_path FROM egg_types WHERE egg_image_path != ''"):
+        paths.add(row[0])
+    conn.close()
+
+    created = 0
+    for rel_path in sorted(paths):
+        target = RESOURCES / rel_path
+        if target.exists():
+            continue
+        _generate_placeholder_png(target, size=96)
+        created += 1
+
+    return created
+
+
 def main() -> None:
     placeholder = RESOURCES / "images" / "ui" / "placeholder.png"
     _generate_placeholder_png(placeholder)
@@ -89,6 +121,13 @@ def main() -> None:
     ding = RESOURCES / "audio" / "ding.wav"
     _generate_ding_wav(ding)
     print(f"  Created {ding}")
+
+    db_path = RESOURCES / "db" / "content.db"
+    count = _generate_db_referenced_assets(db_path)
+    if count:
+        print(f"  Generated {count} placeholder image(s) for DB-referenced asset paths")
+    else:
+        print("  All DB-referenced asset paths already present (or DB not yet seeded)")
 
     print("Asset generation complete.")
 

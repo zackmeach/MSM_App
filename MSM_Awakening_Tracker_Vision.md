@@ -159,13 +159,11 @@ What is **not** shown or tracked:
 
 > Settings includes a **"Check for Updates"** option. When triggered, the app:
 > 
-> 1. Checks the MSM Wiki (Fandom), preferably via MediaWiki API endpoints where available
-> 2. Discovers any **new monsters** that have been added to the game (new Celestials, Wublins, or Amber Vessels are added over time)
-> 3. Compares requirement data and images against the local database
-> 4. Updates any changed entries and adds any new entries automatically
-> 5. Updates images as part of the same process
+> 1. Checks a remote manifest for a newer content database version
+> 2. Downloads and validates the prebuilt `content.db` package
+> 3. Replaces the local content database and finalizes in-process (reconnects, reconciles user state, refreshes UI)
 
-> This must support **new monster discovery**, not just changes to existing entries.
+> New monster discovery, requirement changes, and image updates are handled by the project maintainer in a content-production pipeline. The desktop client receives these changes as a prebuilt database package. This supports new monster discovery without requiring the installed app to scrape external sources.
 
 ---
 
@@ -248,7 +246,7 @@ What is **not** shown or tracked:
 | In-work monster panel                            | ✅     |
 | Monster catalog (by type, searchable)            | ✅     |
 | Built-in asset pack                              | ✅     |
-| Check for Updates (data + images + new monsters) | ✅     |
+| Check for Updates (content DB replacement)        | ✅     |
 | Timers / notifications                           | ❌     |
 | Breeding optimization suggestions                | ❌     |
 | Multi-user profiles                              | ❌     |
@@ -263,4 +261,4 @@ What is **not** shown or tracked:
 - **Local Storage:** SQLite (single file, supports versioning and queries)
 - **Undo/Redo:** Command pattern (stack of reversible state transitions)
 - **Packaging:** PyInstaller + Windows installer (Inno Setup or MSI)
-- **Update Scraper:** Python `requests` + MediaWiki API (Fandom) for structured data; BBB Fan Kit for images
+- **Content Updater:** Manifest-driven content DB download and replacement; media bundled at install time

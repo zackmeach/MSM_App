@@ -1,5 +1,10 @@
 """Verify that the resource bundle contains all expected files.
 
+Checks:
+- Core resources (content.db, placeholder, icon, ding audio)
+- Every image path referenced in content.db exists under resources/
+- Row count assertions match seeded expectations
+
 Run:  python scripts/verify_bundle.py
 """
 
@@ -14,26 +19,25 @@ RESOURCES = ROOT / "resources"
 
 
 def main() -> int:
-    ok = True
     errors: list[str] = []
 
     db_path = RESOURCES / "db" / "content.db"
     if not db_path.exists():
-        errors.append(f"MISSING: {db_path}")
         print(f"FAIL  {db_path}")
         return 1
 
-    placeholder = RESOURCES / "images" / "ui" / "placeholder.png"
-    if not placeholder.exists():
-        errors.append(f"MISSING: {placeholder}")
-    else:
-        print(f"  OK  {placeholder.relative_to(ROOT)}")
+    print(f"  OK  {db_path.relative_to(ROOT)}")
 
-    ding = RESOURCES / "audio" / "ding.wav"
-    if not ding.exists():
-        errors.append(f"MISSING: {ding}")
-    else:
-        print(f"  OK  {ding.relative_to(ROOT)}")
+    core_files = [
+        RESOURCES / "images" / "ui" / "placeholder.png",
+        RESOURCES / "images" / "ui" / "app_icon.ico",
+        RESOURCES / "audio" / "ding.wav",
+    ]
+    for f in core_files:
+        if not f.exists():
+            errors.append(f"MISSING: {f.relative_to(ROOT)}")
+        else:
+            print(f"  OK  {f.relative_to(ROOT)}")
 
     conn = sqlite3.connect(str(db_path))
 
@@ -42,9 +46,9 @@ def main() -> int:
     req_count = conn.execute("SELECT COUNT(*) FROM monster_requirements").fetchone()[0]
 
     for label, expected_min, actual in [
-        ("Monsters", 30, monster_count),
-        ("Egg types", 30, egg_count),
-        ("Requirements", 200, req_count),
+        ("Monsters", 39, monster_count),
+        ("Egg types", 38, egg_count),
+        ("Requirements", 450, req_count),
     ]:
         if actual < expected_min:
             errors.append(f"{label}: expected >= {expected_min}, got {actual}")
@@ -56,10 +60,10 @@ def main() -> int:
     ).fetchall()
     type_map = dict(types)
 
-    for mtype, min_count in [("wublin", 19), ("celestial", 12), ("amber", 3)]:
+    for mtype, expected in [("wublin", 19), ("celestial", 12), ("amber", 8)]:
         actual = type_map.get(mtype, 0)
-        if actual < min_count:
-            errors.append(f"{mtype}: expected >= {min_count}, got {actual}")
+        if actual < expected:
+            errors.append(f"{mtype}: expected >= {expected}, got {actual}")
         else:
             print(f"  OK  {mtype}: {actual}")
 
@@ -74,6 +78,11 @@ def main() -> int:
     else:
         print("  OK  No orphaned requirements")
 
+    missing_assets = _check_db_referenced_assets(conn)
+    errors.extend(missing_assets)
+    if not missing_assets:
+        print("  OK  All DB-referenced asset paths exist in bundle")
+
     conn.close()
 
     if errors:
@@ -84,6 +93,29 @@ def main() -> int:
 
     print("\nBundle verification passed.")
     return 0
+
+
+def _check_db_referenced_assets(conn: sqlite3.Connection) -> list[str]:
+    """Verify every image path in the DB exists under RESOURCES."""
+    errors: list[str] = []
+
+    for row in conn.execute(
+        "SELECT name, image_path FROM monsters WHERE image_path != ''"
+    ):
+        name, rel_path = row
+        full = RESOURCES / rel_path
+        if not full.exists():
+            errors.append(f"MISSING monster asset: {rel_path} (monster: {name})")
+
+    for row in conn.execute(
+        "SELECT name, egg_image_path FROM egg_types WHERE egg_image_path != ''"
+    ):
+        name, rel_path = row
+        full = RESOURCES / rel_path
+        if not full.exists():
+            errors.append(f"MISSING egg asset: {rel_path} (egg: {name})")
+
+    return errors
 
 
 if __name__ == "__main__":

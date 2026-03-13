@@ -35,7 +35,7 @@ class SettingsPanel(QWidget):
         self._updated_label = QLabel("Last updated: —")
         layout.addWidget(self._updated_label)
 
-        self._update_btn = QPushButton("Check for Updates")
+        self._update_btn = QPushButton("Check for Content Updates")
         self._update_btn.clicked.connect(self._on_update_btn)
         layout.addWidget(self._update_btn)
 
@@ -71,10 +71,10 @@ class SettingsPanel(QWidget):
     def set_update_available(self, available: bool, remote_version: str = "") -> None:
         self._update_available = available
         if available:
-            self._update_btn.setText(f"Install Update ({remote_version})")
-            self._status_label.setText(f"Update available: {remote_version}")
+            self._update_btn.setText(f"Install Content Update ({remote_version})")
+            self._status_label.setText(f"Content update available: {remote_version}")
         else:
-            self._update_btn.setText("Check for Updates")
+            self._update_btn.setText("Check for Content Updates")
 
     def set_busy(self, busy: bool) -> None:
         self._update_btn.setEnabled(not busy)

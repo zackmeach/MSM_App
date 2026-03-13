@@ -45,10 +45,14 @@ class AppStateViewModel:
     can_redo: bool = False
 
 
+APP_VERSION = "1.0.0"
+
+
 @dataclass(frozen=True)
 class SettingsViewModel:
     content_version: str = ""
     last_updated_display: str = ""
+    app_version: str = APP_VERSION
     disclaimer_text: str = (
         "This app is an unofficial fan creation and is not affiliated with, endorsed by, "
         "or sponsored by Big Blue Bubble Inc. All My Singing Monsters assets used in this "

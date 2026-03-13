@@ -17,12 +17,25 @@ pip install -r requirements.txt
 # Seed the dev content database (first time only)
 python scripts/seed_content_db.py
 
+# Generate bundled assets (placeholder image, audio, icon)
+python scripts/generate_assets.py
+python scripts/generate_icon.py
+
 # Run the app
 python main.py
 
 # Run tests
 pytest
 ```
+
+## Building a Release
+
+```bash
+# Full build pipeline (tests + seed + assets + verify + package)
+python scripts/build.py
+```
+
+The packaged app will be in `dist/MSMAwakeningTracker/`.
 
 ## Project Layout
 
@@ -37,9 +50,19 @@ pytest
 | `app/repositories/` | SQLite data access |
 | `app/db/` | Connection factory, migration runner, SQL migration scripts |
 | `app/assets/` | Runtime asset path resolver |
+| `app/updater/` | Content update subsystem (fetch, validate, stage, apply) |
 | `resources/` | Bundled static assets (DB, images, audio) |
-| `scripts/` | Build-time utilities (seed DB, fetch assets) |
-| `tests/` | pytest unit and integration tests |
+| `scripts/` | Build-time utilities (seed DB, generate assets, build) |
+| `tests/` | pytest unit, integration, and GUI smoke tests |
+
+## Content Coverage
+
+| Category | Count | Source |
+|---|---|---|
+| Wublins | 19 | All regular Wublins |
+| Celestials | 12 | All regular Celestials |
+| Amber Vessels | 8 | All standard Amber Vessels |
+| Egg Types | 38 | All required breeding elements |
 
 ## Databases
 
@@ -50,7 +73,8 @@ pytest
 
 ## Tech Stack
 
-- Python 3.11+
+- Python 3.10+
 - PySide6 (Qt for Python)
 - SQLite via `sqlite3`
 - pytest / pytest-qt
+- PyInstaller (packaging)

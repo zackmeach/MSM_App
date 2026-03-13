@@ -30,21 +30,23 @@ def userstate_conn() -> sqlite3.Connection:
 
 
 def _seed_content(conn: sqlite3.Connection) -> None:
-    """Insert a minimal dev dataset into the in-memory content DB."""
+    """Insert a representative dev dataset covering Wublins, Celestials, and Amber."""
     eggs = [
-        ("Mammott",   1800,  "30m",    "images/eggs/mammott_egg.png"),
-        ("Noggin",     900,  "15m",    "images/eggs/noggin_egg.png"),
-        ("Potbelly",   900,  "15m",    "images/eggs/potbelly_egg.png"),
-        ("Toe Jammer", 900,  "15m",    "images/eggs/toejammer_egg.png"),
-        ("Tweedle",   1800,  "30m",    "images/eggs/tweedle_egg.png"),
-        ("Furcorn",   5400,  "1h 30m", "images/eggs/furcorn_egg.png"),
-        ("Pango",     7200,  "2h",     "images/eggs/pango_egg.png"),
-        ("Drumpler",  3600,  "1h",     "images/eggs/drumpler_egg.png"),
-        ("Fwog",      3600,  "1h",     "images/eggs/fwog_egg.png"),
-        ("Bowgart",  30600,  "8h 30m", "images/eggs/bowgart_egg.png"),
-        ("Clamble",  28800,  "8h",     "images/eggs/clamble_egg.png"),
-        ("PomPom",   28800,  "8h",     "images/eggs/pompom_egg.png"),
-        ("Thumpies", 27000,  "7h 30m", "images/eggs/thumpies_egg.png"),
+        ("Mammott",    1800,  "30m",    "images/eggs/mammott_egg.png"),
+        ("Noggin",      900,  "15m",    "images/eggs/noggin_egg.png"),
+        ("Potbelly",    900,  "15m",    "images/eggs/potbelly_egg.png"),
+        ("Toe Jammer",  900,  "15m",    "images/eggs/toejammer_egg.png"),
+        ("Tweedle",    1800,  "30m",    "images/eggs/tweedle_egg.png"),
+        ("Furcorn",    5400,  "1h 30m", "images/eggs/furcorn_egg.png"),
+        ("Pango",      7200,  "2h",     "images/eggs/pango_egg.png"),
+        ("Drumpler",   3600,  "1h",     "images/eggs/drumpler_egg.png"),
+        ("Fwog",       3600,  "1h",     "images/eggs/fwog_egg.png"),
+        ("Bowgart",   30600,  "8h 30m", "images/eggs/bowgart_egg.png"),
+        ("Clamble",   28800,  "8h",     "images/eggs/clamble_egg.png"),
+        ("PomPom",    28800,  "8h",     "images/eggs/pompom_egg.png"),
+        ("Thumpies",  27000,  "7h 30m", "images/eggs/thumpies_egg.png"),
+        ("Oaktopus",   7200,  "2h",     "images/eggs/oaktopus_egg.png"),
+        ("Shrubb",     1800,  "30m",    "images/eggs/shrubb_egg.png"),
     ]
     conn.executemany(
         "INSERT INTO egg_types(name, breeding_time_seconds, breeding_time_display, egg_image_path, is_placeholder) "
@@ -53,12 +55,13 @@ def _seed_content(conn: sqlite3.Connection) -> None:
     )
 
     monsters = [
-        ("Zynth",    "wublin",    "images/monsters/zynth.png",    "Zynth"),
-        ("Poewk",    "wublin",    "images/monsters/poewk.png",    "Poewk"),
-        ("Dwumrohl", "wublin",    "images/monsters/dwumrohl.png", "Dwumrohl"),
-        ("Galvana",  "celestial", "images/monsters/galvana.png",  "Galvana"),
-        ("Glaishur", "celestial", "images/monsters/glaishur.png", "Glaishur"),
-        ("Attmoz",   "amber",     "images/monsters/attmoz.png",   "Attmoz"),
+        ("Zynth",    "wublin",    "images/monsters/zynth.png",        "Zynth"),
+        ("Poewk",    "wublin",    "images/monsters/poewk.png",        "Poewk"),
+        ("Dwumrohl", "wublin",    "images/monsters/dwumrohl.png",     "Dwumrohl"),
+        ("Galvana",  "celestial", "images/monsters/galvana.png",      "Galvana"),
+        ("Glaishur", "celestial", "images/monsters/glaishur.png",     "Glaishur"),
+        ("Attmoz",   "amber",     "images/monsters/attmoz_amber.png", "Attmoz"),
+        ("Kayna",    "amber",     "images/monsters/kayna_amber.png",  "Kayna"),
     ]
     conn.executemany(
         "INSERT INTO monsters(name, monster_type, image_path, wiki_slug, is_placeholder) "
@@ -93,6 +96,12 @@ def _seed_content(conn: sqlite3.Connection) -> None:
         (mon_ids["Attmoz"], egg_ids["Drumpler"], 3),
         (mon_ids["Attmoz"], egg_ids["Mammott"],  2),
         (mon_ids["Attmoz"], egg_ids["Noggin"],   1),
+        # Amber Vessel: Kayna
+        (mon_ids["Kayna"], egg_ids["Potbelly"],   4),
+        (mon_ids["Kayna"], egg_ids["Mammott"],    4),
+        (mon_ids["Kayna"], egg_ids["Tweedle"],    4),
+        (mon_ids["Kayna"], egg_ids["Oaktopus"],   3),
+        (mon_ids["Kayna"], egg_ids["Shrubb"],     3),
     ]
     conn.executemany(
         "INSERT INTO monster_requirements(monster_id, egg_type_id, quantity) VALUES(?, ?, ?)",

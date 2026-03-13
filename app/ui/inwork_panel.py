@@ -89,6 +89,7 @@ class InWorkPanel(QWidget):
             for m in monsters:
                 badge = f"× {m.count}" if m.count > 1 else ""
                 card = MonsterCard(m.monster_id, m.name, m.image_path, badge_text=badge)
+                card.setToolTip("Click to close out (removes newest instance)")
                 card.clicked.connect(self._on_card_clicked)
                 self._container_layout.insertWidget(insert_idx, card)
                 self._cards.append(card)

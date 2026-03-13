@@ -139,6 +139,12 @@ class AppService(QObject):
         )
         self.execute_command(cmd)
 
+    def clear_undo_redo(self) -> None:
+        """Clear undo/redo stacks (e.g. after a content update)."""
+        self._undo_stack.clear()
+        self._redo_stack.clear()
+        self._emit_state()
+
     def handle_sort_change(self, order_str: str) -> None:
         try:
             self._sort_order = SortOrder(order_str)

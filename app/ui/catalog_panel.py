@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING
 
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import (
+    QGridLayout,
     QLabel,
     QLineEdit,
     QScrollArea,
@@ -76,27 +77,31 @@ class CatalogPanel(QWidget):
 
 
 class _GridContainer(QScrollArea):
-    """Scrollable area displaying monster cards in a simple vertical list."""
+    """Scrollable area displaying monster cards in a responsive grid."""
+
+    COLUMN_COUNT = 4
 
     def __init__(self) -> None:
         super().__init__()
         self.setWidgetResizable(True)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self._inner = QWidget()
-        self._layout = QVBoxLayout(self._inner)
-        self._layout.setSpacing(8)
-        self._layout.addStretch()
+        self._grid = QGridLayout(self._inner)
+        self._grid.setSpacing(10)
+        self._grid.setContentsMargins(8, 8, 8, 8)
         self.setWidget(self._inner)
         self._cards: list[MonsterCard] = []
 
     def populate(self, items: list, on_click) -> None:
         for c in self._cards:
-            self._layout.removeWidget(c)
+            self._grid.removeWidget(c)
             c.deleteLater()
         self._cards.clear()
 
         for idx, it in enumerate(items):
             card = MonsterCard(it.monster_id, it.name, it.image_path)
             card.clicked.connect(on_click)
-            self._layout.insertWidget(idx, card)
+            row = idx // self.COLUMN_COUNT
+            col = idx % self.COLUMN_COUNT
+            self._grid.addWidget(card, row, col)
             self._cards.append(card)

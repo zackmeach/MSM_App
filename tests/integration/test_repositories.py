@@ -9,7 +9,7 @@ from app.domain.models import MonsterType
 class TestMonsterRepo:
     def test_fetch_all_monsters(self, content_conn):
         monsters = monster_repo.fetch_all_monsters(content_conn)
-        assert len(monsters) == 6
+        assert len(monsters) == 7
         names = {m.name for m in monsters}
         assert "Zynth" in names
         assert "Galvana" in names
@@ -21,7 +21,7 @@ class TestMonsterRepo:
 
     def test_fetch_egg_types_map(self, content_conn):
         emap = monster_repo.fetch_egg_types_map(content_conn)
-        assert len(emap) == 13
+        assert len(emap) == 15
         mammott = next(e for e in emap.values() if e.name == "Mammott")
         assert mammott.breeding_time_seconds == 1800
 

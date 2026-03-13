@@ -5,9 +5,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from PySide6.QtCore import (
+    QEvent,
     QPropertyAnimation,
     QSize,
     Signal,
+    Qt,
 )
 from PySide6.QtGui import QCursor, QPixmap
 from PySide6.QtWidgets import (
@@ -31,8 +33,6 @@ class EggRowWidget(QWidget):
         self._is_completing = False
         self._build_ui()
         self.update_data(vm)
-        self.setCursor(QCursor.pos().__class__(QCursor().shape()))
-        self.setCursor(QCursor(QCursor().shape()))
 
     def _build_ui(self) -> None:
         self.setObjectName("eggRow")
@@ -43,6 +43,8 @@ class EggRowWidget(QWidget):
         self._icon_label = QLabel()
         self._icon_label.setFixedSize(QSize(40, 40))
         self._icon_label.setScaledContents(True)
+        self._icon_label.setCursor(Qt.CursorShape.PointingHandCursor)
+        self._icon_label.installEventFilter(self)
         layout.addWidget(self._icon_label)
 
         info_layout = QHBoxLayout()
@@ -72,7 +74,6 @@ class EggRowWidget(QWidget):
             #eggRow {
                 background-color: #313244; border-radius: 8px;
             }
-            #eggRow:hover { background-color: #45475a; }
             #eggName { font-weight: bold; font-size: 13px; }
             #eggTime { color: #a6adc8; font-size: 12px; }
             #eggCounter { font-size: 13px; color: #89b4fa; }
@@ -116,7 +117,12 @@ class EggRowWidget(QWidget):
     def is_completing(self) -> bool:
         return self._is_completing
 
-    def mousePressEvent(self, event) -> None:
-        if not self._is_completing:
+    def eventFilter(self, obj, event) -> bool:
+        if (
+            obj is self._icon_label
+            and event.type() == QEvent.Type.MouseButtonPress
+            and not self._is_completing
+        ):
             self.clicked.emit(self._egg_type_id)
-        super().mousePressEvent(event)
+            return True
+        return super().eventFilter(obj, event)

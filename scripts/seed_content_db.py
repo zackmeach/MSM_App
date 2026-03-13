@@ -1,8 +1,8 @@
 """Release content seed — populates resources/db/content.db with complete game data.
 
-Covers all 19 regular Wublins, all 12 regular Celestials, and the
-always-available Amber Vessel (Kayna). Additional Amber Vessels can be
-added via the in-app update mechanism.
+Covers all 19 regular Wublins, all 12 regular Celestials, and all 8
+standard Amber Vessels. Additional content can be added via the in-app
+update mechanism.
 
 Run:  python scripts/seed_content_db.py
 """
@@ -107,8 +107,15 @@ MONSTERS = [
     ("Torrt",        "celestial", "images/monsters/torrt.png",        "Torrt"),
     ("Plixie",       "celestial", "images/monsters/plixie.png",       "Plixie"),
     ("Attmoz",       "celestial", "images/monsters/attmoz.png",       "Attmoz"),
-    # Amber Vessels (always-available)
-    ("Kayna",        "amber",     "images/monsters/kayna.png",        "Kayna"),
+    # Amber Vessels (8)
+    ("Kayna",        "amber",     "images/monsters/kayna_amber.png",  "Kayna"),
+    ("Glowl",        "amber",     "images/monsters/glowl_amber.png",  "Glowl"),
+    ("Flowah",       "amber",     "images/monsters/flowah_amber.png", "Flowah"),
+    ("Stogg",        "amber",     "images/monsters/stogg_amber.png",  "Stogg"),
+    ("Floogull",     "amber",     "images/monsters/floogull_amber.png", "Floogull"),
+    ("Barrb",        "amber",     "images/monsters/barrb_amber.png",  "Barrb"),
+    ("Repatillo",    "amber",     "images/monsters/repatillo_amber.png", "Repatillo"),
+    ("Tring",        "amber",     "images/monsters/tring_amber.png",  "Tring"),
 ]
 
 # ── Requirements ─────────────────────────────────────────────────────
@@ -281,6 +288,59 @@ REQUIREMENTS: dict[str, list[tuple[str, int]]] = {
         ("Bowgart", 6), ("Shellbeat", 2), ("Quarrister", 2),
         ("Entbrat", 2), ("Deedge", 2), ("Riff", 2),
     ],
+    "Glowl": [
+        ("Noggin", 12), ("Mammott", 12), ("Toe Jammer", 12),
+        ("Potbelly", 8), ("Tweedle", 8),
+        ("Drumpler", 6), ("Fwog", 6), ("Maw", 6),
+        ("Shrubb", 6), ("Oaktopus", 6),
+        ("Cybop", 4), ("Scups", 4), ("Bowgart", 4), ("T-Rox", 4),
+        ("Entbrat", 2), ("Deedge", 2),
+    ],
+    "Flowah": [
+        ("Potbelly", 15), ("Tweedle", 12), ("Noggin", 10), ("Mammott", 8),
+        ("Furcorn", 8), ("Oaktopus", 6), ("Shrubb", 6), ("Dandidoo", 6),
+        ("Reedling", 4), ("PomPom", 4), ("Bowgart", 4), ("Pummel", 4),
+        ("Entbrat", 2), ("Quarrister", 2), ("Riff", 2),
+    ],
+    "Stogg": [
+        ("Noggin", 15), ("Mammott", 12), ("Toe Jammer", 10),
+        ("Drumpler", 8), ("Fwog", 8), ("Maw", 6),
+        ("Cybop", 6), ("Congle", 4), ("T-Rox", 4), ("Clamble", 4),
+        ("Thumpies", 4), ("Scups", 4),
+        ("Shellbeat", 2), ("Deedge", 2), ("Quarrister", 2),
+    ],
+    "Floogull": [
+        ("Toe Jammer", 12), ("Mammott", 10), ("Potbelly", 10), ("Tweedle", 8),
+        ("Fwog", 6), ("Oaktopus", 6), ("Pango", 6), ("Furcorn", 6),
+        ("Quibble", 4), ("Spunge", 4), ("Bowgart", 4), ("PomPom", 4),
+        ("Shellbeat", 2), ("Entbrat", 2), ("Deedge", 2),
+    ],
+    "Barrb": [
+        ("Noggin", 12), ("Tweedle", 10), ("Potbelly", 10),
+        ("Drumpler", 6), ("Shrubb", 6), ("Furcorn", 6), ("Maw", 6),
+        ("Cybop", 4), ("Dandidoo", 4), ("Reedling", 4), ("Pummel", 4),
+        ("Clamble", 4), ("T-Rox", 4),
+        ("Quarrister", 2), ("Riff", 2),
+    ],
+    "Repatillo": [
+        ("Mammott", 12), ("Noggin", 10), ("Toe Jammer", 10),
+        ("Drumpler", 6), ("Fwog", 6), ("Pango", 6), ("Oaktopus", 6),
+        ("Congle", 4), ("Thumpies", 4), ("Scups", 4), ("Quibble", 4),
+        ("Spunge", 4), ("T-Rox", 4),
+        ("Deedge", 2), ("Shellbeat", 2),
+    ],
+    "Tring": [
+        ("Noggin", 15), ("Toe Jammer", 15), ("Mammott", 15),
+        ("Potbelly", 10), ("Tweedle", 10),
+        ("Drumpler", 8), ("Fwog", 8), ("Maw", 8),
+        ("Shrubb", 6), ("Furcorn", 6), ("Oaktopus", 6),
+        ("Cybop", 4), ("Quibble", 4), ("Dandidoo", 4),
+        ("Scups", 4), ("Reedling", 4), ("T-Rox", 4),
+        ("Pummel", 4), ("Congle", 4), ("Bowgart", 4), ("PomPom", 4),
+        ("Thumpies", 2), ("Clamble", 2), ("Spunge", 2),
+        ("Entbrat", 2), ("Deedge", 2), ("Shellbeat", 2),
+        ("Quarrister", 2), ("Riff", 2),
+    ],
 }
 
 
@@ -358,7 +418,7 @@ def _print_summary() -> None:
 
     wublins = 19
     celestials = 12
-    amber = 1
+    amber = 8
     print(f"Seeded content.db at {DB_PATH}")
     print(f"  Content version: {version}")
     print(f"  Egg types:   {egg_count}")

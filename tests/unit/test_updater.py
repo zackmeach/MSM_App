@@ -9,7 +9,13 @@ from pathlib import Path
 import pytest
 
 from app.db.migrations import run_migrations
-from app.updater.validator import ValidationError, validate_content_db
+from app.updater.validator import (
+    ValidationError,
+    validate_content_db,
+    validate_checksum,
+    validate_manifest_contract,
+    validate_client_compatibility,
+)
 
 
 class TestValidator:
@@ -86,6 +92,107 @@ class TestValidator:
         db = tmp_path / "corrupt.db"
         db.write_text("this is not a database")
         with pytest.raises(ValidationError):
+            validate_content_db(str(db))
+
+
+class TestChecksumValidation:
+    def test_valid_checksum_passes(self, tmp_path):
+        f = tmp_path / "test.bin"
+        f.write_bytes(b"hello world")
+        import hashlib
+        expected = hashlib.sha256(b"hello world").hexdigest()
+        validate_checksum(f, expected)
+
+    def test_invalid_checksum_fails(self, tmp_path):
+        f = tmp_path / "test.bin"
+        f.write_bytes(b"hello world")
+        with pytest.raises(ValidationError, match="Checksum mismatch"):
+            validate_checksum(f, "0" * 64)
+
+
+class TestManifestContractValidation:
+    def test_valid_manifest_passes(self):
+        manifest = {
+            "artifact_contract_version": "1.1",
+            "content_version": "1.0.0",
+            "content_db_url": "https://example.com/content.db",
+            "content_db_sha256": "a" * 64,
+        }
+        validate_manifest_contract(manifest)
+
+    def test_unsupported_contract_version(self):
+        manifest = {
+            "artifact_contract_version": "99.0",
+            "content_version": "1.0.0",
+            "content_db_url": "https://example.com/content.db",
+            "content_db_sha256": "a" * 64,
+        }
+        with pytest.raises(ValidationError, match="Unsupported"):
+            validate_manifest_contract(manifest)
+
+    def test_missing_content_version(self):
+        manifest = {"content_db_url": "https://example.com/content.db"}
+        with pytest.raises(ValidationError, match="content_version"):
+            validate_manifest_contract(manifest)
+
+    def test_malformed_sha256(self):
+        manifest = {
+            "artifact_contract_version": "1.1",
+            "content_version": "1.0.0",
+            "content_db_url": "https://example.com/content.db",
+            "content_db_sha256": "tooshort",
+        }
+        with pytest.raises(ValidationError, match="malformed"):
+            validate_manifest_contract(manifest)
+
+    def test_legacy_manifest_no_contract(self):
+        """Legacy manifests without artifact_contract_version still work."""
+        manifest = {
+            "content_version": "0.9.0",
+            "content_db_url": "https://example.com/content.db",
+        }
+        validate_manifest_contract(manifest)
+
+
+class TestClientCompatibility:
+    def test_compatible_version(self):
+        manifest = {"min_supported_client_version": "1.0.0"}
+        validate_client_compatibility(manifest, "1.1.0")
+
+    def test_exact_version(self):
+        manifest = {"min_supported_client_version": "1.0.0"}
+        validate_client_compatibility(manifest, "1.0.0")
+
+    def test_too_old_version(self):
+        manifest = {"min_supported_client_version": "2.0.0"}
+        with pytest.raises(ValidationError, match="below minimum"):
+            validate_client_compatibility(manifest, "1.5.0")
+
+    def test_no_min_version(self):
+        validate_client_compatibility({}, "1.0.0")
+
+
+class TestOrphanEggValidation:
+    def test_orphan_egg_refs_detected(self, tmp_path):
+        db = tmp_path / "orphan_egg.db"
+        conn = sqlite3.connect(str(db))
+        conn.execute("PRAGMA foreign_keys=OFF")
+        run_migrations(conn, "content")
+        conn.execute(
+            "INSERT INTO monsters(name, monster_type, image_path, wiki_slug) "
+            "VALUES('Mon', 'wublin', '', '')"
+        )
+        conn.execute(
+            "INSERT INTO egg_types(name, breeding_time_seconds, breeding_time_display, egg_image_path) "
+            "VALUES('Egg', 100, '1m', '')"
+        )
+        conn.execute("UPDATE update_metadata SET value='1.0.0' WHERE key='content_version'")
+        conn.execute("UPDATE update_metadata SET value='2026-01-01' WHERE key='last_updated_utc'")
+        conn.execute("UPDATE update_metadata SET value='test' WHERE key='source'")
+        conn.execute("INSERT INTO monster_requirements VALUES(1, 999, 1)")
+        conn.commit()
+        conn.close()
+        with pytest.raises(ValidationError, match="egg types"):
             validate_content_db(str(db))
 
 

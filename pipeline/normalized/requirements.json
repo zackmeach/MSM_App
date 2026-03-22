@@ -1,0 +1,5486 @@
+[
+  {
+    "monster_key": "monster:wublin:zynth",
+    "egg_key": "egg:congle",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:zynth",
+    "egg_key": "egg:drumpler",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:zynth",
+    "egg_key": "egg:maw",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:zynth",
+    "egg_key": "egg:oaktopus",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:zynth",
+    "egg_key": "egg:pango",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:zynth",
+    "egg_key": "egg:t-rox",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:brump",
+    "egg_key": "egg:furcorn",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:brump",
+    "egg_key": "egg:fwog",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:thwok",
+    "egg_key": "egg:bowgart",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:thwok",
+    "egg_key": "egg:deedge",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:thwok",
+    "egg_key": "egg:entbrat",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:thwok",
+    "egg_key": "egg:furcorn",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:thwok",
+    "egg_key": "egg:pompom",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:thwok",
+    "egg_key": "egg:quarrister",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:thwok",
+    "egg_key": "egg:quibble",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:thwok",
+    "egg_key": "egg:riff",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:thwok",
+    "egg_key": "egg:shellbeat",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:thwok",
+    "egg_key": "egg:spunge",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:poewk",
+    "egg_key": "egg:clamble",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:poewk",
+    "egg_key": "egg:dandidoo",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:poewk",
+    "egg_key": "egg:oaktopus",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:poewk",
+    "egg_key": "egg:pango",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:poewk",
+    "egg_key": "egg:pompom",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:poewk",
+    "egg_key": "egg:reedling",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:poewk",
+    "egg_key": "egg:scups",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:poewk",
+    "egg_key": "egg:shellbeat",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:poewk",
+    "egg_key": "egg:shrubb",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:zuuker",
+    "egg_key": "egg:bowgart",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:zuuker",
+    "egg_key": "egg:deedge",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:zuuker",
+    "egg_key": "egg:entbrat",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:zuuker",
+    "egg_key": "egg:furcorn",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:zuuker",
+    "egg_key": "egg:fwog",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:zuuker",
+    "egg_key": "egg:oaktopus",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:zuuker",
+    "egg_key": "egg:t-rox",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:tympa",
+    "egg_key": "egg:clamble",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:tympa",
+    "egg_key": "egg:drumpler",
+    "quantity": 24,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:tympa",
+    "egg_key": "egg:pummel",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:tympa",
+    "egg_key": "egg:shellbeat",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:tympa",
+    "egg_key": "egg:t-rox",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:screemu",
+    "egg_key": "egg:quibble",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:screemu",
+    "egg_key": "egg:shellbeat",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:screemu",
+    "egg_key": "egg:shrubb",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:screemu",
+    "egg_key": "egg:spunge",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dermit",
+    "egg_key": "egg:entbrat",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dermit",
+    "egg_key": "egg:fwog",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dermit",
+    "egg_key": "egg:quarrister",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dermit",
+    "egg_key": "egg:scups",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dermit",
+    "egg_key": "egg:thumpies",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:gheegur",
+    "egg_key": "egg:cybop",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:gheegur",
+    "egg_key": "egg:pompom",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:gheegur",
+    "egg_key": "egg:reedling",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:gheegur",
+    "egg_key": "egg:riff",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:gheegur",
+    "egg_key": "egg:scups",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:maulch",
+    "egg_key": "egg:clamble",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:maulch",
+    "egg_key": "egg:entbrat",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:maulch",
+    "egg_key": "egg:furcorn",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:maulch",
+    "egg_key": "egg:noggin",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:maulch",
+    "egg_key": "egg:pummel",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:maulch",
+    "egg_key": "egg:quarrister",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:maulch",
+    "egg_key": "egg:spunge",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:fleechwurm",
+    "egg_key": "egg:dandidoo",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:fleechwurm",
+    "egg_key": "egg:furcorn",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:fleechwurm",
+    "egg_key": "egg:pummel",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:fleechwurm",
+    "egg_key": "egg:quarrister",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:fleechwurm",
+    "egg_key": "egg:reedling",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:fleechwurm",
+    "egg_key": "egg:shellbeat",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:fleechwurm",
+    "egg_key": "egg:spunge",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:astropod",
+    "egg_key": "egg:deedge",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:astropod",
+    "egg_key": "egg:reedling",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:astropod",
+    "egg_key": "egg:scups",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:astropod",
+    "egg_key": "egg:shellbeat",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:astropod",
+    "egg_key": "egg:spunge",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:astropod",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:blipsqueak",
+    "egg_key": "egg:cybop",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:blipsqueak",
+    "egg_key": "egg:deedge",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:blipsqueak",
+    "egg_key": "egg:pompom",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:blipsqueak",
+    "egg_key": "egg:t-rox",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:blipsqueak",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:scargo",
+    "egg_key": "egg:clamble",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:scargo",
+    "egg_key": "egg:dandidoo",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:scargo",
+    "egg_key": "egg:pummel",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:scargo",
+    "egg_key": "egg:shellbeat",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:scargo",
+    "egg_key": "egg:shrubb",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:scargo",
+    "egg_key": "egg:spunge",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:bonapetite",
+    "egg_key": "egg:bowgart",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:bonapetite",
+    "egg_key": "egg:drumpler",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:bonapetite",
+    "egg_key": "egg:entbrat",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:bonapetite",
+    "egg_key": "egg:fwog",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:bonapetite",
+    "egg_key": "egg:mammott",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:bonapetite",
+    "egg_key": "egg:maw",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:bonapetite",
+    "egg_key": "egg:pompom",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:bonapetite",
+    "egg_key": "egg:riff",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:bonapetite",
+    "egg_key": "egg:t-rox",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:creepuscule",
+    "egg_key": "egg:congle",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:creepuscule",
+    "egg_key": "egg:deedge",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:creepuscule",
+    "egg_key": "egg:noggin",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:creepuscule",
+    "egg_key": "egg:pummel",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:creepuscule",
+    "egg_key": "egg:quibble",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:creepuscule",
+    "egg_key": "egg:shellbeat",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:creepuscule",
+    "egg_key": "egg:t-rox",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:whajje",
+    "egg_key": "egg:cybop",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:whajje",
+    "egg_key": "egg:dandidoo",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:whajje",
+    "egg_key": "egg:deedge",
+    "quantity": 7,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:whajje",
+    "egg_key": "egg:reedling",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:whajje",
+    "egg_key": "egg:tweedle",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:bowgart",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:congle",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:deedge",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:entbrat",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:mammott",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:noggin",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:pompom",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:potbelly",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:pummel",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:quarrister",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:reedling",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:riff",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:scups",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:shellbeat",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:thumpies",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:dwumrohl",
+    "egg_key": "egg:tweedle",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:pixolotl",
+    "egg_key": "egg:cybop",
+    "quantity": 14,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:pixolotl",
+    "egg_key": "egg:entbrat",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:pixolotl",
+    "egg_key": "egg:fwog",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:pixolotl",
+    "egg_key": "egg:pummel",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:pixolotl",
+    "egg_key": "egg:riff",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:pixolotl",
+    "egg_key": "egg:scups",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:wublin:pixolotl",
+    "egg_key": "egg:t-rox",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:hornacle",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 50,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:hornacle",
+    "egg_key": "egg:fwog",
+    "quantity": 15,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:hornacle",
+    "egg_key": "egg:oaktopus",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:hornacle",
+    "egg_key": "egg:maw",
+    "quantity": 9,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:hornacle",
+    "egg_key": "egg:quibble",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:hornacle",
+    "egg_key": "egg:pummel",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:hornacle",
+    "egg_key": "egg:bowgart",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:hornacle",
+    "egg_key": "egg:scups",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:hornacle",
+    "egg_key": "egg:spunge",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:hornacle",
+    "egg_key": "egg:congle",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:hornacle",
+    "egg_key": "egg:shellbeat",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:hornacle",
+    "egg_key": "egg:t-rox",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:noggin",
+    "quantity": 25,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:potbelly",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:tweedle",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:kayna",
+    "quantity": 15,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:glowl",
+    "quantity": 7,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:flowah",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:stogg",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:cybop",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:shrubb",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:repatillo",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:floogull",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:barrb",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:dandidoo",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:reedling",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:furnoss",
+    "egg_key": "egg:tring",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:glaishur",
+    "egg_key": "egg:mammott",
+    "quantity": 40,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:glaishur",
+    "egg_key": "egg:bowgart",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:glaishur",
+    "egg_key": "egg:deedge",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:glaishur",
+    "egg_key": "egg:furcorn",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:glaishur",
+    "egg_key": "egg:congle",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:glaishur",
+    "egg_key": "egg:drumpler",
+    "quantity": 7,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:glaishur",
+    "egg_key": "egg:maw",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:glaishur",
+    "egg_key": "egg:t-rox",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:glaishur",
+    "egg_key": "egg:thumpies",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:glaishur",
+    "egg_key": "egg:pango",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:glaishur",
+    "egg_key": "egg:pompom",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:glaishur",
+    "egg_key": "egg:clamble",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:blasoom",
+    "egg_key": "egg:potbelly",
+    "quantity": 20,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:blasoom",
+    "egg_key": "egg:shrubb",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:blasoom",
+    "egg_key": "egg:oaktopus",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:blasoom",
+    "egg_key": "egg:dandidoo",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:blasoom",
+    "egg_key": "egg:furcorn",
+    "quantity": 9,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:blasoom",
+    "egg_key": "egg:clamble",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:blasoom",
+    "egg_key": "egg:thumpies",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:blasoom",
+    "egg_key": "egg:reedling",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:blasoom",
+    "egg_key": "egg:pummel",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:blasoom",
+    "egg_key": "egg:spunge",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:blasoom",
+    "egg_key": "egg:bowgart",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:blasoom",
+    "egg_key": "egg:entbrat",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:noggin",
+    "quantity": 75,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 30,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:potbelly",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:tweedle",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:fwog",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:oaktopus",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:cybop",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:dandidoo",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:scups",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:reedling",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:quibble",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:spunge",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:pummel",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:shrubb",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:syncopite",
+    "egg_key": "egg:shellbeat",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:noggin",
+    "quantity": 50,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 50,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:mammott",
+    "quantity": 35,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:tweedle",
+    "quantity": 9,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:drumpler",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:cybop",
+    "quantity": 15,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:fwog",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:maw",
+    "quantity": 7,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:scups",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:quibble",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:t-rox",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:pango",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:pompom",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:congle",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:vhamp",
+    "egg_key": "egg:riff",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:noggin",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:mammott",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:potbelly",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:tweedle",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:kayna",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:drumpler",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:fwog",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:maw",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:shrubb",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:furcorn",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:oaktopus",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:dandidoo",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:cybop",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:stogg",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:flowah",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:glowl",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:t-rox",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:congle",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:pango",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:pompom",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:pummel",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:clamble",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:scups",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:bowgart",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:reedling",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:spunge",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:thumpies",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:quibble",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:floogull",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:barrb",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:repatillo",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:quarrister",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:entbrat",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:deedge",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:shellbeat",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:riff",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:galvana",
+    "egg_key": "egg:tring",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:noggin",
+    "quantity": 36,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:mammott",
+    "quantity": 25,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:potbelly",
+    "quantity": 16,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:tweedle",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:drumpler",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:furcorn",
+    "quantity": 7,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:shrubb",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:dandidoo",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:cybop",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:pango",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:thumpies",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:clamble",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:pompom",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:reedling",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:scaratar",
+    "egg_key": "egg:quarrister",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 30,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:mammott",
+    "quantity": 25,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:potbelly",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:tweedle",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:maw",
+    "quantity": 15,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:furcorn",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:oaktopus",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:quibble",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:dandidoo",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:bowgart",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:congle",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:pango",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:spunge",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:thumpies",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:loodvigg",
+    "egg_key": "egg:deedge",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:torrt",
+    "egg_key": "egg:noggin",
+    "quantity": 50,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:torrt",
+    "egg_key": "egg:drumpler",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:torrt",
+    "egg_key": "egg:fwog",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:torrt",
+    "egg_key": "egg:shrubb",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:torrt",
+    "egg_key": "egg:cybop",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:torrt",
+    "egg_key": "egg:clamble",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:torrt",
+    "egg_key": "egg:scups",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:torrt",
+    "egg_key": "egg:pummel",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:torrt",
+    "egg_key": "egg:reedling",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:torrt",
+    "egg_key": "egg:pompom",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:torrt",
+    "egg_key": "egg:t-rox",
+    "quantity": 1,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:torrt",
+    "egg_key": "egg:quarrister",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:noggin",
+    "quantity": 70,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 25,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:mammott",
+    "quantity": 25,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:potbelly",
+    "quantity": 16,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:drumpler",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:fwog",
+    "quantity": 20,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:maw",
+    "quantity": 35,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:furcorn",
+    "quantity": 7,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:shrubb",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:oaktopus",
+    "quantity": 15,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:t-rox",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:pummel",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:clamble",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:entbrat",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:plixie",
+    "egg_key": "egg:bowgart",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:attmoz",
+    "egg_key": "egg:tweedle",
+    "quantity": 25,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:attmoz",
+    "egg_key": "egg:dandidoo",
+    "quantity": 5,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:attmoz",
+    "egg_key": "egg:pango",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:attmoz",
+    "egg_key": "egg:scups",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:attmoz",
+    "egg_key": "egg:quibble",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:attmoz",
+    "egg_key": "egg:pompom",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:attmoz",
+    "egg_key": "egg:cybop",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:attmoz",
+    "egg_key": "egg:reedling",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:attmoz",
+    "egg_key": "egg:congle",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:attmoz",
+    "egg_key": "egg:thumpies",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:attmoz",
+    "egg_key": "egg:spunge",
+    "quantity": 3,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:celestial:attmoz",
+    "egg_key": "egg:riff",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:potbelly",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:mammott",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:tweedle",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:noggin",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:oaktopus",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:furcorn",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:dandidoo",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:cybop",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:shrubb",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:clamble",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:pompom",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:scups",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:t-rox",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:bowgart",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:shellbeat",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:quarrister",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:entbrat",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:deedge",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:kayna",
+    "egg_key": "egg:riff",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:noggin",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:mammott",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:potbelly",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:tweedle",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:drumpler",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:fwog",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:maw",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:shrubb",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:oaktopus",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:cybop",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:scups",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:bowgart",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:t-rox",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:entbrat",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:glowl",
+    "egg_key": "egg:deedge",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:potbelly",
+    "quantity": 15,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:tweedle",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:noggin",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:mammott",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:furcorn",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:oaktopus",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:shrubb",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:dandidoo",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:reedling",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:pompom",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:bowgart",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:pummel",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:entbrat",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:quarrister",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:flowah",
+    "egg_key": "egg:riff",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:noggin",
+    "quantity": 15,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:mammott",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:drumpler",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:fwog",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:maw",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:cybop",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:congle",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:t-rox",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:clamble",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:thumpies",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:scups",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:shellbeat",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:deedge",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:stogg",
+    "egg_key": "egg:quarrister",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:mammott",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:potbelly",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:tweedle",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:fwog",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:oaktopus",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:pango",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:furcorn",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:quibble",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:spunge",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:bowgart",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:pompom",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:shellbeat",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:entbrat",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:floogull",
+    "egg_key": "egg:deedge",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:noggin",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:tweedle",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:potbelly",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:drumpler",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:shrubb",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:furcorn",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:maw",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:cybop",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:dandidoo",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:reedling",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:pummel",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:clamble",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:t-rox",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:quarrister",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:barrb",
+    "egg_key": "egg:riff",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:mammott",
+    "quantity": 12,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:noggin",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:drumpler",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:fwog",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:pango",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:oaktopus",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:congle",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:thumpies",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:scups",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:quibble",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:spunge",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:t-rox",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:deedge",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:repatillo",
+    "egg_key": "egg:shellbeat",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:noggin",
+    "quantity": 15,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:toe-jammer",
+    "quantity": 15,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:mammott",
+    "quantity": 15,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:potbelly",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:tweedle",
+    "quantity": 10,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:drumpler",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:fwog",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:maw",
+    "quantity": 8,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:shrubb",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:furcorn",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:oaktopus",
+    "quantity": 6,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:cybop",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:quibble",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:dandidoo",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:scups",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:reedling",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:t-rox",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:pummel",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:congle",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:bowgart",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:pompom",
+    "quantity": 4,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:thumpies",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:clamble",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:spunge",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:entbrat",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:deedge",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:shellbeat",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:quarrister",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  },
+  {
+    "monster_key": "monster:amber:tring",
+    "egg_key": "egg:riff",
+    "quantity": 2,
+    "source_fingerprint": "",
+    "provenance": {
+      "factual_source": "seed_content_db",
+      "retrieved_at_utc": "2026-03-22T00:00:00Z",
+      "raw_snapshot_id": "seed-baseline"
+    },
+    "overrides_applied": []
+  }
+]

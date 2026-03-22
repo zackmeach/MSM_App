@@ -1,0 +1,8 @@
+# Curator overrides for the MSM content pipeline.
+# Each section contains override records that force identity, field, asset,
+# or classification decisions that supersede raw-source data.
+
+identity_overrides: []
+field_overrides: []
+asset_overrides: []
+classification_overrides: []

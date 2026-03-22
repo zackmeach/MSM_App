@@ -27,7 +27,12 @@ from typing import TYPE_CHECKING
 
 from PySide6.QtCore import QObject, QThread, Signal
 
-from app.updater.validator import ValidationError, validate_content_db
+from app.updater.validator import (
+    ValidationError,
+    validate_content_db,
+    validate_checksum,
+    validate_manifest_contract,
+)
 
 if TYPE_CHECKING:
     pass
@@ -82,6 +87,14 @@ class _UpdateWorker(QObject):
             with urllib.request.urlopen(req, timeout=15) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
 
+            try:
+                validate_manifest_contract(data)
+            except ValidationError as ve:
+                self.check_finished.emit(
+                    UpdateCheckResult(False, self._current_version, error=str(ve))
+                )
+                return
+
             remote_version = data.get("content_version", "")
             if not remote_version:
                 self.check_finished.emit(
@@ -122,6 +135,11 @@ class _UpdateWorker(QObject):
                 staging.write_bytes(resp.read())
 
             self.progress.emit("Validating...")
+
+            expected_sha = self._manifest_data.get("content_db_sha256", "")
+            if expected_sha:
+                validate_checksum(staging, expected_sha)
+
             validate_content_db(str(staging))
 
             new_version = self._manifest_data.get("content_version", "unknown")

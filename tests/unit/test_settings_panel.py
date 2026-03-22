@@ -171,7 +171,7 @@ class TestSettingsNavigationRefresh:
         panel.refresh(vm)
 
         assert panel._row_version._value.text() == "1.8.0"
-        assert panel._row_schema._value.text() == "1"
+        assert panel._row_schema._value.text() == "2"
         assert "2026" in panel._row_updated._value.text()
         assert BBB_DISCLAIMER in panel._disclaimer_label.text()
         assert panel._data_table.rowCount() > 0

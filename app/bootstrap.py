@@ -118,6 +118,7 @@ def bootstrap() -> AppContext:
     run_migrations(conn_userstate, "userstate", bundle_dir=bundle_dir)
 
     _seed_userstate_defaults(conn_userstate)
+    backfill_stable_keys(conn_content, conn_userstate)
 
     return AppContext(
         data_dir=data_dir,
@@ -125,6 +126,102 @@ def bootstrap() -> AppContext:
         conn_content=conn_content,
         conn_userstate=conn_userstate,
     )
+
+
+def _has_column(conn: sqlite3.Connection, table: str, column: str) -> bool:
+    cols = conn.execute(f"PRAGMA table_info({table})").fetchall()  # noqa: S608
+    return any(c[1] == column for c in cols)
+
+
+def backfill_stable_keys(
+    conn_content: sqlite3.Connection,
+    conn_userstate: sqlite3.Connection,
+) -> None:
+    """Populate empty content_key / monster_key / egg_key after migration.
+
+    Safe to call multiple times; only touches rows where the key is still
+    the default empty string.
+    """
+    from app.domain.models import egg_content_key, monster_content_key
+
+    # ── Content DB: backfill content_key on monsters ─────────────────
+    if _has_column(conn_content, "monsters", "content_key"):
+        rows = conn_content.execute(
+            "SELECT id, name, monster_type FROM monsters WHERE content_key = ''"
+        ).fetchall()
+        if rows:
+            conn_content.executemany(
+                "UPDATE monsters SET content_key = ? WHERE id = ?",
+                [(monster_content_key(r[2], r[1]), r[0]) for r in rows],
+            )
+            logger.info("Backfilled content_key for %d monster(s)", len(rows))
+
+        # Backfill wiki_slug as source_slug stand-in (source_fingerprint stays empty for seed data).
+        conn_content.execute(
+            "UPDATE monsters SET source_fingerprint = '' WHERE source_fingerprint = ''"
+        )
+
+    # ── Content DB: backfill content_key on egg_types ────────────────
+    if _has_column(conn_content, "egg_types", "content_key"):
+        rows = conn_content.execute(
+            "SELECT id, name FROM egg_types WHERE content_key = ''"
+        ).fetchall()
+        if rows:
+            conn_content.executemany(
+                "UPDATE egg_types SET content_key = ? WHERE id = ?",
+                [(egg_content_key(r[1]), r[0]) for r in rows],
+            )
+            logger.info("Backfilled content_key for %d egg type(s)", len(rows))
+
+    conn_content.commit()
+
+    # ── Userstate DB: backfill monster_key on active_targets ─────────
+    if not _has_column(conn_userstate, "active_targets", "monster_key"):
+        return
+
+    targets = conn_userstate.execute(
+        "SELECT id, monster_id FROM active_targets WHERE monster_key = ''"
+    ).fetchall()
+    if targets:
+        key_map: dict[int, str] = {}
+        if _has_column(conn_content, "monsters", "content_key"):
+            for row in conn_content.execute("SELECT id, content_key FROM monsters").fetchall():
+                key_map[row[0]] = row[1]
+
+        for tid, mid in targets:
+            key = key_map.get(mid, "")
+            if key:
+                conn_userstate.execute(
+                    "UPDATE active_targets SET monster_key = ? WHERE id = ?",
+                    (key, tid),
+                )
+        logger.info("Backfilled monster_key for %d active target(s)", len(targets))
+
+    # ── Userstate DB: backfill egg_key on progress rows ──────────────
+    if not _has_column(conn_userstate, "target_requirement_progress", "egg_key"):
+        conn_userstate.commit()
+        return
+
+    progress = conn_userstate.execute(
+        "SELECT active_target_id, egg_type_id FROM target_requirement_progress WHERE egg_key = ''"
+    ).fetchall()
+    if progress:
+        egg_key_map: dict[int, str] = {}
+        if _has_column(conn_content, "egg_types", "content_key"):
+            for row in conn_content.execute("SELECT id, content_key FROM egg_types").fetchall():
+                egg_key_map[row[0]] = row[1]
+
+        for atid, eid in progress:
+            key = egg_key_map.get(eid, "")
+            if key:
+                conn_userstate.execute(
+                    "UPDATE target_requirement_progress SET egg_key = ? "
+                    "WHERE active_target_id = ? AND egg_type_id = ?",
+                    (key, atid, eid),
+                )
+        logger.info("Backfilled egg_key for %d progress row(s)", len(progress))
+
+    conn_userstate.commit()
 
 
 def _seed_userstate_defaults(conn: sqlite3.Connection) -> None:

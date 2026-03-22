@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Settings | MSM Awakening Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "on-tertiary-container": "#392600",
+                "surface": "#121317",
+                "surface-container-low": "#1a1b20",
+                "on-error": "#690005",
+                "surface-container-highest": "#343439",
+                "tertiary-fixed-dim": "#ffba20",
+                "surface-container": "#1f1f24",
+                "on-secondary-container": "#005146",
+                "on-primary": "#3b0091",
+                "error-container": "#93000a",
+                "inverse-surface": "#e3e2e7",
+                "on-background": "#e3e2e7",
+                "error": "#ffb4ab",
+                "on-tertiary": "#412d00",
+                "on-error-container": "#ffdad6",
+                "surface-container-high": "#292a2e",
+                "on-primary-container": "#330080",
+                "tertiary": "#ffba20",
+                "on-tertiary-fixed-variant": "#5e4200",
+                "on-primary-fixed": "#23005c",
+                "tertiary-container": "#bc8700",
+                "secondary-container": "#02ccb4",
+                "background": "#121317",
+                "primary": "#d0bcff",
+                "secondary": "#45e9d0",
+                "inverse-primary": "#6d3bd6",
+                "surface-tint": "#d0bcff",
+                "secondary-fixed-dim": "#33ddc5",
+                "outline": "#958ea0",
+                "secondary-fixed": "#5cfae1",
+                "on-primary-fixed-variant": "#5417be",
+                "outline-variant": "#494454",
+                "inverse-on-surface": "#2f3035",
+                "on-secondary-fixed-variant": "#005046",
+                "surface-bright": "#38393d",
+                "on-tertiary-fixed": "#271900",
+                "surface-dim": "#121317",
+                "primary-fixed-dim": "#d0bcff",
+                "on-secondary": "#003730",
+                "surface-variant": "#343439",
+                "on-surface": "#e3e2e7",
+                "on-surface-variant": "#cbc3d7",
+                "tertiary-fixed": "#ffdea8",
+                "on-secondary-fixed": "#00201b",
+                "primary-container": "#9f78ff",
+                "surface-container-lowest": "#0d0e12",
+                "primary-fixed": "#e9ddff"
+              },
+              fontFamily: {
+                "headline": ["Manrope"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+      </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+          background-color: #121317;
+          color: #e3e2e7;
+        }
+        .glass-panel {
+          background: rgba(52, 52, 57, 0.7);
+          backdrop-filter: blur(20px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: #343439;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: rgba(208, 188, 255, 0.2);
+          border-radius: 10px;
+        }
+      </style>
+</head>
+<body class="font-body selection:bg-primary/30 antialiased">
+<!-- TopNavBar -->
+<nav class="bg-[#121317] dark:bg-[#121317] flex items-center justify-start w-full px-6 h-14 gap-8 fixed top-0 z-50">
+<div class="text-lg font-bold text-[#e3e2e7] tracking-tight font-headline">
+        MSM Awakening Tracker
+    </div>
+<div class="flex items-center gap-6 h-full">
+<a class="font-headline text-sm font-semibold h-full flex items-center text-[#939099] hover:text-[#e3e2e7] transition-colors" href="#">Home</a>
+<a class="font-headline text-sm font-semibold h-full flex items-center text-[#939099] hover:text-[#e3e2e7] transition-colors" href="#">Catalog</a>
+<a class="font-headline text-sm font-semibold h-full flex items-center text-[#d0bcff] border-b-2 border-[#d0bcff] pb-1" href="#">Settings</a>
+</div>
+</nav>
+<!-- Content Canvas -->
+<main class="pt-20 pb-12 px-8 max-w-[1600px] mx-auto min-h-[calc(100vh-3.5rem)]">
+<!-- Header Section -->
+<header class="mb-8">
+<h1 class="text-2xl font-extrabold font-headline text-on-surface tracking-tight mb-2">Settings</h1>
+<p class="text-on-surface-variant font-body">Manage content updates, view database details, and review fan content attribution.</p>
+</header>
+<!-- Layout Grid -->
+<div class="flex flex-col gap-8">
+<!-- Top Row: Two equal columns -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<!-- Content Updates Card -->
+<section class="bg-surface-container rounded-xl p-6 border border-outline-variant/10 flex flex-col justify-between">
+<div>
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">system_update</span>
+</div>
+<h2 class="font-headline text-lg font-bold text-on-surface">Content Updates</h2>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-6">
+                        Updates replace your local content database with the latest monster data. Existing progress is preserved.
+                    </p>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-lowest rounded-xl border border-outline-variant/10">
+<div class="flex items-center gap-3">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span>
+</span>
+<span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Ready to check</span>
+</div>
+<button class="bg-primary text-on-primary font-headline font-bold text-xs py-2 px-4 rounded-lg shadow-md hover:brightness-110 active:scale-95 transition-all">
+                        Check for Updates
+                    </button>
+</div>
+</section>
+<!-- Database Information Card -->
+<section class="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary">database</span>
+</div>
+<h2 class="font-headline text-lg font-bold text-on-surface">Database Information</h2>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/5">
+<span class="text-on-surface-variant text-xs font-semibold uppercase tracking-wider">Database Version</span>
+<span class="font-headline font-bold text-primary">1.1.0</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/5">
+<span class="text-on-surface-variant text-xs font-semibold uppercase tracking-wider">Schema Version</span>
+<span class="font-headline font-bold text-primary">4</span>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="text-on-surface-variant text-xs font-semibold uppercase tracking-wider">Last Updated</span>
+<span class="font-headline font-bold text-primary">OCTOBER 24, 2026</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Bottom Row: Data View and Side Stack -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+<!-- Left: Data View (Large) -->
+<section class="md:col-span-8 bg-surface-container rounded-xl border border-outline-variant/10 overflow-hidden flex flex-col h-[500px]">
+<div class="p-6 border-b border-outline-variant/10">
+<h2 class="font-headline text-lg font-bold text-on-surface">Data View</h2>
+</div>
+<div class="overflow-auto custom-scrollbar flex-grow">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-surface-container-high z-10">
+<tr>
+<th class="px-6 py-3 text-[10px] font-bold text-outline uppercase tracking-widest border-b border-outline-variant/10">Egg</th>
+<th class="px-6 py-3 text-[10px] font-bold text-outline uppercase tracking-widest border-b border-outline-variant/10">Monster Name</th>
+<th class="px-6 py-3 text-[10px] font-bold text-outline uppercase tracking-widest border-b border-outline-variant/10">Type</th>
+<th class="px-6 py-3 text-[10px] font-bold text-outline uppercase tracking-widest border-b border-outline-variant/10">Eggs Required</th>
+<th class="px-6 py-3 text-[10px] font-bold text-outline uppercase tracking-widest border-b border-outline-variant/10">Time</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/5">
+<tr class="hover:bg-surface-container-high/50 transition-colors">
+<td class="px-6 py-4">
+<div class="w-8 h-8 rounded bg-surface-container-highest overflow-hidden">
+<img alt="Wubbox Egg" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDSsQouoYs9PocrZkq-alzzbRkOVV0sV5FiyP3_AtgAcH5tZmhtTUL8bcVCZXlte2LS5qqvYPq047SMrXAKKgpNpxVCHqnm6ZR8lWNo3tI_a6eakhDRdPoqNukjk0BN7MG8zHuLLnvyBoSaS9PpoQv9GDlmNkPA7-u0Z-I0pMCuewaCyQ1kOApktaTZsdMqY2lYxaHCsGcu2Qzj4gPy2QhtXOS_u-wHy9PLRVrkqWV25twFPD-e__lOvIKLhP7qtl472Xn3iVTE08Z"/>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-on-surface">Wubbox</td>
+<td class="px-6 py-4 text-xs text-secondary font-semibold">Wublin</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">Varies (Common)</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">N/A</td>
+</tr>
+<tr class="hover:bg-surface-container-high/50 transition-colors">
+<td class="px-6 py-4">
+<div class="w-8 h-8 rounded bg-surface-container-highest overflow-hidden">
+<img alt="Ziggurab Egg" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7HlYLR3lsbjWTZah49kxCSH_9gJz7ZJJ0sg8trIMeFK99-tpqVQqbybbYiGn8k5Q2hp5tySITzC6Xh1bXS5E-TvOd113u6vRveZgrQaATDs_2VtUK9tIYQwzkLFaT_o_kWAJByjAKOA142XZLC1eVQB2OEmADHnJPveZv9-W-QcL8C5PKkQD-S74MVftFaKlige7vXcJzUpk0a2v7nvmYCDTDqLzyZfd6vlqQ0WeHIA1_nm6fliKdbsKtbT1INWhFX6vhgmSoV1Ns"/>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-on-surface">Ziggurab</td>
+<td class="px-6 py-4 text-xs text-[#ff8a65] font-semibold">Amber Vessel</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">128 Eggs</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">30 Days</td>
+</tr>
+<tr class="hover:bg-surface-container-high/50 transition-colors">
+<td class="px-6 py-4">
+<div class="w-8 h-8 rounded bg-surface-container-highest overflow-hidden">
+<img alt="Galvana Egg" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4yvobnQ5kC5Zlu4YoIYdToPsJG6i0MmhJqyBWW3Ca8UoK6P3PCtmi7TNt2vnZj_HNfUjjPsrU1SPRUfdtcjjk6gK3D_hLBXW8RqlJJSv5XM3TmsTqrYEH4jARP-5nYnv8Boo96GIVgdiWp25JRqdARaR9Nz_zmkohwW17sln_Z-IFt4CIqVQWvlmBEc1FulMSwQS39Ul66dHgmlOZeVxCRq-bn83b6lJ2I-3OjcX5BJA490CST6_mFMGrCttyLlukLHGtWUGi6ugs"/>
+</div>
+</td>
+<td class="px-6 py-4 text-sm font-bold text-on-surface">Galvana</td>
+<td class="px-6 py-4 text-xs text-tertiary font-semibold">Celestial</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">84 Eggs</td>
+<td class="px-6 py-4 text-sm text-on-surface-variant">Permanent</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Right: Stacked Info Cards -->
+<div class="md:col-span-4 flex flex-col gap-6">
+<!-- Fan Content Policy -->
+<section class="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+<h2 class="text-[10px] font-bold tracking-widest uppercase text-outline mb-4">Fan Content Policy</h2>
+<div class="space-y-3">
+<p class="text-[11px] text-on-surface-variant leading-relaxed">
+                            This app is an unofficial fan creation and is not affiliated with, endorsed by, or sponsored by Big Blue Bubble Inc.
+                        </p>
+<p class="text-[11px] text-on-surface-variant leading-relaxed">
+                            All My Singing Monsters assets used in this app are sourced from the official Big Blue Bubble Fan Kit and are used in accordance with the BBB Fan Content Policy.
+                        </p>
+<p class="text-[11px] font-bold text-on-surface/80">
+                            My Singing Monsters is a trademark of Big Blue Bubble Inc.
+                        </p>
+</div>
+</section>
+<!-- App Information -->
+<section class="bg-surface-container-low rounded-xl p-6 border border-outline-variant/10">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-outline text-xl">info</span>
+</div>
+<div>
+<p class="text-[10px] text-outline uppercase font-bold tracking-tighter">Application Version</p>
+<p class="text-xs font-headline font-bold text-on-surface">1.1.0 (Build 2026.10.24)</p>
+</div>
+</div>
+</section>
+</div>
+</div>
+</div>
+</main>
+<!-- Decorative Grain/Texture Overlay -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] mix-blend-overlay z-[100]">
+<img class="w-full h-full object-cover" data-alt="Subtle fine noise and grain texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMfMa58qT4X7HKwK4BLNYCQ0AxTa6hCBlrvpEFVhbHIU14MkuAzq8gpalnE5KGstSlPLvkpwBfJt61lPcqNd3H2bZ4eVG2Lzti7A8JaY8-tX4GofsK_f24qbZF8cDDKOH_bTPEqaUyXQFmYRLbLmJUF6IagIjco1pIRFXVxZuRM_GM-_bexNPKt2UoLVHrJ0ZHUSq4VwreFKx8Rsa8leuRv6kiyGaucsDuU7RWVZbVlhbzZz_fs4XL9dNLrLPymMcv05q8eJe5rw"/>
+</div>
+</body></html>

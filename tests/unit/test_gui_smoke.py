@@ -18,8 +18,9 @@ from app.domain.models import SortOrder
 from app.repositories import monster_repo, target_repo
 from app.services.app_service import AppService
 from app.ui.breed_list_panel import BreedListPanel
-from app.ui.catalog_panel import CatalogPanel
+from app.ui.catalog_view import CatalogView
 from app.ui.inwork_panel import InWorkPanel
+from app.ui.widgets.catalog_monster_card import CatalogMonsterCard
 from app.ui.widgets.egg_row_widget import EggRowWidget
 
 
@@ -30,24 +31,27 @@ def service(content_conn, userstate_conn):
 
 
 @pytest.fixture
-def breed_panel():
+def breed_panel(qtbot):
     panel = BreedListPanel()
+    qtbot.addWidget(panel)
     yield panel
     panel.close()
 
 
 @pytest.fixture
-def catalog(content_conn):
+def catalog(qtbot, content_conn):
     svc = AppService(content_conn, _fresh_userstate())
-    panel = CatalogPanel()
+    panel = CatalogView()
+    qtbot.addWidget(panel)
     panel.load_catalog(svc.get_catalog_items())
     yield panel
     panel.close()
 
 
 @pytest.fixture
-def inwork():
+def inwork(qtbot):
     panel = InWorkPanel()
+    qtbot.addWidget(panel)
     yield panel
     panel.close()
 
@@ -64,8 +68,18 @@ class TestAddTargetFromCatalog:
 
     def test_catalog_emits_monster_id(self, qtbot, catalog, id_maps):
         with qtbot.waitSignal(catalog.add_target_requested, timeout=1000) as blocker:
-            catalog._on_card_clicked(id_maps["monsters"]["Zynth"])
+            catalog._browser._on_card_clicked(id_maps["monsters"]["Zynth"])
         assert blocker.args == [id_maps["monsters"]["Zynth"]]
+
+
+class TestCatalogPresentation:
+    """Catalog browser presents large showcase cards."""
+
+    def test_catalog_uses_large_cards(self, catalog):
+        assert catalog._browser._cards
+        first_card = catalog._browser._cards[0]
+        assert first_card.width() == CatalogMonsterCard.CARD_WIDTH
+        assert first_card.height() == CatalogMonsterCard.CARD_HEIGHT
 
 
 class TestAddTargetUpdatesState:

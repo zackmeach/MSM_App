@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MSM Awakening Tracker - Home</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-tertiary-container": "#392600",
+            "surface": "#121317",
+            "surface-container-low": "#1a1b20",
+            "on-error": "#690005",
+            "surface-container-highest": "#343439",
+            "tertiary-fixed-dim": "#ffba20",
+            "surface-container": "#1f1f24",
+            "on-secondary-container": "#005146",
+            "on-primary": "#3b0091",
+            "error-container": "#93000a",
+            "inverse-surface": "#e3e2e7",
+            "on-background": "#e3e2e7",
+            "error": "#ffb4ab",
+            "on-tertiary": "#412d00",
+            "on-error-container": "#ffdad6",
+            "surface-container-high": "#292a2e",
+            "on-primary-container": "#330080",
+            "tertiary": "#ffba20",
+            "on-tertiary-fixed-variant": "#5e4200",
+            "on-primary-fixed": "#23005c",
+            "tertiary-container": "#bc8700",
+            "secondary-container": "#02ccb4",
+            "background": "#121317",
+            "primary": "#d0bcff",
+            "secondary": "#45e9d0",
+            "inverse-primary": "#6d3bd6",
+            "surface-tint": "#d0bcff",
+            "secondary-fixed-dim": "#33ddc5",
+            "outline": "#958ea0",
+            "secondary-fixed": "#5cfae1",
+            "on-primary-fixed-variant": "#5417be",
+            "outline-variant": "#494454",
+            "inverse-on-surface": "#2f3035",
+            "on-secondary-fixed-variant": "#005046",
+            "surface-bright": "#38393d",
+            "on-tertiary-fixed": "#271900",
+            "surface-dim": "#121317",
+            "primary-fixed-dim": "#d0bcff",
+            "on-secondary": "#003730",
+            "surface-variant": "#343439",
+            "on-surface": "#e3e2e7",
+            "on-surface-variant": "#cbc3d7",
+            "tertiary-fixed": "#ffdea8",
+            "on-secondary-fixed": "#00201b",
+            "primary-container": "#9f78ff",
+            "surface-container-lowest": "#0d0e12",
+            "primary-fixed": "#e9ddff"
+          },
+          fontFamily: {
+            "headline": ["Manrope"],
+            "body": ["Inter"],
+            "label": ["Inter"]
+          },
+          borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    body {
+      background-color: #121317;
+      color: #e3e2e7;
+    }
+    .glass-panel {
+      background: rgba(52, 52, 57, 0.7);
+      backdrop-filter: blur(20px);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #343439;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: rgba(208, 188, 255, 0.2);
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body class="font-body selection:bg-primary/30 antialiased">
+<!-- TopNavBar (Shared Component) -->
+<nav class="bg-[#121317] dark:bg-[#121317] flex items-center justify-start w-full px-6 h-14 gap-8 docked full-width top-0 z-50">
+<div class="text-lg font-bold text-[#e3e2e7] tracking-tight font-headline">
+      MSM Awakening Tracker
+    </div>
+<div class="flex items-center gap-6 h-full">
+<a class="font-headline text-sm font-semibold h-full flex items-center text-[#d0bcff] border-b-2 border-[#d0bcff] pb-1" href="#">Home</a>
+<a class="font-headline text-sm font-semibold h-full flex items-center text-[#939099] hover:text-[#e3e2e7] transition-colors" href="#">Catalog</a>
+<a class="font-headline text-sm font-semibold h-full flex items-center text-[#939099] hover:text-[#e3e2e7] transition-colors" href="#">Settings</a>
+</div>
+</nav>
+<!-- Main Content Layout -->
+<main class="grid grid-cols-1 md:grid-cols-12 gap-8 p-8 max-w-[1600px] mx-auto min-h-[calc(100vh-3.5rem)]">
+<!-- Left Panel: Breed List -->
+<section class="md:col-span-7 flex flex-col gap-6">
+<header class="flex items-center justify-between">
+<h2 class="font-headline text-2xl font-extrabold text-on-surface tracking-tight">Breed List</h2>
+<span class="text-label-sm text-outline px-3 py-1 bg-surface-container-low rounded-full border border-outline-variant/15">0 Active</span>
+</header>
+<div class="flex-grow flex flex-col items-center justify-center bg-surface-container-low rounded-xl relative overflow-hidden group">
+<!-- Visual Backdrop for Empty State -->
+<div class="absolute inset-0 opacity-5 pointer-events-none">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary rounded-full blur-[100px]"></div>
+</div>
+<div class="relative z-10 flex flex-col items-center text-center px-12">
+<div class="w-20 h-20 mb-6 bg-surface-container-high rounded-full flex items-center justify-center border border-outline-variant/15 shadow-2xl">
+<span class="material-symbols-outlined text-4xl text-primary/40">egg</span>
+</div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-2">No active monsters to track</h3>
+<p class="text-on-surface-variant font-body max-w-xs mb-8">
+            Select an egg from the Catalog to begin your awakening journey.
+          </p>
+<button class="bg-gradient-to-br from-primary to-primary-container text-on-primary-container font-headline font-bold py-3 px-8 rounded-xl shadow-lg transition-transform active:scale-95 hover:brightness-110 flex items-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">book_5</span>
+            Open Monster Catalog
+          </button>
+</div>
+</div>
+</section>
+<!-- Right Panel: Active Monsters (Inventory Context) -->
+<section class="md:col-span-5 flex flex-col gap-6">
+<header class="flex items-center">
+<h2 class="font-headline text-2xl font-extrabold text-on-surface tracking-tight">Active Monsters</h2>
+</header>
+<div class="flex flex-col gap-4">
+<!-- Wublins Group -->
+<div class="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<h4 class="font-headline text-lg font-bold text-on-surface">Wublins</h4>
+</div>
+<span class="text-xs font-bold text-outline uppercase tracking-widest">Inactive</span>
+</div>
+<div class="h-24 bg-surface-container-lowest rounded-xl flex items-center justify-center border border-dashed border-outline-variant/30">
+<p class="text-sm text-outline italic">No Wublins currently statuesque</p>
+</div>
+</div>
+<!-- Celestials Group -->
+<div class="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<h4 class="font-headline text-lg font-bold text-on-surface">Celestials</h4>
+</div>
+<span class="text-xs font-bold text-outline uppercase tracking-widest">Inactive</span>
+</div>
+<div class="h-24 bg-surface-container-lowest rounded-xl flex items-center justify-center border border-dashed border-outline-variant/30">
+<p class="text-sm text-outline italic">The heavens are currently quiet</p>
+</div>
+</div>
+<!-- Amber Vessels Group -->
+<div class="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-[#ff8a65]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<h4 class="font-headline text-lg font-bold text-on-surface">Amber Vessels</h4>
+</div>
+<span class="text-xs font-bold text-outline uppercase tracking-widest">Inactive</span>
+</div>
+<div class="h-24 bg-surface-container-lowest rounded-xl flex items-center justify-center border border-dashed border-outline-variant/30">
+<p class="text-sm text-outline italic">No vessels undergoing incubation</p>
+</div>
+</div>
+</div>
+<!-- Contextual Tip (Atelier Style) -->
+<div class="mt-auto glass-panel p-6 rounded-xl border border-primary/10">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary">lightbulb</span>
+<div>
+<h5 class="text-on-surface font-bold text-sm mb-1">Getting Started</h5>
+<p class="text-on-surface-variant text-xs leading-relaxed">
+              Use the Catalog to browse monsters across all islands. Once you start an awakening process, it will appear here with real-time timers and requirement tracking.
+            </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Decorative Grain/Texture Overlay -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] mix-blend-overlay">
+<img class="w-full h-full object-cover" data-alt="Subtle fine noise and grain texture for atmospheric UI depth" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMfMa58qT4X7HKwK4BLNYCQ0AxTa6hCBlrvpEFVhbHIU14MkuAzq8gpalnE5KGstSlPLvkpwBfJt61lPcqNd3H2bZ4eVG2Lzti7A8JaY8-tX4GofsK_f24qbZF8cDDKOH_bTPEqaUyXQFmYRLbLmJUF6IagIjco1pIRFXVxZuRM_GM-_bexNPKt2UoLVHrJ0ZHUSq4VwreFKx8Rsa8leuRv6kiyGaucsDuU7RWVZbVlhbzZz_fs4XL9dNLrLPymMcv05q8eJe5rw"/>
+</div>
+</body></html>

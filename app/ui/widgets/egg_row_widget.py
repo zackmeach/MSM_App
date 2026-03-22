@@ -11,12 +11,13 @@ from PySide6.QtCore import (
     Signal,
     Qt,
 )
-from PySide6.QtGui import QCursor, QPixmap
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import (
     QGraphicsOpacityEffect,
     QHBoxLayout,
     QLabel,
     QProgressBar,
+    QVBoxLayout,
     QWidget,
 )
 
@@ -36,50 +37,56 @@ class EggRowWidget(QWidget):
 
     def _build_ui(self) -> None:
         self.setObjectName("eggRow")
-        layout = QHBoxLayout(self)
-        layout.setContentsMargins(8, 6, 8, 6)
-        layout.setSpacing(10)
+        self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        self.setMinimumHeight(62)
+
+        root = QHBoxLayout(self)
+        root.setContentsMargins(10, 8, 14, 8)
+        root.setSpacing(12)
 
         self._icon_label = QLabel()
-        self._icon_label.setFixedSize(QSize(40, 40))
+        self._icon_label.setFixedSize(QSize(46, 46))
+        self._icon_label.setObjectName("eggIconContainer")
         self._icon_label.setScaledContents(True)
+        self._icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._icon_label.setCursor(Qt.CursorShape.PointingHandCursor)
         self._icon_label.installEventFilter(self)
-        layout.addWidget(self._icon_label)
+        root.addWidget(self._icon_label)
 
-        info_layout = QHBoxLayout()
+        center = QVBoxLayout()
+        center.setSpacing(2)
+        center.setContentsMargins(0, 2, 0, 2)
+
         self._name_label = QLabel()
         self._name_label.setObjectName("eggName")
-        info_layout.addWidget(self._name_label)
+        center.addWidget(self._name_label)
 
         self._time_label = QLabel()
         self._time_label.setObjectName("eggTime")
-        info_layout.addWidget(self._time_label)
+        center.addWidget(self._time_label)
 
-        info_layout.addStretch()
+        root.addLayout(center, stretch=1)
+
+        right = QVBoxLayout()
+        right.setSpacing(4)
+        right.setContentsMargins(0, 2, 0, 2)
 
         self._counter_label = QLabel()
         self._counter_label.setObjectName("eggCounter")
-        info_layout.addWidget(self._counter_label)
-
-        layout.addLayout(info_layout, stretch=1)
+        self._counter_label.setAlignment(
+            Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignVCenter
+        )
+        right.addWidget(self._counter_label)
 
         self._progress_bar = QProgressBar()
-        self._progress_bar.setFixedWidth(80)
+        self._progress_bar.setFixedWidth(100)
         self._progress_bar.setTextVisible(False)
-        self._progress_bar.setFixedHeight(8)
-        layout.addWidget(self._progress_bar)
+        self._progress_bar.setFixedHeight(6)
+        right.addWidget(
+            self._progress_bar, alignment=Qt.AlignmentFlag.AlignRight
+        )
 
-        self.setStyleSheet("""
-            #eggRow {
-                background-color: #313244; border-radius: 8px;
-            }
-            #eggName { font-weight: bold; font-size: 13px; }
-            #eggTime { color: #a6adc8; font-size: 12px; }
-            #eggCounter { font-size: 13px; color: #89b4fa; }
-            QProgressBar { background-color: #45475a; border-radius: 4px; }
-            QProgressBar::chunk { background-color: #a6e3a1; border-radius: 4px; }
-        """)
+        root.addLayout(right)
 
     def update_data(self, vm: BreedListRowViewModel) -> None:
         self._egg_type_id = vm.egg_type_id

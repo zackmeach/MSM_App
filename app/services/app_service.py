@@ -16,6 +16,7 @@ from app.ui.viewmodels import (
     BreedListRowViewModel,
     InWorkMonsterRowViewModel,
     MonsterCatalogItemViewModel,
+    SettingsDataRowViewModel,
     SettingsViewModel,
 )
 
@@ -189,7 +190,9 @@ class AppService(QObject):
         meta = monster_repo.fetch_update_metadata(self._conn_content)
         return SettingsViewModel(
             content_version=meta.get("content_version", "—"),
+            schema_version=str(self._get_content_schema_version()),
             last_updated_display=meta.get("last_updated_utc", "—"),
+            data_rows=self._build_settings_data_rows(),
         )
 
     # ── State derivation ─────────────────────────────────────────────
@@ -241,11 +244,61 @@ class AppService(QObject):
                 name=m.name,
                 monster_type=m.monster_type.value,
                 image_path=resolver.resolve(m.image_path),
+                is_placeholder=m.is_placeholder,
                 count=count,
                 display_name=display,
             )
             by_type.setdefault(m.monster_type.value, []).append(vm)
         return by_type
 
+    def _get_content_schema_version(self) -> int:
+        row = self._conn_content.execute(
+            "SELECT COALESCE(MAX(version), 0) FROM schema_migrations"
+        ).fetchone()
+        return int(row[0]) if row else 0
+
+    def _build_settings_data_rows(self) -> list[SettingsDataRowViewModel]:
+        from app.assets import resolver
+
+        requirements_map = monster_repo.fetch_all_requirements(self._conn_content)
+        monsters = monster_repo.fetch_all_monsters(self._conn_content)
+        rows: list[SettingsDataRowViewModel] = []
+
+        for monster in monsters:
+            requirements = requirements_map.get(monster.id, [])
+            eggs_required = sum(req.quantity for req in requirements)
+            rows.append(
+                SettingsDataRowViewModel(
+                    monster_id=monster.id,
+                    monster_name=monster.name,
+                    monster_type=monster.monster_type.value,
+                    monster_type_label=_TYPE_LABELS[monster.monster_type],
+                    image_path=resolver.resolve(monster.image_path),
+                    is_placeholder=monster.is_placeholder,
+                    eggs_required_display=_format_egg_total(eggs_required),
+                    duration_display=_DURATION_LABELS[monster.monster_type],
+                )
+            )
+
+        return rows
+
     def _emit_state(self) -> None:
         self.state_changed.emit(self.get_app_state())
+
+
+_TYPE_LABELS = {
+    MonsterType.WUBLIN: "Wublin",
+    MonsterType.CELESTIAL: "Celestial",
+    MonsterType.AMBER: "Amber Vessel",
+}
+
+_DURATION_LABELS = {
+    MonsterType.WUBLIN: "N/A",
+    MonsterType.CELESTIAL: "Permanent",
+    MonsterType.AMBER: "30 Days",
+}
+
+
+def _format_egg_total(total: int) -> str:
+    unit = "Egg" if total == 1 else "Eggs"
+    return f"{total} {unit}"

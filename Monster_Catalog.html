@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Monster Catalog - MSM Awakening Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "on-tertiary-container": "#392600",
+                "surface": "#121317",
+                "surface-container-low": "#1a1b20",
+                "on-error": "#690005",
+                "surface-container-highest": "#343439",
+                "tertiary-fixed-dim": "#ffba20",
+                "surface-container": "#1f1f24",
+                "on-secondary-container": "#005146",
+                "on-primary": "#3b0091",
+                "error-container": "#93000a",
+                "inverse-surface": "#e3e2e7",
+                "on-background": "#e3e2e7",
+                "error": "#ffb4ab",
+                "on-tertiary": "#412d00",
+                "on-error-container": "#ffdad6",
+                "surface-container-high": "#292a2e",
+                "on-primary-container": "#330080",
+                "tertiary": "#ffba20",
+                "on-tertiary-fixed-variant": "#5e4200",
+                "on-primary-fixed": "#23005c",
+                "tertiary-container": "#bc8700",
+                "secondary-container": "#02ccb4",
+                "background": "#121317",
+                "primary": "#d0bcff",
+                "secondary": "#45e9d0",
+                "inverse-primary": "#6d3bd6",
+                "surface-tint": "#d0bcff",
+                "secondary-fixed-dim": "#33ddc5",
+                "outline": "#958ea0",
+                "secondary-fixed": "#5cfae1",
+                "on-primary-fixed-variant": "#5417be",
+                "outline-variant": "#494454",
+                "inverse-on-surface": "#2f3035",
+                "on-secondary-fixed-variant": "#005046",
+                "surface-bright": "#38393d",
+                "on-tertiary-fixed": "#271900",
+                "surface-dim": "#121317",
+                "primary-fixed-dim": "#d0bcff",
+                "on-secondary": "#003730",
+                "surface-variant": "#343439",
+                "on-surface": "#e3e2e7",
+                "on-surface-variant": "#cbc3d7",
+                "tertiary-fixed": "#ffdea8",
+                "on-secondary-fixed": "#00201b",
+                "primary-container": "#9f78ff",
+                "surface-container-lowest": "#0d0e12",
+                "primary-fixed": "#e9ddff"
+              },
+              fontFamily: {
+                "headline": ["Manrope"],
+                "body": ["Inter"],
+                "label": ["Inter"]
+              },
+              borderRadius: {"DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem"},
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+          background-color: #121317;
+          color: #e3e2e7;
+        }
+        .glass-panel {
+          background: rgba(52, 52, 57, 0.7);
+          backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="font-body selection:bg-primary/30 antialiased">
+<!-- TopNavBar (Shared Component from Home) -->
+<nav class="bg-[#121317] dark:bg-[#121317] flex items-center justify-start w-full px-6 h-14 gap-8 fixed top-0 z-50">
+<div class="text-lg font-bold text-[#e3e2e7] tracking-tight font-headline">
+        MSM Awakening Tracker
+    </div>
+<div class="flex items-center gap-6 h-full">
+<a class="font-headline text-sm font-semibold h-full flex items-center text-[#939099] hover:text-[#e3e2e7] transition-colors" href="#">Home</a>
+<a class="font-headline text-sm font-semibold h-full flex items-center text-[#d0bcff] border-b-2 border-[#d0bcff] pb-1" href="#">Catalog</a>
+<a class="font-headline text-sm font-semibold h-full flex items-center text-[#939099] hover:text-[#e3e2e7] transition-colors" href="#">Settings</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="pt-20 pb-12 px-8 grid grid-cols-1 md:grid-cols-12 gap-8 max-w-[1600px] mx-auto min-h-[calc(100vh-3.5rem)]">
+<!-- Left Section: Catalog -->
+<section class="md:col-span-7 flex flex-col gap-6">
+<header>
+<h1 class="text-2xl font-extrabold font-headline text-on-surface tracking-tight mb-2">Monster Catalog</h1>
+<p class="text-on-surface-variant font-body">Browse Wublins, Celestials, and Amber Vessels, then click once to begin tracking.</p>
+</header>
+<!-- Search & Filter Area -->
+<div class="flex flex-col gap-6">
+<!-- Search Bar (Styled like Home panels) -->
+<div class="relative">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</div>
+<input class="w-full bg-surface-container border-outline-variant/10 focus:border-primary/40 focus:ring-0 rounded-xl py-3 pl-12 pr-12 text-on-surface placeholder:text-outline transition-all" placeholder="Search monsters by name..." type="text"/>
+</div>
+<!-- Tabs (Styled like Nav links per request) -->
+<div class="flex gap-8 border-b border-outline-variant/10 pb-0">
+<button class="font-headline text-sm font-bold text-[#d0bcff] border-b-2 border-[#d0bcff] pb-2 px-1">Wublins</button>
+<button class="font-headline text-sm font-bold text-[#939099] hover:text-[#e3e2e7] pb-2 px-1 transition-colors">Celestials</button>
+<button class="font-headline text-sm font-bold text-[#939099] hover:text-[#e3e2e7] pb-2 px-1 transition-colors">Amber Vessels</button>
+</div>
+</div>
+<!-- Monster Grid -->
+<div class="grid grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Card 1 -->
+<div class="group bg-surface-container rounded-xl p-4 cursor-pointer hover:bg-surface-container-high transition-all border border-outline-variant/10">
+<div class="aspect-square rounded-lg bg-surface-container-lowest mb-4 overflow-hidden">
+<img alt="" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Wubbox" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3uNjn9OlcQozLMX_wSR1HQZQOgO9AFFaKCxurCZGCYKcvQmo7zBJrsNGk5I9Z6kT6GuHHrEkL1kIhT2WBD0ucAk1GgzuIeeSkwvFYnBdW197w5kyiCL2zVpYYOaIuXazJhj71gYMJUsCcch1zXSOwfSR06X32cMDA9xf62AIjbwZ6kLNmmbwQdJll_TFwvkFRmlu1t6Hz3YZ-hd4BfUhCBikKOtGMM6TUORSAUOgq3K43loOI8fONdEpVnIc6siqe-QEk5YO7AZox"/>
+</div>
+<h3 class="font-headline font-bold text-on-surface">Wubbox</h3>
+</div>
+<!-- Card 2 -->
+<div class="group bg-surface-container rounded-xl p-4 cursor-pointer hover:bg-surface-container-high transition-all border border-outline-variant/10">
+<div class="aspect-square rounded-lg bg-surface-container-lowest mb-4 overflow-hidden">
+<img alt="" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Ziggurab" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXBLb2gUAfGCOrGw1_6SjmVjbtOsQ-nvTvwG3wXggn9e-ybfMrpMbFQi1u17LpPX7nq5LCq2WxF4VJ_ejBV2IvVSj_2Ei_3fdb3yzpQpgQGLwcUSIfgUeA1oOsNkh4iRN577a4Qb8Fq4K2chLq-LlHGwfCuVCbJsyc85rtC6FIAgSAflFkX4e9csG83Qq_giJet6gNfmeFXv_2-4cYXJapGPfXcjUDIz29Vl3xT_EADvtNUUxiw1XJSODTF-1DkfIeb-DrHyIIf-Zk"/>
+</div>
+<h3 class="font-headline font-bold text-on-surface">Ziggurab</h3>
+</div>
+<!-- Card 3 -->
+<div class="group bg-surface-container rounded-xl p-4 cursor-pointer hover:bg-surface-container-high transition-all border border-outline-variant/10">
+<div class="aspect-square rounded-lg bg-surface-container-lowest mb-4 overflow-hidden">
+<img alt="" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Galvana" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOw0pEMWRIzo3QvXI1G3f4NQ4fLfh1salTBCB2by2fl-T-34DyOKZAdaKnYG5zEp-eDS1QPGJ1diUpwLHeV4STOZGNEmlpIJzufcBnqAwFdzCoR56o-qNFaH5qwMmNy6TxmxXXRIf02pkTlaV9KT6oV_vVaESBVBTALO-mBJ0NlUiLw2hsFRKl6R6dwvM9hjq4M9tCoZx6Cn-abiELBURIcSr9MgkWWFMeI8oqt-sk92k1sQR8Ct0z0Mh34EFZq3nzY_BIf3j8-RlY"/>
+</div>
+<h3 class="font-headline font-bold text-on-surface">Galvana</h3>
+</div>
+<!-- Card 4 -->
+<div class="group bg-surface-container rounded-xl p-4 cursor-pointer hover:bg-surface-container-high transition-all border border-outline-variant/10">
+<div class="aspect-square rounded-lg bg-surface-container-lowest mb-4 overflow-hidden">
+<img alt="" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity" data-alt="Dwumrohl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_aS0YWCQ6qw1lPNk8j6afVVDUt2qkXqT9Y0gw0QiVeQzTdDJUfS0ka4-m6Mammf4XIxDMs2wjIXbQcIpb1kbhb7dUgY9yE91V_cXtSO2NzlufNt3mC4865RjlCltZ9XB_5WfvBJ3qSTpT7Nfl3NJqEpE7fSpEUTEK-caSTeowiPKbM1gOUNTq7cwITbQSdVx_b5t6Y8LDmH-3DPQ_v7-DjL2EOpHi6ngs5G716Thx9I0GKXiURfKfyiadgB8iyCUOH52ziTnaQfKe"/>
+</div>
+<h3 class="font-headline font-bold text-on-surface">Dwumrohl</h3>
+</div>
+</div>
+</section>
+<!-- Right Section: Active Monsters (Mirrored from Home Page) -->
+<section class="md:col-span-5 flex flex-col gap-6">
+<header class="flex items-center">
+<h2 class="font-headline text-2xl font-extrabold text-on-surface tracking-tight">Active Monsters</h2>
+</header>
+<div class="flex flex-col gap-4">
+<!-- Wublins Group -->
+<div class="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<h4 class="font-headline text-lg font-bold text-on-surface">Wublins</h4>
+</div>
+<span class="text-xs font-bold text-outline uppercase tracking-widest">3 Active</span>
+</div>
+<!-- Active Monster Card Simulation -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest rounded-xl border border-outline-variant/10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDSsQouoYs9PocrZkq-alzzbRkOVV0sV5FiyP3_AtgAcH5tZmhtTUL8bcVCZXlte2LS5qqvYPq047SMrXAKKgpNpxVCHqnm6ZR8lWNo3tI_a6eakhDRdPoqNukjk0BN7MG8zHuLLnvyBoSaS9PpoQv9GDlmNkPA7-u0Z-I0pMCuewaCyQ1kOApktaTZsdMqY2lYxaHCsGcu2Qzj4gPy2QhtXOS_u-wHy9PLRVrkqWV25twFPD-e__lOvIKLhP7qtl472Xn3iVTE08Z"/>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Wubbox</p>
+<p class="text-[10px] text-outline">2 Active</p>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest rounded-xl border border-outline-variant/10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPCCypQAuOslQ6jwm1YpPO-lGWt7vsPOOxAKtKB285-VTLYcTfc5bx6Q9QwvMSZ-fa-YebNXsQJMGE9LDA2gBRGuZ6vd7PiysypoHzPzxw_oihX2V2jTa9z0-mzzKlt_ox_WwwEKUHV1uPQZaFmlaIlEs5gmc2z5zm1zw4-B_aA1FNLEKG_7L5lFyvsc8INY7HqsXp1fPPPjC_Wmn177Nc1m9_ngAA6625qFbTVChMJrdKtDMznNr9uUeBCVxDN--s2n7-WFYfG1IV"/>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Dwumrohl</p>
+<p class="text-[10px] text-outline">1 Active</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Celestials Group -->
+<div class="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<h4 class="font-headline text-lg font-bold text-on-surface">Celestials</h4>
+</div>
+<span class="text-xs font-bold text-outline uppercase tracking-widest">1 Active</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest rounded-xl border border-outline-variant/10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4yvobnQ5kC5Zlu4YoIYdToPsJG6i0MmhJqyBWW3Ca8UoK6P3PCtmi7TNt2vnZj_HNfUjjPsrU1SPRUfdtcjjk6gK3D_hLBXW8RqlJJSv5XM3TmsTqrYEH4jARP-5nYnv8Boo96GIVgdiWp25JRqdARaR9Nz_zmkohwW17sln_Z-IFt4CIqVQWvlmBEc1FulMSwQS39Ul66dHgmlOZeVxCRq-bn83b6lJ2I-3OjcX5BJA490CST6_mFMGrCttyLlukLHGtWUGi6ugs"/>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Galvana</p>
+<p class="text-[10px] text-outline">1 Active</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Amber Vessels Group -->
+<div class="bg-surface-container rounded-xl p-6 border border-outline-variant/10">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-[#ff8a65]" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<h4 class="font-headline text-lg font-bold text-on-surface">Amber Vessels</h4>
+</div>
+<span class="text-xs font-bold text-outline uppercase tracking-widest">1 Active</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-lowest rounded-xl border border-outline-variant/10">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7HlYLR3lsbjWTZah49kxCSH_9gJz7ZJJ0sg8trIMeFK99-tpqVQqbybbYiGn8k5Q2hp5tySITzC6Xh1bXS5E-TvOd113u6vRveZgrQaATDs_2VtUK9tIYQwzkLFaT_o_kWAJByjAKOA142XZLC1eVQB2OEmADHnJPveZv9-W-QcL8C5PKkQD-S74MVftFaKlige7vXcJzUpk0a2v7nvmYCDTDqLzyZfd6vlqQ0WeHIA1_nm6fliKdbsKtbT1INWhFX6vhgmSoV1Ns"/>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">Ziggurab</p>
+<p class="text-[10px] text-outline">1 Active</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Getting Started Tip -->
+<div class="mt-auto glass-panel p-6 rounded-xl border border-primary/10">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary">lightbulb</span>
+<div>
+<h5 class="text-on-surface font-bold text-sm mb-1">Getting Started</h5>
+<p class="text-on-surface-variant text-xs leading-relaxed">
+                        Use the Catalog to browse monsters across all islands. Once you start an awakening process, it will appear here with real-time timers and requirement tracking.
+                    </p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Decorative Grain/Texture Overlay (From Home) -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] mix-blend-overlay z-[100]">
+<img class="w-full h-full object-cover" data-alt="Subtle fine noise and grain texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMfMa58qT4X7HKwK4BLNYCQ0AxTa6hCBlrvpEFVhbHIU14MkuAzq8gpalnE5KGstSlPLvkpwBfJt61lPcqNd3H2bZ4eVG2Lzti7A8JaY8-tX4GofsK_f24qbZF8cDDKOH_bTPEqaUyXQFmYRLbLmJUF6IagIjco1pIRFXVxZuRM_GM-_bexNPKt2UoLVHrJ0ZHUSq4VwreFKx8Rsa8leuRv6kiyGaucsDuU7RWVZbVlhbzZz_fs4XL9dNLrLPymMcv05q8eJe5rw"/>
+</div>
+</body></html>

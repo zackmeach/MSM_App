@@ -53,17 +53,17 @@ class MonsterCard(QWidget):
 
         self.setStyleSheet("""
             #monsterCard {
-                background-color: #313244; border-radius: 8px;
+                background-color: #292a2e; border-radius: 8px;
             }
-            #monsterCard:hover { background-color: #45475a; }
-            #cardLabel { font-size: 11px; color: #cdd6f4; }
+            #monsterCard:hover { background-color: #343439; }
+            #cardLabel { font-size: 11px; color: #e3e2e7; }
         """)
 
     def _set_initials(self, name: str) -> None:
         self._image.setText(name[:2].upper())
         self._image.setStyleSheet(
-            "background-color: #45475a; border-radius: 8px; "
-            "font-size: 18px; font-weight: bold; color: #89b4fa;"
+            "background-color: #343439; border-radius: 8px; "
+            "font-size: 18px; font-weight: bold; color: #d0bcff;"
         )
 
     def mousePressEvent(self, event) -> None:

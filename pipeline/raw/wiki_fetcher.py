@@ -61,7 +61,7 @@ _NON_MONSTER_PAGES: set[str] = {
     "Polarity", "Wublin Island", "Wublins",
     "Celestial Island", "Celestials", "Monster Names/Celestials",
     "Amber Island", "Islands", "Glowbes", "Vessels", "Zapping",
-    "Colossals", "Island Skins",
+    "Colossals", "Island Skins", "Crucible", "Echoes of Eco",
     "Air Element", "Cold Element", "Earth Element", "Fire Element",
     "Plant Element", "Water Element",
 }
@@ -69,6 +69,17 @@ _NON_MONSTER_PAGES: set[str] = {
 # Prefixes that indicate Rare/Epic/Adult variants — skip these since
 # the app tracks base monsters only.
 _VARIANT_PREFIXES: tuple[str, ...] = ("Rare ", "Epic ", "Adult ")
+
+# Monsters that should never appear in results (different mechanics).
+EXCLUDED_MONSTERS: set[str] = {
+    "Wubbox",  # Uses "boxing" mechanic — whole monsters, not eggs
+}
+
+# Monsters not in any standard category but that have wublin-inventory
+# requirements.  Fetched individually by fetch_extra_monsters().
+EXTRA_MONSTERS: dict[str, str] = {
+    "Monculus": "wublin",  # Aux. Seasonal on Wublin Island
+}
 
 # Fallback classification if a monster's type can't be determined from
 # which category page listed it.
@@ -81,15 +92,118 @@ KNOWN_MONSTER_TYPES: dict[str, str] = {
     "Pixolotl": "wublin", "Bona-Petite": "wublin", "Dermit": "wublin",
     "Fleechwurm": "wublin", "Maulch": "wublin",
     "Screemu": "wublin", "Whajje": "wublin",
+    "Monculus": "wublin",
     # Celestials (base monsters on Celestial Island)
     "Attmoz": "celestial", "Blasoom": "celestial", "Furnoss": "celestial",
     "Galvana": "celestial", "Glaishur": "celestial", "Hornacle": "celestial",
     "Loodvigg": "celestial", "Plixie": "celestial", "Scaratar": "celestial",
     "Syncopite": "celestial", "Torrt": "celestial", "Vhamp": "celestial",
-    # Amber Island (Vessels — base monsters)
-    "Kayna": "amber", "Flowah": "amber", "Stogg": "amber",
-    "Woolabee": "amber", "Barrb": "amber", "Glowl": "amber",
-    "Floot Fly": "amber", "Banjaw": "amber",
+    # Amber Island (Vessels — all 32 base monsters)
+    "Barrb": "amber", "Bisonorus": "amber", "Boskus": "amber",
+    "Bowhead": "amber", "Candelavra": "amber", "Drummidary": "amber",
+    "Edamimi": "amber", "Floogull": "amber", "Flowah": "amber",
+    "Flum Ox": "amber", "Glowl": "amber", "Gnarls": "amber",
+    "Incisaur": "amber", "Kayna": "amber", "Krillby": "amber",
+    "Phangler": "amber", "PongPing": "amber", "Repatillo": "amber",
+    "Rootitoot": "amber", "Sneyser": "amber", "Sooza": "amber",
+    "Stogg": "amber", "Thrumble": "amber", "Tiawa": "amber",
+    "Tring": "amber", "Tuskski": "amber", "Viveine": "amber",
+    "Whaddle": "amber", "Woolabee": "amber", "Wynq": "amber",
+    "Yelmut": "amber", "Ziggurab": "amber",
+}
+
+
+# ── Breeding time lookup ────────────────────────────────────────────
+
+# Authoritative breeding times for all known egg types.
+# (seconds, display_string) — sourced from MSM Fandom Wiki.
+KNOWN_BREEDING_TIMES: dict[str, tuple[int, str]] = {
+    # ── Single-element (Natural Island starters) ──
+    "Noggin":       (5,      "5s"),
+    "Mammott":      (5,      "5s"),
+    "Toe Jammer":   (5,      "5s"),
+    "Potbelly":     (5,      "5s"),
+    "Tweedle":      (5,      "5s"),
+    # ── Two-element (Natural Islands) ──
+    "Drumpler":     (1800,   "30m"),
+    "Fwog":         (1800,   "30m"),
+    "Maw":          (1800,   "30m"),
+    "Shrubb":       (1800,   "30m"),
+    "Furcorn":      (5400,   "1h 30m"),
+    "Pango":        (7200,   "2h"),
+    "Oaktopus":     (7200,   "2h"),
+    # ── Three-element (Natural Islands) ──
+    "Cybop":        (28800,  "8h"),
+    "Quibble":      (28800,  "8h"),
+    "Dandidoo":     (28800,  "8h"),
+    "Scups":        (28800,  "8h"),
+    "Reedling":     (28800,  "8h"),
+    "T-Rox":        (28800,  "8h"),
+    "Pummel":       (28800,  "8h"),
+    "Congle":       (28800,  "8h"),
+    "Spunge":       (28800,  "8h"),
+    "Clamble":      (28800,  "8h"),
+    "PomPom":       (28800,  "8h"),
+    "Bowgart":      (30600,  "8h 30m"),
+    "Thumpies":     (27000,  "7h 30m"),
+    # ── Four-element (Natural Islands) ──
+    "Entbrat":      (86400,  "24h"),
+    "Deedge":       (86400,  "24h"),
+    "Shellbeat":    (86400,  "24h"),
+    "Quarrister":   (86400,  "24h"),
+    "Riff":         (86400,  "24h"),
+    # ── Amber Island two-element ──
+    "Kayna":        (25200,  "7h"),
+    "Glowl":        (36000,  "10h"),
+    "Flowah":       (36000,  "10h"),
+    "Stogg":        (36000,  "10h"),
+    "Phangler":     (36000,  "10h"),
+    "Boskus":       (36000,  "10h"),
+    # ── Amber Island three-element ──
+    "Floogull":     (72000,  "20h"),
+    "Barrb":        (72000,  "20h"),
+    "Repatillo":    (72000,  "20h"),
+    "Woolabee":     (72000,  "20h"),
+    "Whaddle":      (72000,  "20h"),
+    "Wynq":         (72000,  "20h"),
+    "Sooza":        (72000,  "20h"),
+    "Rootitoot":    (72000,  "20h"),
+    "Thrumble":     (72000,  "20h"),
+    "Ziggurab":     (72000,  "20h"),
+    # ── Amber Island five-element ──
+    "Tring":        (144000, "1d 16h"),
+    "Sneyser":      (144000, "1d 16h"),
+    # ── Fire / Magical two-element (9h) ──
+    "Bonkers":      (32400,  "9h"),
+    "Bulbo":        (32400,  "9h"),
+    "Denchuhs":     (32400,  "9h"),
+    "Gob":          (32400,  "9h"),
+    "Hawlo":        (32400,  "9h"),
+    "HippityHop":   (32400,  "9h"),
+    "Peckidna":     (32400,  "9h"),
+    "Pluckbill":    (32400,  "9h"),
+    "Poppette":     (32400,  "9h"),
+    "Squot":        (32400,  "9h"),
+    "Wimmzies":     (32400,  "9h"),
+    "Yuggler":      (32400,  "9h"),
+    # ── Fire / Magical three-element (16h) ──
+    "Banjaw":       (57600,  "16h"),
+    "Bridg-it":     (57600,  "16h"),
+    "Cantorell":    (57600,  "16h"),
+    "Clavi Gnat":   (57600,  "16h"),
+    "Fiddlement":   (57600,  "16h"),
+    "Periscorp":    (57600,  "16h"),
+    "Rooba":        (57600,  "16h"),
+    "Spytrap":      (57600,  "16h"),
+    "Tapricorn":    (57600,  "16h"),
+    "TooToo":       (57600,  "16h"),
+    "Uuduk":        (57600,  "16h"),
+    "Withur":       (57600,  "16h"),
+    # ── Fire / Magical four-element (1d 8h) ──
+    "Blow't":       (115200, "1d 8h"),
+    "Gloptic":      (115200, "1d 8h"),
+    "Pladdie":      (115200, "1d 8h"),
+    "Plinkajou":    (115200, "1d 8h"),
 }
 
 
@@ -258,6 +372,8 @@ def _is_base_monster(name: str) -> bool:
     """Return True if this is a base monster (not a variant or non-monster page)."""
     if name in _NON_MONSTER_PAGES:
         return False
+    if name in EXCLUDED_MONSTERS:
+        return False
     if any(name.startswith(prefix) for prefix in _VARIANT_PREFIXES):
         return False
     if name.startswith("Category:") or name.startswith("Template:"):
@@ -337,6 +453,25 @@ def fetch_monster_list(
     return results
 
 
+def fetch_extra_monsters(
+    cache: SourceCache,
+    *,
+    delay: float = DEFAULT_REQUEST_DELAY,
+) -> list[FetchResult]:
+    """Fetch monsters not listed in any standard category page.
+
+    These are monsters like Monculus that have wublin-inventory
+    requirements but don't appear in Category:Wublins.
+    """
+    results: list[FetchResult] = []
+    for name, mtype in EXTRA_MONSTERS.items():
+        if delay > 0:
+            time.sleep(delay)
+        result = fetch_monster_page(name, mtype, cache)
+        results.append(result)
+    return results
+
+
 def _extract_monster_names_from_category(page_html: str) -> list[str]:
     """Extract base monster names from a wiki category page.
 
@@ -344,6 +479,7 @@ def _extract_monster_names_from_category(page_html: str) -> list[str]:
     - Category/Template pages
     - Rare/Epic/Adult variants
     - Known non-monster pages (islands, elements, game features)
+    - Excluded monsters (Wubbox, etc.)
     """
     names: list[str] = []
     # Category pages list members as links in the category content area
@@ -439,8 +575,7 @@ def fetch_egg_data_from_requirements(
     """Extract unique egg types from fetched monster requirements.
 
     Builds egg payloads from the requirement data gathered across all
-    monster pages. Since the wiki doesn't have dedicated egg pages with
-    breeding times, this uses the known breeding time data.
+    monster pages. Looks up breeding times from KNOWN_BREEDING_TIMES.
     """
     seen_eggs: dict[str, dict[str, Any]] = {}
 
@@ -450,8 +585,13 @@ def fetch_egg_data_from_requirements(
         for req in result.raw_payload["requirements"]:
             egg_name = req.get("egg_name", "").strip()
             if egg_name and egg_name not in seen_eggs:
+                bt_seconds, bt_display = KNOWN_BREEDING_TIMES.get(
+                    egg_name, (0, ""),
+                )
                 seen_eggs[egg_name] = {
                     "name": egg_name,
+                    "breeding_time_seconds": bt_seconds,
+                    "breeding_time_display": bt_display,
                     "source_slug": egg_name,
                     "source_url": "",
                     "is_placeholder": True,

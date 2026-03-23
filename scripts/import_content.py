@@ -5,9 +5,9 @@ Chains the full Layer 1 ingestion pipeline:
   2. Load overrides
   3. Fetch source data from the MSM Wiki (or other configured source)
   4. Normalize each fetched record
-  5. Compare against existing data and classify changes
-  6. Write updated normalized files
-  7. Write review queue with items requiring maintainer attention
+  5. Extract and merge egg data
+  6. Detect requirement changes
+  7. Write updated normalized files + review queue
 
 This script never writes directly to the app DB — it only updates
 the normalized JSON files under ``pipeline/normalized/``.
@@ -22,6 +22,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+from datetime import datetime, timezone
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -33,6 +34,7 @@ from pipeline.raw.normalizer import normalize_monster_payload, normalize_egg_pay
 from pipeline.raw.source_cache import SourceCache  # noqa: E402
 from pipeline.raw.wiki_fetcher import (  # noqa: E402
     fetch_monster_list,
+    fetch_extra_monsters,
     fetch_egg_data_from_requirements,
 )
 
@@ -137,7 +139,11 @@ def main() -> int:
     existing_monsters, existing_eggs, existing_requirements = _load_existing_normalized()
     monster_index = _build_key_index(existing_monsters)
     egg_index = _build_key_index(existing_eggs)
-    existing_keys = set(monster_index.keys())
+    # Track keys seen within this import batch only — NOT pre-populated
+    # with existing keys. The normalizer uses this to detect duplicates
+    # within one import run. Change detection against existing data
+    # happens separately via _classify_change().
+    import_batch_keys: set[str] = set()
 
     print(f"  Existing monsters:     {len(existing_monsters)}")
     print(f"  Existing eggs:         {len(existing_eggs)}")
@@ -181,6 +187,17 @@ def main() -> int:
             elif r.review_items:
                 print(f"    [!] {r.source_reference}: {len(r.review_items)} review item(s)")
 
+    # Fetch monsters not in any standard category (e.g. Monculus)
+    print(f"\n  Fetching extra monsters...")
+    extra_results = fetch_extra_monsters(cache, delay=args.delay)
+    all_fetch_results.extend(extra_results)
+    for r in extra_results:
+        all_review_items.extend(r.review_items)
+        if r.raw_payload:
+            name = r.raw_payload.get("name", "?")
+            reqs = len(r.raw_payload.get("requirements", []))
+            print(f"    {name}: {reqs} requirements")
+
     print(f"\n  Total monsters fetched: {len([r for r in all_fetch_results if r.raw_payload])}")
     print(f"  Total review items from fetch: {len(all_review_items)}")
 
@@ -204,7 +221,7 @@ def main() -> int:
             source_reference=result.source_reference,
             content_hash=result.cache_entry.content_hash,
             retrieved_at_utc=result.cache_entry.retrieved_at_utc,
-            existing_keys=existing_keys,
+            existing_keys=import_batch_keys,
             overrides=override_map,
         )
         all_review_items.extend(norm_review)
@@ -246,7 +263,7 @@ def main() -> int:
             stats["unchanged"] += 1
 
         new_monsters.append(record)
-        existing_keys.add(record["content_key"])
+        import_batch_keys.add(record["content_key"])
 
         # Extract requirements from the raw payload
         for req in result.raw_payload.get("requirements", []):
@@ -268,30 +285,66 @@ def main() -> int:
     print(f"  Modified:  {stats['modified']}")
     print(f"  Failed:    {stats['failed']}")
 
-    # ── Step 5: Extract egg data ─────────────────────────────────────
+    # ── Step 5: Extract and merge egg data ────────────────────────────
     if not args.monsters_only:
         print(f"\n{'='*60}")
-        print("  Step 5: Extracting egg data from requirements")
+        print("  Step 5: Extracting and merging egg data")
         print(f"{'='*60}")
 
+        # Extract eggs from wiki-fetched requirements
         raw_eggs = fetch_egg_data_from_requirements(all_fetch_results)
-        new_eggs: list[dict] = []
 
+        # Use a stable timestamp for all derived egg records
+        now_utc = datetime.now(timezone.utc).isoformat()
+
+        new_eggs: list[dict] = []
         for raw_egg in raw_eggs:
-            if not result.cache_entry:
-                continue
             egg_record, egg_review = normalize_egg_payload(
                 raw_egg,
                 source_category="fandom",
                 source_reference=f"derived/egg/{raw_egg['name']}",
                 content_hash="derived",
-                retrieved_at_utc=result.cache_entry.retrieved_at_utc if result.cache_entry else "",
+                retrieved_at_utc=now_utc,
             )
             all_review_items.extend(egg_review)
             if egg_record:
                 new_eggs.append(egg_record)
 
-        print(f"  Egg types extracted: {len(new_eggs)}")
+        # Merge with existing eggs: preserve breeding times from existing data
+        # where the wiki-derived egg has no breeding time.
+        merged_eggs: list[dict] = []
+        seen_keys: set[str] = set()
+
+        for egg in new_eggs:
+            key = egg["content_key"]
+            existing_egg = egg_index.get(key)
+            if existing_egg:
+                # Prefer existing breeding time if new one is zero
+                if egg.get("breeding_time_seconds", 0) == 0:
+                    egg["breeding_time_seconds"] = existing_egg.get(
+                        "breeding_time_seconds", 0,
+                    )
+                    egg["breeding_time_display"] = existing_egg.get(
+                        "breeding_time_display", "",
+                    )
+            seen_keys.add(key)
+            merged_eggs.append(egg)
+
+        # Keep existing eggs not discovered in this import run
+        for existing_egg in existing_eggs:
+            ekey = existing_egg.get("content_key", "")
+            if ekey and ekey not in seen_keys:
+                merged_eggs.append(existing_egg)
+                seen_keys.add(ekey)
+
+        new_eggs = merged_eggs
+        print(f"  Egg types extracted: {len(raw_eggs)}")
+        print(f"  Eggs after merge:    {len(new_eggs)}")
+
+        # Check for eggs with missing breeding times
+        zero_bt = [e["display_name"] for e in new_eggs if e.get("breeding_time_seconds", 0) == 0]
+        if zero_bt:
+            print(f"  WARNING: {len(zero_bt)} eggs with unknown breeding time: {', '.join(zero_bt)}")
     else:
         new_eggs = list(existing_eggs)
 

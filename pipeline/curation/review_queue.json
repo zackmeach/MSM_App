@@ -1,0 +1,11 @@
+[
+  {
+    "issue_type": "new_entity",
+    "severity": "warning",
+    "source_reference": "wiki/Bona-Petite",
+    "blocking": false,
+    "candidate_content_key": "monster:wublin:bona-petite",
+    "notes": "New monster discovered: Bona-Petite (wublin)",
+    "status": "open"
+  }
+]

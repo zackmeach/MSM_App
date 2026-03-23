@@ -310,15 +310,15 @@ class TestBaselineFilesParity:
 
     def test_monsters_count(self):
         records = load_json_records(NORMALIZED_DIR / "monsters.json")
-        assert len(records) == 39  # 19 + 12 + 8
+        assert len(records) == 64  # 20 + 12 + 32
 
     def test_eggs_count(self):
         records = load_json_records(NORMALIZED_DIR / "eggs.json")
-        assert len(records) == 38
+        assert len(records) == 76
 
     def test_requirements_count(self):
         records = load_json_records(NORMALIZED_DIR / "requirements.json")
-        assert len(records) == 457
+        assert len(records) == 806
 
     def test_type_splits(self):
         records = load_json_records(NORMALIZED_DIR / "monsters.json")
@@ -326,7 +326,7 @@ class TestBaselineFilesParity:
         for r in records:
             t = r["monster_type"]
             types[t] = types.get(t, 0) + 1
-        assert types == {"wublin": 19, "celestial": 12, "amber": 8}
+        assert types == {"wublin": 20, "celestial": 12, "amber": 32}
 
     def test_monsters_validate(self):
         records = load_json_records(NORMALIZED_DIR / "monsters.json")

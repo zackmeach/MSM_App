@@ -313,9 +313,9 @@ class TestDBBuilder:
             tmp_path / "content.db", monsters, eggs, reqs,
             content_version="1.0.0-test",
         )
-        assert result.monster_count == 39
-        assert result.egg_count == 38
-        assert result.requirement_count == 457
+        assert result.monster_count == 64
+        assert result.egg_count == 76
+        assert result.requirement_count == 806
 
         conn = sqlite3.connect(str(tmp_path / "content.db"))
         v = conn.execute("SELECT value FROM update_metadata WHERE key='content_version'").fetchone()

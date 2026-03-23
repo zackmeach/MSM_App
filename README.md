@@ -17,7 +17,10 @@ pip install -r requirements.txt
 # Seed the content database from normalized pipeline data (first time only)
 python scripts/seed_content_db.py
 
-# Generate bundled placeholder assets
+# Import official BBB Fan Kit images (if Fan Kit is present in Monsters/)
+python scripts/import_fankit_images.py
+
+# Generate placeholder assets for any missing images
 python scripts/generate_assets.py
 python scripts/generate_icon.py
 
@@ -189,12 +192,12 @@ The in-app "Check for Updates" feature in Settings downloads and applies a new `
 
 | Category | Count | Notes |
 |----------|-------|-------|
-| Wublins | 19 | All regular Wublins |
+| Wublins | 20 | All regular Wublins (including Monculus) |
 | Celestials | 12 | All regular Celestials |
-| Amber Vessels | 8 | All standard Amber Vessels |
-| Egg Types | 38 | All required breeding elements |
+| Amber Vessels | 32 | All Amber Island vessels |
+| Egg Types | 76 | All required breeding elements |
 
-Canonical data lives in `pipeline/normalized/`. The seeded `resources/db/content.db` is built from it by `scripts/seed_content_db.py`.
+All 64 monsters and 76 egg types have official artwork from the BBB Fan Kit (portrait squares and egg images). Canonical data lives in `pipeline/normalized/`. The seeded `resources/db/content.db` is built from it by `scripts/seed_content_db.py`.
 
 ---
 
@@ -203,7 +206,8 @@ Canonical data lives in `pipeline/normalized/`. The seeded `resources/db/content
 | Script | Purpose |
 |--------|---------|
 | `scripts/seed_content_db.py` | Builds `resources/db/content.db` from `pipeline/normalized/*.json`. Falls back to embedded Python literals if the normalized files are absent. |
-| `scripts/generate_assets.py` | Generates placeholder PNG images for all egg and monster slots, plus the UI placeholder. Skips files that already exist so hand-placed official assets are preserved. |
+| `scripts/import_fankit_images.py` | Imports official BBB Fan Kit images (portraits + eggs) from `Monsters/` into `resources/images/`. Resizes to 256×256, updates metadata. Skips existing files unless `--force`. |
+| `scripts/generate_assets.py` | Generates placeholder PNG images for any missing egg/monster slots, plus the UI placeholder. Skips files that already exist so Fan Kit images are preserved. |
 | `scripts/generate_icon.py` | Generates a placeholder `app_icon.ico`. Replace with official artwork before distribution. |
 | `scripts/verify_bundle.py` | Validates the full bundle: DB integrity, image paths, row counts, no orphan requirements. Must exit 0 before a release is tagged. |
 | `scripts/build.py` | Full release pipeline: run tests → seed DB → generate assets → generate icon → verify bundle → PyInstaller package. Output at `dist/MSMAwakeningTracker/`. |
@@ -212,7 +216,7 @@ Canonical data lives in `pipeline/normalized/`. The seeded `resources/db/content
 
 ## Testing
 
-266 tests across unit and integration suites.
+322 tests across unit and integration suites.
 
 ```powershell
 python -m pytest tests/          # full suite

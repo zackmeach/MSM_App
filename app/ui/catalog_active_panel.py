@@ -1,10 +1,10 @@
-"""Catalog active-monsters rail — read-only right column."""
+"""Catalog active-monsters rail — interactive right column."""
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QScrollArea, QVBoxLayout, QWidget
 
 from app.ui.widgets.monster_entry import MonsterEntryRow
@@ -36,7 +36,9 @@ _TYPE_CONFIG = {
 
 
 class CatalogActivePanel(QWidget):
-    """Right-side summary of currently active monsters (non-interactive)."""
+    """Right-side summary of currently active monsters."""
+
+    close_out_requested = Signal(int)  # monster_id
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -80,7 +82,7 @@ class CatalogActivePanel(QWidget):
             cfg = _TYPE_CONFIG[mtype]
             section = SectionCard(
                 cfg["label"], cfg["icon"], cfg["empty_text"],
-                interactive=False,
+                interactive=True,
             )
             self._sections[mtype] = section
             container_layout.addWidget(section)
@@ -109,9 +111,12 @@ class CatalogActivePanel(QWidget):
         for mtype in _TYPE_ORDER:
             section = self._sections[mtype]
             monsters = inwork_by_type.get(mtype, [])
-            entries = section.refresh(monsters)
+            entries = section.refresh(monsters, self._on_entry_clicked)
             self._entries.extend(entries)
             total += len(monsters)
 
         self._count_badge.setText(f"{total} Active" if total else "0 Active")
         self._tip.setVisible(total == 0)
+
+    def _on_entry_clicked(self, monster_id: int) -> None:
+        self.close_out_requested.emit(monster_id)

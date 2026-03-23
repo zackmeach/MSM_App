@@ -147,6 +147,9 @@ class MainWindow(QMainWindow):
         self._catalog.add_target_requested.connect(
             self._service.handle_add_target
         )
+        self._catalog.close_out_requested.connect(
+            self._service.handle_close_out
+        )
         self._home.breed_list_panel.navigate_to_catalog.connect(
             lambda: self._navigate_to(1)
         )

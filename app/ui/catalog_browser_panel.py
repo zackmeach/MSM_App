@@ -109,17 +109,25 @@ class CatalogBrowserPanel(QWidget):
         self._grid_container = QWidget()
         self._grid_container.setObjectName("catalogGridContainer")
         self._grid_container.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
-        self._grid_layout = QGridLayout(self._grid_container)
+        grid_outer = QVBoxLayout(self._grid_container)
+        grid_outer.setContentsMargins(0, 0, 0, 0)
+        grid_outer.setSpacing(0)
+
+        self._grid_inner = QWidget()
+        self._grid_layout = QGridLayout(self._grid_inner)
         self._grid_layout.setSpacing(20)
         self._grid_layout.setContentsMargins(0, 0, 0, 0)
-        self._scroll.setWidget(self._grid_container)
-        layout.addWidget(self._scroll, stretch=1)
+        grid_outer.addWidget(self._grid_inner)
 
         self._no_results = QLabel("\U0001f50d  No monsters match your search")
         self._no_results.setObjectName("catalogNoResults")
         self._no_results.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._no_results.setVisible(False)
-        layout.addWidget(self._no_results)
+        grid_outer.addWidget(self._no_results)
+
+        grid_outer.addStretch()
+        self._scroll.setWidget(self._grid_container)
+        layout.addWidget(self._scroll, stretch=1)
 
         self._set_active_tab(self._current_tab)
 
@@ -178,7 +186,7 @@ class CatalogBrowserPanel(QWidget):
             self._cards.append(card)
 
         has_items = bool(items)
-        self._scroll.setVisible(has_items)
+        self._grid_inner.setVisible(has_items)
         self._no_results.setVisible(not has_items and bool(self._search.text()))
 
     def _compute_columns(self) -> int:

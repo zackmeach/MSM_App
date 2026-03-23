@@ -35,3 +35,6 @@ Desktop.ini
 
 # Logs
 *.log
+
+# BBB Fan Kit source assets (large binary files)
+/Monsters/

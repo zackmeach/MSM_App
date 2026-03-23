@@ -14,6 +14,8 @@ pip install -r requirements.txt
 python scripts/seed_content_db.py       # builds resources/db/content.db from pipeline/normalized/*.json
 python scripts/generate_assets.py       # creates placeholder PNGs (skips existing files)
 python scripts/generate_icon.py         # creates placeholder .ico
+python scripts/import_fankit_images.py  # copies BBB Fan Kit images (skips existing)
+python scripts/import_fankit_images.py --dry-run  # preview without copying
 
 # Run the app
 python main.py

@@ -18,6 +18,7 @@ class CatalogView(QWidget):
     """Top-level Catalog page — mirrors HomeView's two-column composition."""
 
     add_target_requested = Signal(int)  # monster_id
+    close_out_requested = Signal(int)  # monster_id
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -41,6 +42,9 @@ class CatalogView(QWidget):
 
         self._browser.add_target_requested.connect(
             self.add_target_requested
+        )
+        self._active.close_out_requested.connect(
+            self.close_out_requested
         )
 
     def load_catalog(self, items: list[MonsterCatalogItemViewModel]) -> None:

@@ -40,7 +40,7 @@ if TYPE_CHECKING:
 logger = logging.getLogger(__name__)
 
 DEFAULT_MANIFEST_URL = (
-    "https://raw.githubusercontent.com/MSMAwakeningTracker/content/main/manifest.json"
+    "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/manifest.json"
 )
 
 

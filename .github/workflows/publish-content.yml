@@ -1,0 +1,52 @@
+name: Publish Content
+
+on:
+  workflow_dispatch:
+    inputs:
+      content_version:
+        description: "Content version (semver, e.g. 1.0.0)"
+        required: true
+        type: string
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Seed content database
+        run: python scripts/seed_content_db.py
+
+      - name: Check review queue
+        run: python scripts/review_content.py --check
+
+      - name: Publish content artifacts
+        run: >
+          python scripts/publish_content.py
+          --content-version ${{ inputs.content_version }}
+
+      - name: Verify published artifacts
+        run: |
+          python -c "import json, pathlib; m = json.loads(pathlib.Path('content/manifest.json').read_text()); print(f'Published v{m[\"content_version\"]}')"
+          python -c "import pathlib; db = pathlib.Path('content/content.db'); print(f'content.db: {db.stat().st_size:,} bytes')"
+
+      - name: Commit and push content artifacts
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add content/manifest.json content/content.db content/diff-report.json content/validation-report.json
+          git commit -m "Publish content v${{ inputs.content_version }}"
+          git push

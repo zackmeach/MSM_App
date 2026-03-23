@@ -1,0 +1,18 @@
+{
+  "artifact_contract_version": "1.1",
+  "channel": "stable",
+  "content_version": "1.0.0",
+  "published_at_utc": "2026-03-23T02:55:26.547657+00:00",
+  "schema_version": 2,
+  "min_supported_client_version": "1.0.0",
+  "content_db_url": "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/content.db",
+  "content_db_sha256": "0e1ef6dbf77933bdb2027ab2aa67b0a0b21295cb67ac29077ec3c5d573044b65",
+  "content_db_size_bytes": 122880,
+  "content_db_required": true,
+  "assets_manifest_url": "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/assets-manifest.json",
+  "assets_pack_optional": true,
+  "diff_report_url": "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/diff-report.json",
+  "validation_report_url": "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/validation-report.json",
+  "generated_by_build_id": "build-20260323-025526",
+  "generated_by_git_sha": "c118fd94754a"
+}

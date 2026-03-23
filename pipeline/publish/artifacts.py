@@ -34,7 +34,7 @@ def generate_manifest(
     build_id: str,
     git_sha: str,
     *,
-    base_url: str = "https://updates.example.com/msm/stable",
+    base_url: str = "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content",
     channel: str = "stable",
     min_client_version: str = "1.0.0",
     rollback_to: str | None = None,
@@ -43,8 +43,6 @@ def generate_manifest(
     db_bytes = content_db_path.read_bytes()
     db_sha256 = hashlib.sha256(db_bytes).hexdigest()
 
-    version_url = f"{base_url}/{content_version}"
-
     manifest: dict[str, Any] = {
         "artifact_contract_version": ARTIFACT_CONTRACT_VERSION,
         "channel": channel,
@@ -52,21 +50,21 @@ def generate_manifest(
         "published_at_utc": datetime.now(timezone.utc).isoformat(),
         "schema_version": schema_version,
         "min_supported_client_version": min_client_version,
-        "content_db_url": f"{version_url}/content.db",
+        "content_db_url": f"{base_url}/content.db",
         "content_db_sha256": db_sha256,
         "content_db_size_bytes": len(db_bytes),
         "content_db_required": True,
-        "assets_manifest_url": f"{version_url}/assets-manifest.json",
+        "assets_manifest_url": f"{base_url}/assets-manifest.json",
         "assets_pack_optional": True,
-        "diff_report_url": f"{version_url}/diff-report.json",
-        "validation_report_url": f"{version_url}/validation-report.json",
+        "diff_report_url": f"{base_url}/diff-report.json",
+        "validation_report_url": f"{base_url}/validation-report.json",
         "generated_by_build_id": build_id,
         "generated_by_git_sha": git_sha,
     }
 
     if assets_pack_path and assets_pack_path.exists():
         pack_bytes = assets_pack_path.read_bytes()
-        manifest["assets_pack_url"] = f"{version_url}/assets-pack.zip"
+        manifest["assets_pack_url"] = f"{base_url}/assets-pack.zip"
         manifest["assets_pack_sha256"] = hashlib.sha256(pack_bytes).hexdigest()
         manifest["assets_pack_size_bytes"] = len(pack_bytes)
 

@@ -181,7 +181,7 @@ The in-app "Check for Updates" feature in Settings downloads and applies a new `
 6. Atomically replace `content.db` in `%APPDATA%\MSMAwakeningTracker\`, reopen the connection, and reconcile user state.
 7. On failure at any step, the prior `content.db` is restored from backup automatically.
 
-> **Note**: The `DEFAULT_MANIFEST_URL` currently points to `https://raw.githubusercontent.com/MSMAwakeningTracker/content/main/manifest.json`. That repository does not exist yet. The "Check for Updates" button will return a 404 until the content publishing infrastructure is stood up. This is expected and handled gracefully — the app displays an error message and leaves existing content untouched.
+> **Note**: The `DEFAULT_MANIFEST_URL` points to `https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/manifest.json`. The `content/` directory is populated by the publish pipeline (`scripts/publish_content.py`). Until content artifacts are published there, the "Check for Updates" button will return a 404 — this is handled gracefully.
 
 ---
 

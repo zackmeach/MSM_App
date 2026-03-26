@@ -36,6 +36,7 @@ class MonsterCatalogItemViewModel:
     monster_type: str
     image_path: str
     is_placeholder: bool
+    active_count: int = 0
 
 
 @dataclass(frozen=True)
@@ -196,3 +197,5 @@ class SettingsViewModel:
     disclaimer_text: str = BBB_DISCLAIMER
     data_rows: list[SettingsDataRowViewModel] = field(default_factory=list)
     update_state: SettingsUpdateState = field(default_factory=SettingsUpdateState)
+    current_theme: str = "Deep Island Night"
+    current_font_size_label: str = "Default"

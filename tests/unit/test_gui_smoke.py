@@ -127,7 +127,8 @@ class TestEggIconIncrement:
         assert blocker.args == [id_maps["eggs"]["Mammott"]]
         row.close()
 
-    def test_row_body_click_does_not_emit(self, qtbot, id_maps):
+    def test_row_body_click_emits(self, qtbot, id_maps):
+        """Clicking anywhere on the row emits the clicked signal."""
         from app.ui.viewmodels import BreedListRowViewModel
 
         vm = BreedListRowViewModel(
@@ -144,12 +145,10 @@ class TestEggIconIncrement:
         row.show()
         qtbot.addWidget(row)
 
-        signals_received = []
-        row.clicked.connect(lambda eid: signals_received.append(eid))
+        with qtbot.waitSignal(row.clicked, timeout=1000) as blocker:
+            qtbot.mouseClick(row._name_label, Qt.MouseButton.LeftButton)
 
-        qtbot.mouseClick(row._name_label, Qt.MouseButton.LeftButton)
-        QApplication.processEvents()
-        assert signals_received == []
+        assert blocker.args == [id_maps["eggs"]["Mammott"]]
         row.close()
 
 

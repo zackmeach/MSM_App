@@ -16,6 +16,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from app.ui.themes import scaled
 from app.ui.widgets.catalog_monster_card import CatalogMonsterCard
 
 if TYPE_CHECKING:
@@ -137,6 +138,11 @@ class CatalogBrowserPanel(QWidget):
         self._all_items = list(items)
         self._apply_filter()
 
+    def update_active_counts(self, counts: dict[int, int]) -> None:
+        """Update badge counts on visible cards without rebuilding the grid."""
+        for card in self._cards:
+            card.set_active_count(counts.get(card._monster_id, 0))
+
     # ── Internal ──
 
     def _on_search(self, _text: str) -> None:
@@ -179,6 +185,7 @@ class CatalogBrowserPanel(QWidget):
                 monster_type=it.monster_type,
                 is_placeholder=it.is_placeholder,
             )
+            card.set_active_count(it.active_count)
             card.clicked.connect(self._on_card_clicked)
             row = idx // cols
             col = idx % cols
@@ -190,11 +197,11 @@ class CatalogBrowserPanel(QWidget):
         self._no_results.setVisible(not has_items and bool(self._search.text()))
 
     def _compute_columns(self) -> int:
-        card_w = CatalogMonsterCard.CARD_WIDTH
+        card_w = scaled(CatalogMonsterCard.CARD_WIDTH)
         spacing = self._grid_layout.spacing()
         available = self._scroll.viewport().width() if self._scroll.viewport() else 480
         cols = max(2, available // (card_w + spacing))
-        return min(cols, 3)
+        return min(cols, 5)
 
     def _on_card_clicked(self, monster_id: int) -> None:
         self.add_target_requested.emit(monster_id)

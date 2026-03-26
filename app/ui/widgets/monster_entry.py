@@ -6,6 +6,8 @@ from PySide6.QtCore import QSize, Qt, Signal
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QWidget
 
+from app.ui.themes import placeholder_tones_2, scaled
+
 
 class MonsterEntryRow(QWidget):
     """Image + name + optional badge row. Optionally clickable."""
@@ -39,7 +41,8 @@ class MonsterEntryRow(QWidget):
         layout.setSpacing(10)
 
         self._image = QLabel()
-        self._image.setFixedSize(QSize(36, 36))
+        s = scaled(36)
+        self._image.setFixedSize(QSize(s, s))
         self._image.setScaledContents(True)
         self._image.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -60,7 +63,7 @@ class MonsterEntryRow(QWidget):
 
     def _set_initials(self, name: str) -> None:
         initials = "".join(part[0] for part in name.split()[:2]).upper()
-        bg, fg = _PLACEHOLDER_TONES.get(self._monster_type, ("#262332", "#d0bcff"))
+        bg, fg = placeholder_tones_2(self._monster_type)
         self._image.setText(initials or name[:2].upper())
         self._image.setStyleSheet(
             f"background-color: {bg}; border-radius: 6px; "
@@ -73,8 +76,3 @@ class MonsterEntryRow(QWidget):
         super().mousePressEvent(event)
 
 
-_PLACEHOLDER_TONES = {
-    "wublin": ("#1a2e31", "#45e9d0"),
-    "celestial": ("#352d12", "#ffba20"),
-    "amber": ("#38251f", "#ff8a65"),
-}

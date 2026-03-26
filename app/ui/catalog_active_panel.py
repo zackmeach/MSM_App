@@ -20,17 +20,17 @@ _TYPE_CONFIG = {
     "wublin": {
         "label": "Wublins",
         "icon": "\u03df",
-        "empty_text": "No Wublins currently statuesque",
+        "empty_text": "All Wublins still slumbering on their pedestals\u2026",
     },
     "celestial": {
         "label": "Celestials",
         "icon": "\u2726",
-        "empty_text": "The heavens are currently quiet",
+        "empty_text": "The Celestial realm awaits its first spark\u2026",
     },
     "amber": {
         "label": "Amber Vessels",
         "icon": "\u25c8",
-        "empty_text": "No vessels undergoing incubation",
+        "empty_text": "No amber echoes stirring in the deep\u2026",
     },
 }
 

@@ -5,7 +5,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from PySide6.QtCore import (
-    QEvent,
     QPropertyAnimation,
     QSize,
     Signal,
@@ -21,6 +20,8 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
+from app.ui.themes import scaled
+
 if TYPE_CHECKING:
     from app.ui.viewmodels import BreedListRowViewModel
 
@@ -32,25 +33,28 @@ class EggRowWidget(QWidget):
         super().__init__(parent)
         self._egg_type_id = vm.egg_type_id
         self._is_completing = False
+        self._prev_bred_count = 0
         self._build_ui()
         self.update_data(vm)
 
     def _build_ui(self) -> None:
         self.setObjectName("eggRow")
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
-        self.setMinimumHeight(62)
+        self.setMinimumHeight(scaled(62))
+        self.setCursor(Qt.CursorShape.PointingHandCursor)
+        self.setToolTip("Click to increment egg count")
 
         root = QHBoxLayout(self)
         root.setContentsMargins(10, 8, 14, 8)
         root.setSpacing(12)
 
         self._icon_label = QLabel()
-        self._icon_label.setFixedSize(QSize(46, 46))
+        s = scaled(46)
+        self._icon_label.setFixedSize(QSize(s, s))
         self._icon_label.setObjectName("eggIconContainer")
         self._icon_label.setScaledContents(True)
         self._icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self._icon_label.setCursor(Qt.CursorShape.PointingHandCursor)
-        self._icon_label.installEventFilter(self)
+        self._icon_label.setAttribute(Qt.WidgetAttribute.WA_TransparentForMouseEvents, True)
         root.addWidget(self._icon_label)
 
         center = QVBoxLayout()
@@ -79,9 +83,8 @@ class EggRowWidget(QWidget):
         right.addWidget(self._counter_label)
 
         self._progress_bar = QProgressBar()
-        self._progress_bar.setFixedWidth(100)
+        self._progress_bar.setMinimumWidth(100)
         self._progress_bar.setTextVisible(False)
-        self._progress_bar.setFixedHeight(6)
         right.addWidget(
             self._progress_bar, alignment=Qt.AlignmentFlag.AlignRight
         )
@@ -96,6 +99,10 @@ class EggRowWidget(QWidget):
         self._progress_bar.setMaximum(vm.total_needed)
         self._progress_bar.setValue(vm.bred_count)
 
+        if vm.bred_count > self._prev_bred_count and self._prev_bred_count > 0:
+            self._flash_counter()
+        self._prev_bred_count = vm.bred_count
+
         if vm.egg_image_path:
             pix = QPixmap(vm.egg_image_path)
             if not pix.isNull():
@@ -104,6 +111,18 @@ class EggRowWidget(QWidget):
                 self._icon_label.setText(vm.name[:2])
         else:
             self._icon_label.setText(vm.name[:2])
+
+    def _flash_counter(self) -> None:
+        """Brief opacity pulse on the counter label to acknowledge an increment."""
+        effect = QGraphicsOpacityEffect(self._counter_label)
+        self._counter_label.setGraphicsEffect(effect)
+        anim = QPropertyAnimation(effect, b"opacity")
+        anim.setDuration(200)
+        anim.setStartValue(0.3)
+        anim.setEndValue(1.0)
+        anim.finished.connect(lambda: self._counter_label.setGraphicsEffect(None))
+        anim.start()
+        self._counter_flash_anim = anim  # prevent GC
 
     def animate_completion(self) -> None:
         self._is_completing = True
@@ -124,12 +143,7 @@ class EggRowWidget(QWidget):
     def is_completing(self) -> bool:
         return self._is_completing
 
-    def eventFilter(self, obj, event) -> bool:
-        if (
-            obj is self._icon_label
-            and event.type() == QEvent.Type.MouseButtonPress
-            and not self._is_completing
-        ):
+    def mousePressEvent(self, event) -> None:
+        if not self._is_completing:
             self.clicked.emit(self._egg_type_id)
-            return True
-        return super().eventFilter(obj, event)
+        super().mousePressEvent(event)

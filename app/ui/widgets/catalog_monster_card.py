@@ -6,6 +6,8 @@ from PySide6.QtCore import QPropertyAnimation, QSize, Qt, Signal
 from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QGraphicsOpacityEffect, QLabel, QVBoxLayout, QWidget
 
+from app.ui.themes import placeholder_tones_3, scaled
+
 
 class CatalogMonsterCard(QWidget):
     """Catalog grid tile — larger image, name, click-to-add with flash feedback."""
@@ -32,7 +34,10 @@ class CatalogMonsterCard(QWidget):
         self._monster_type = monster_type
         self.setObjectName("catalogCard")
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
-        self.setFixedSize(QSize(self.CARD_WIDTH, self.CARD_HEIGHT))
+        card_w = scaled(self.CARD_WIDTH)
+        card_h = scaled(self.CARD_HEIGHT)
+        img_sz = scaled(self.IMAGE_SIZE)
+        self.setFixedSize(QSize(card_w, card_h))
         self.setCursor(Qt.CursorShape.PointingHandCursor)
 
         layout = QVBoxLayout(self)
@@ -40,7 +45,7 @@ class CatalogMonsterCard(QWidget):
         layout.setSpacing(10)
 
         self._image = QLabel()
-        self._image.setFixedSize(QSize(self.IMAGE_SIZE, self.IMAGE_SIZE))
+        self._image.setFixedSize(QSize(img_sz, img_sz))
         self._image.setScaledContents(True)
         self._image.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._image.setObjectName("catalogCardImage")
@@ -62,12 +67,26 @@ class CatalogMonsterCard(QWidget):
         self._label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(self._label)
 
+        # iOS-style active-count badge (floats over card, not in layout)
+        self._badge = QLabel(self)
+        self._badge.setObjectName("catalogBadge")
+        self._badge.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self._badge.hide()
+
+    def set_active_count(self, count: int) -> None:
+        """Show/hide the iOS-style notification badge with the active count."""
+        if count > 0:
+            self._badge.setText(str(count))
+            self._badge.adjustSize()
+            self._badge.move(self.width() - self._badge.width() - 6, 6)
+            self._badge.show()
+            self._badge.raise_()
+        else:
+            self._badge.hide()
+
     def _set_initials(self, name: str) -> None:
         initials = "".join(part[0] for part in name.split()[:2]).upper()
-        bg, border, fg = _PLACEHOLDER_TONES.get(
-            self._monster_type,
-            ("#262332", "#343046", "#d0bcff"),
-        )
+        bg, border, fg = placeholder_tones_3(self._monster_type)
         self._image.setText(initials or name[:2].upper())
         self._image.setStyleSheet(
             f"background-color: {bg}; border: 1px solid {border}; border-radius: 12px; "
@@ -92,8 +111,3 @@ class CatalogMonsterCard(QWidget):
         super().mousePressEvent(event)
 
 
-_PLACEHOLDER_TONES = {
-    "wublin": ("#1a2e31", "#275058", "#45e9d0"),
-    "celestial": ("#352d12", "#5c4810", "#ffba20"),
-    "amber": ("#38251f", "#6a3b2d", "#ff8a65"),
-}

@@ -54,3 +54,7 @@ class CatalogView(QWidget):
         self, inwork_by_type: dict[str, list[InWorkMonsterRowViewModel]]
     ) -> None:
         self._active.refresh(inwork_by_type)
+
+    def update_active_counts(self, counts: dict[int, int]) -> None:
+        """Forward badge-count updates to the browser grid."""
+        self._browser.update_active_counts(counts)

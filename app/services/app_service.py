@@ -29,6 +29,7 @@ logger = logging.getLogger(__name__)
 class AppService(QObject):
     state_changed = Signal(AppStateViewModel)
     completion_event = Signal(int)  # egg_type_id
+    target_added = Signal(str)  # monster name
     error_occurred = Signal(str)
 
     def __init__(
@@ -117,6 +118,10 @@ class AppService(QObject):
         )
         self.execute_command(cmd)
 
+        m = monster_repo.fetch_monster_by_id(self._conn_content, monster_id)
+        if m is not None:
+            self.target_added.emit(m.name)
+
     def handle_close_out(self, monster_id: int) -> None:
         from app.commands.close_out_target import CloseOutTargetCommand
 
@@ -170,6 +175,11 @@ class AppService(QObject):
 
     def get_catalog_items(self) -> list[MonsterCatalogItemViewModel]:
         monsters = monster_repo.fetch_all_monsters(self._conn_content)
+        # Build active-count lookup from current targets
+        targets = target_repo.fetch_all_targets(self._conn_userstate)
+        active_counts: dict[int, int] = {}
+        for t in targets:
+            active_counts[t.monster_id] = active_counts.get(t.monster_id, 0) + 1
         items = []
         for m in monsters:
             from app.assets import resolver
@@ -180,6 +190,7 @@ class AppService(QObject):
                     monster_type=m.monster_type.value,
                     image_path=resolver.resolve(m.image_path),
                     is_placeholder=m.is_placeholder,
+                    active_count=active_counts.get(m.id, 0),
                 )
             )
         return items
@@ -187,12 +198,24 @@ class AppService(QObject):
     # ── Settings data ────────────────────────────────────────────────
 
     def get_settings_viewmodel(self) -> SettingsViewModel:
+        from app.ui.themes import get_active_font_offset, get_active_theme, FONT_SIZE_OPTIONS
+
         meta = monster_repo.fetch_update_metadata(self._conn_content)
+
+        current_offset = get_active_font_offset()
+        font_label = "Default"
+        for label, offset in FONT_SIZE_OPTIONS:
+            if offset == current_offset:
+                font_label = label
+                break
+
         return SettingsViewModel(
             content_version=meta.get("content_version", "—"),
             schema_version=str(self._get_content_schema_version()),
             last_updated_display=meta.get("last_updated_utc", "—"),
             data_rows=self._build_settings_data_rows(),
+            current_theme=get_active_theme(),
+            current_font_size_label=font_label,
         )
 
     # ── State derivation ─────────────────────────────────────────────

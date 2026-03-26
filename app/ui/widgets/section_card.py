@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
+from app.ui.themes import scaled
 from app.ui.widgets.monster_entry import MonsterEntryRow
 
 if TYPE_CHECKING:
@@ -41,7 +42,8 @@ class SectionCard(QWidget):
         icon = QLabel(icon_text)
         icon.setObjectName("sectionIcon")
         icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        icon.setFixedSize(40, 40)
+        s = scaled(40)
+        icon.setFixedSize(s, s)
         icon.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         header.addWidget(icon)
 

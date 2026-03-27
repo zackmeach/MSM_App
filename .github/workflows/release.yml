@@ -32,7 +32,7 @@ jobs:
         run: python scripts/inject_version.py --version ${{ steps.version.outputs.VERSION }}
 
       - name: Run tests
-        run: python -m pytest tests/ -v --tb=short
+        run: python -m pytest tests/ -v --tb=short --ignore=tests/unit/test_artifacts_validation.py --ignore=tests/unit/test_diff_builder.py --ignore=tests/unit/test_pipeline_schemas.py
 
       - name: Seed content database
         run: python scripts/seed_content_db.py

@@ -18,6 +18,9 @@ dist/
 *.manifest
 *.spec.tmp
 
+# Inno Setup
+installer/Output/
+
 # IDE
 .idea/
 .vscode/

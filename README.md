@@ -216,7 +216,7 @@ All 64 monsters and 76 egg types have official artwork from the BBB Fan Kit (por
 
 ## Testing
 
-322 tests across unit and integration suites.
+359 tests across unit and integration suites.
 
 ```powershell
 python -m pytest tests/          # full suite

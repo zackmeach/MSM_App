@@ -184,7 +184,7 @@
   {
     "entity_type": "monster",
     "content_key": "monster:wublin:bonapetite",
-    "relative_path": "images/monsters/bonapetite.png",
+    "relative_path": "images/monsters/bona-petite.png",
     "sha256": "",
     "byte_size": 0,
     "asset_source": "generated_placeholder",
@@ -405,7 +405,7 @@
   {
     "entity_type": "monster",
     "content_key": "monster:amber:kayna",
-    "relative_path": "images/monsters/kayna_amber.png",
+    "relative_path": "images/monsters/kayna.png",
     "sha256": "",
     "byte_size": 0,
     "asset_source": "generated_placeholder",
@@ -418,7 +418,7 @@
   {
     "entity_type": "monster",
     "content_key": "monster:amber:glowl",
-    "relative_path": "images/monsters/glowl_amber.png",
+    "relative_path": "images/monsters/glowl.png",
     "sha256": "",
     "byte_size": 0,
     "asset_source": "generated_placeholder",
@@ -431,7 +431,7 @@
   {
     "entity_type": "monster",
     "content_key": "monster:amber:flowah",
-    "relative_path": "images/monsters/flowah_amber.png",
+    "relative_path": "images/monsters/flowah.png",
     "sha256": "",
     "byte_size": 0,
     "asset_source": "generated_placeholder",
@@ -444,7 +444,7 @@
   {
     "entity_type": "monster",
     "content_key": "monster:amber:stogg",
-    "relative_path": "images/monsters/stogg_amber.png",
+    "relative_path": "images/monsters/stogg.png",
     "sha256": "",
     "byte_size": 0,
     "asset_source": "generated_placeholder",
@@ -457,7 +457,7 @@
   {
     "entity_type": "monster",
     "content_key": "monster:amber:floogull",
-    "relative_path": "images/monsters/floogull_amber.png",
+    "relative_path": "images/monsters/floogull.png",
     "sha256": "",
     "byte_size": 0,
     "asset_source": "generated_placeholder",
@@ -470,7 +470,7 @@
   {
     "entity_type": "monster",
     "content_key": "monster:amber:barrb",
-    "relative_path": "images/monsters/barrb_amber.png",
+    "relative_path": "images/monsters/barrb.png",
     "sha256": "",
     "byte_size": 0,
     "asset_source": "generated_placeholder",
@@ -483,7 +483,7 @@
   {
     "entity_type": "monster",
     "content_key": "monster:amber:repatillo",
-    "relative_path": "images/monsters/repatillo_amber.png",
+    "relative_path": "images/monsters/repatillo.png",
     "sha256": "",
     "byte_size": 0,
     "asset_source": "generated_placeholder",
@@ -496,7 +496,7 @@
   {
     "entity_type": "monster",
     "content_key": "monster:amber:tring",
-    "relative_path": "images/monsters/tring_amber.png",
+    "relative_path": "images/monsters/tring.png",
     "sha256": "",
     "byte_size": 0,
     "asset_source": "generated_placeholder",
@@ -535,7 +535,7 @@
   {
     "entity_type": "egg",
     "content_key": "egg:toe-jammer",
-    "relative_path": "images/eggs/toejammer_egg.png",
+    "relative_path": "images/eggs/toe-jammer_egg.png",
     "sha256": "",
     "byte_size": 0,
     "asset_source": "generated_placeholder",
@@ -730,7 +730,7 @@
   {
     "entity_type": "egg",
     "content_key": "egg:t-rox",
-    "relative_path": "images/eggs/trox_egg.png",
+    "relative_path": "images/eggs/t-rox_egg.png",
     "sha256": "",
     "byte_size": 0,
     "asset_source": "generated_placeholder",

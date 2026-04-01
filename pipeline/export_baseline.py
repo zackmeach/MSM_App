@@ -48,7 +48,7 @@ def _provenance() -> dict:
 def _asset_path_for_monster(name: str, mtype: str) -> str:
     slug = canonical_slug(name)
     if mtype == "amber":
-        return f"images/monsters/{slug}_amber.png"
+        return f"images/monsters/{slug}.png"
     return f"images/monsters/{slug}.png"
 
 

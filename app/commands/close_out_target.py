@@ -23,6 +23,7 @@ class CloseOutTargetCommand(Command):
         self._conn = conn_userstate
         self._monster_id: int | None = None
         self._added_at: str | None = None
+        self._monster_key: str = ""
         self._snapshot: list[TargetRequirementProgress] = []
 
     def execute(self) -> None:
@@ -32,6 +33,7 @@ class CloseOutTargetCommand(Command):
 
         self._monster_id = target.monster_id
         self._added_at = target.added_at
+        self._monster_key = target.monster_key
 
         with transaction(self._conn):
             self._snapshot = target_repo.delete_progress_for_target(
@@ -46,7 +48,11 @@ class CloseOutTargetCommand(Command):
             return
         with transaction(self._conn):
             target_repo.insert_target_with_id(
-                self._conn, self._target_id, self._monster_id, self._added_at
+                self._conn,
+                self._target_id,
+                self._monster_id,
+                self._added_at,
+                self._monster_key,
             )
             target_repo.restore_progress_rows(self._conn, self._snapshot)
 

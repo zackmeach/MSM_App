@@ -100,10 +100,35 @@ def restore_progress_rows(conn: sqlite3.Connection, rows: list[TargetRequirement
     )
 
 
+def insert_progress_row(
+    conn: sqlite3.Connection,
+    target_id: int,
+    egg_type_id: int,
+    required_count: int,
+    satisfied_count: int = 0,
+    egg_key: str = "",
+) -> None:
+    conn.execute(
+        "INSERT INTO target_requirement_progress"
+        "(active_target_id, egg_type_id, required_count, satisfied_count, egg_key) "
+        "VALUES(?, ?, ?, ?, ?)",
+        (target_id, egg_type_id, required_count, satisfied_count, egg_key),
+    )
+
+
 def fetch_all_progress(conn: sqlite3.Connection) -> list[TargetRequirementProgress]:
     rows = conn.execute(
         "SELECT active_target_id, egg_type_id, required_count, satisfied_count, egg_key "
         "FROM target_requirement_progress"
+    ).fetchall()
+    return [_progress_from_row(r) for r in rows]
+
+
+def fetch_progress_for_target(conn: sqlite3.Connection, target_id: int) -> list[TargetRequirementProgress]:
+    rows = conn.execute(
+        "SELECT active_target_id, egg_type_id, required_count, satisfied_count, egg_key "
+        "FROM target_requirement_progress WHERE active_target_id = ?",
+        (target_id,),
     ).fetchall()
     return [_progress_from_row(r) for r in rows]
 
@@ -141,6 +166,34 @@ def set_progress(conn: sqlite3.Connection, target_id: int, egg_type_id: int, sat
         "UPDATE target_requirement_progress SET satisfied_count = ? "
         "WHERE active_target_id = ? AND egg_type_id = ?",
         (satisfied_count, target_id, egg_type_id),
+    )
+
+
+def update_target_identity(
+    conn: sqlite3.Connection,
+    target_id: int,
+    monster_id: int,
+    monster_key: str,
+) -> None:
+    conn.execute(
+        "UPDATE active_targets SET monster_id = ?, monster_key = ? WHERE id = ?",
+        (monster_id, monster_key, target_id),
+    )
+
+
+def update_progress_identity(
+    conn: sqlite3.Connection,
+    target_id: int,
+    old_egg_type_id: int,
+    new_egg_type_id: int,
+    required_count: int,
+    egg_key: str,
+) -> None:
+    conn.execute(
+        "UPDATE target_requirement_progress "
+        "SET egg_type_id = ?, required_count = ?, egg_key = ? "
+        "WHERE active_target_id = ? AND egg_type_id = ?",
+        (new_egg_type_id, required_count, egg_key, target_id, old_egg_type_id),
     )
 
 

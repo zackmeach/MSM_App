@@ -24,6 +24,8 @@ installer/Output/
 # IDE
 .idea/
 .vscode/
+.cursor/
+.claude/
 *.swp
 *.swo
 *~
@@ -41,3 +43,13 @@ Desktop.ini
 
 # BBB Fan Kit source assets (large binary files)
 /Monsters/
+
+# Build staging
+packaging/
+publish_output/
+
+# Pipeline caches
+pipeline/raw/.cache/
+
+# Theme preview screenshots (root-level only, not app/ui/)
+/ui/

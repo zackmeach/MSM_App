@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 from app.db.migrations import run_migrations
+from app.domain.models import egg_content_key, monster_content_key
 
 
 @pytest.fixture
@@ -32,26 +33,28 @@ def userstate_conn() -> sqlite3.Connection:
 def _seed_content(conn: sqlite3.Connection) -> None:
     """Insert a representative dev dataset covering Wublins, Celestials, and Amber."""
     eggs = [
-        ("Mammott",    1800,  "30m",    "images/eggs/mammott_egg.png"),
-        ("Noggin",      900,  "15m",    "images/eggs/noggin_egg.png"),
-        ("Potbelly",    900,  "15m",    "images/eggs/potbelly_egg.png"),
-        ("Toe Jammer",  900,  "15m",    "images/eggs/toejammer_egg.png"),
-        ("Tweedle",    1800,  "30m",    "images/eggs/tweedle_egg.png"),
-        ("Furcorn",    5400,  "1h 30m", "images/eggs/furcorn_egg.png"),
-        ("Pango",      7200,  "2h",     "images/eggs/pango_egg.png"),
-        ("Drumpler",   3600,  "1h",     "images/eggs/drumpler_egg.png"),
-        ("Fwog",       3600,  "1h",     "images/eggs/fwog_egg.png"),
-        ("Bowgart",   30600,  "8h 30m", "images/eggs/bowgart_egg.png"),
-        ("Clamble",   28800,  "8h",     "images/eggs/clamble_egg.png"),
-        ("PomPom",    28800,  "8h",     "images/eggs/pompom_egg.png"),
-        ("Thumpies",  27000,  "7h 30m", "images/eggs/thumpies_egg.png"),
-        ("Oaktopus",   7200,  "2h",     "images/eggs/oaktopus_egg.png"),
-        ("Shrubb",     1800,  "30m",    "images/eggs/shrubb_egg.png"),
+        ("Mammott",    120,    "2m",    "images/eggs/mammott_egg.png"),
+        ("Noggin",      5,     "5s",    "images/eggs/noggin_egg.png"),
+        ("Potbelly",   7200,   "2h",    "images/eggs/potbelly_egg.png"),
+        ("Toe Jammer",  60,    "1m",    "images/eggs/toe-jammer_egg.png"),
+        ("Tweedle",    14400,  "4h",    "images/eggs/tweedle_egg.png"),
+        ("Furcorn",    28800,  "8h",    "images/eggs/furcorn_egg.png"),
+        ("Pango",      28800,  "8h",    "images/eggs/pango_egg.png"),
+        ("Drumpler",   1800,   "30m",   "images/eggs/drumpler_egg.png"),
+        ("Fwog",       1800,   "30m",   "images/eggs/fwog_egg.png"),
+        ("Bowgart",    43200,  "12h",   "images/eggs/bowgart_egg.png"),
+        ("Clamble",    43200,  "12h",   "images/eggs/clamble_egg.png"),
+        ("PomPom",     43200,  "12h",   "images/eggs/pompom_egg.png"),
+        ("Thumpies",   43200,  "12h",   "images/eggs/thumpies_egg.png"),
+        ("Oaktopus",   28800,  "8h",    "images/eggs/oaktopus_egg.png"),
+        ("Shrubb",     28800,  "8h",    "images/eggs/shrubb_egg.png"),
     ]
     conn.executemany(
-        "INSERT INTO egg_types(name, breeding_time_seconds, breeding_time_display, egg_image_path, is_placeholder) "
-        "VALUES(?, ?, ?, ?, 1)",
-        eggs,
+        "INSERT INTO egg_types("
+        "name, breeding_time_seconds, breeding_time_display, egg_image_path, "
+        "is_placeholder, content_key"
+        ") VALUES(?, ?, ?, ?, 1, ?)",
+        [(name, seconds, display, image_path, egg_content_key(name)) for name, seconds, display, image_path in eggs],
     )
 
     monsters = [
@@ -60,13 +63,23 @@ def _seed_content(conn: sqlite3.Connection) -> None:
         ("Dwumrohl", "wublin",    "images/monsters/dwumrohl.png",     "Dwumrohl"),
         ("Galvana",  "celestial", "images/monsters/galvana.png",      "Galvana"),
         ("Glaishur", "celestial", "images/monsters/glaishur.png",     "Glaishur"),
-        ("Attmoz",   "amber",     "images/monsters/attmoz_amber.png", "Attmoz"),
-        ("Kayna",    "amber",     "images/monsters/kayna_amber.png",  "Kayna"),
+        ("Attmoz",   "amber",     "images/monsters/attmoz.png", "Attmoz"),
+        ("Kayna",    "amber",     "images/monsters/kayna.png",  "Kayna"),
     ]
     conn.executemany(
-        "INSERT INTO monsters(name, monster_type, image_path, wiki_slug, is_placeholder) "
-        "VALUES(?, ?, ?, ?, 1)",
-        monsters,
+        "INSERT INTO monsters("
+        "name, monster_type, image_path, wiki_slug, is_placeholder, content_key"
+        ") VALUES(?, ?, ?, ?, 1, ?)",
+        [
+            (
+                name,
+                monster_type,
+                image_path,
+                wiki_slug,
+                monster_content_key(monster_type, name),
+            )
+            for name, monster_type, image_path, wiki_slug in monsters
+        ],
     )
 
     egg_ids = {r[0]: r[1] for r in conn.execute("SELECT name, id FROM egg_types").fetchall()}

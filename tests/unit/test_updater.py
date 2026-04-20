@@ -7,8 +7,11 @@ import sqlite3
 from pathlib import Path
 
 import pytest
+from PySide6.QtCore import QObject
 
 from app.db.migrations import run_migrations
+from app.ui.viewmodels import APP_VERSION
+from app.updater.update_service import _UpdateWorker
 from app.updater.validator import (
     ValidationError,
     validate_content_db,
@@ -235,6 +238,49 @@ class TestUpdateSafety:
 
         assert original.exists()
         assert original.stat().st_size == original_size
+
+
+class TestUpdateWorkerCompatibility:
+    def test_incompatible_manifest_is_rejected_during_check(self, tmp_path):
+        worker = _UpdateWorker(tmp_path, "https://example.com/manifest.json", "1.0.0")
+        worker._manifest_data = None
+
+        emitted = []
+        worker.check_finished.connect(emitted.append)
+
+        manifest = {
+            "artifact_contract_version": "1.1",
+            "content_version": "9.9.9",
+            "content_db_url": "https://example.com/content.db",
+            "content_db_sha256": "a" * 64,
+            "min_supported_client_version": "99.0.0",
+        }
+
+        original_urlopen = __import__("urllib.request").request.urlopen
+        try:
+            import urllib.request
+
+            class _FakeResponse:
+                def __enter__(self):
+                    return self
+
+                def __exit__(self, exc_type, exc, tb):
+                    return False
+
+                def read(self):
+                    return json.dumps(manifest).encode("utf-8")
+
+            urllib.request.urlopen = lambda *args, **kwargs: _FakeResponse()
+            worker.do_check()
+        finally:
+            import urllib.request
+
+            urllib.request.urlopen = original_urlopen
+
+        assert emitted
+        result = emitted[0]
+        assert result.error
+        assert APP_VERSION in result.error
 
 
 class TestClearUndoRedo:

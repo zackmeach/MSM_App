@@ -8,6 +8,7 @@ from pathlib import Path
 import pytest
 
 from app.db.migrations import run_migrations
+from app.domain.models import egg_content_key, monster_content_key
 
 
 @pytest.fixture
@@ -49,9 +50,11 @@ def _seed_content(conn: sqlite3.Connection) -> None:
         ("Shrubb",     28800,  "8h",    "images/eggs/shrubb_egg.png"),
     ]
     conn.executemany(
-        "INSERT INTO egg_types(name, breeding_time_seconds, breeding_time_display, egg_image_path, is_placeholder) "
-        "VALUES(?, ?, ?, ?, 1)",
-        eggs,
+        "INSERT INTO egg_types("
+        "name, breeding_time_seconds, breeding_time_display, egg_image_path, "
+        "is_placeholder, content_key"
+        ") VALUES(?, ?, ?, ?, 1, ?)",
+        [(name, seconds, display, image_path, egg_content_key(name)) for name, seconds, display, image_path in eggs],
     )
 
     monsters = [
@@ -64,9 +67,19 @@ def _seed_content(conn: sqlite3.Connection) -> None:
         ("Kayna",    "amber",     "images/monsters/kayna.png",  "Kayna"),
     ]
     conn.executemany(
-        "INSERT INTO monsters(name, monster_type, image_path, wiki_slug, is_placeholder) "
-        "VALUES(?, ?, ?, ?, 1)",
-        monsters,
+        "INSERT INTO monsters("
+        "name, monster_type, image_path, wiki_slug, is_placeholder, content_key"
+        ") VALUES(?, ?, ?, ?, 1, ?)",
+        [
+            (
+                name,
+                monster_type,
+                image_path,
+                wiki_slug,
+                monster_content_key(monster_type, name),
+            )
+            for name, monster_type, image_path, wiki_slug in monsters
+        ],
     )
 
     egg_ids = {r[0]: r[1] for r in conn.execute("SELECT name, id FROM egg_types").fetchall()}

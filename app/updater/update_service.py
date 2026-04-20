@@ -30,6 +30,7 @@ from PySide6.QtCore import QObject, QThread, Signal
 from app.updater.validator import (
     ValidationError,
     validate_content_db,
+    validate_client_compatibility,
     validate_checksum,
     validate_manifest_contract,
 )
@@ -89,6 +90,9 @@ class _UpdateWorker(QObject):
 
             try:
                 validate_manifest_contract(data)
+                from app.ui.viewmodels import APP_VERSION
+
+                validate_client_compatibility(data, APP_VERSION)
             except ValidationError as ve:
                 self.check_finished.emit(
                     UpdateCheckResult(False, self._current_version, error=str(ve))
@@ -135,6 +139,10 @@ class _UpdateWorker(QObject):
                 staging.write_bytes(resp.read())
 
             self.progress.emit("Validating...")
+
+            from app.ui.viewmodels import APP_VERSION
+
+            validate_client_compatibility(self._manifest_data, APP_VERSION)
 
             expected_sha = self._manifest_data.get("content_db_sha256", "")
             if expected_sha:

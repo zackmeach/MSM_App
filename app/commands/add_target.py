@@ -29,19 +29,32 @@ class AddTargetCommand(Command):
         self._materialized_rows: list[TargetRequirementProgress] = []
 
     def execute(self) -> None:
-        if not monster_repo.monster_exists_and_active(self._conn_content, self._monster_id):
+        monster = monster_repo.fetch_monster_by_id(self._conn_content, self._monster_id)
+        if monster is None or monster.is_deprecated:
             raise RuntimeError(f"Monster {self._monster_id} not found or deprecated")
 
         reqs = self._requirements_cache.get(self._monster_id, [])
         if not reqs:
             raise RuntimeError(f"Monster {self._monster_id} has no requirements")
 
+        egg_types = monster_repo.fetch_egg_types_map(self._conn_content)
+        egg_keys = {
+            req.egg_type_id: egg_types[req.egg_type_id].content_key
+            for req in reqs
+            if req.egg_type_id in egg_types
+        }
+
         with transaction(self._conn_userstate):
             self._inserted_target_id = target_repo.insert_target(
-                self._conn_userstate, self._monster_id
+                self._conn_userstate,
+                self._monster_id,
+                monster.content_key,
             )
             target_repo.materialize_progress(
-                self._conn_userstate, self._inserted_target_id, reqs
+                self._conn_userstate,
+                self._inserted_target_id,
+                reqs,
+                egg_keys=egg_keys,
             )
 
         logger.info("AddTarget: monster_id=%d target_id=%d", self._monster_id, self._inserted_target_id)

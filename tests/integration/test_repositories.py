@@ -23,7 +23,7 @@ class TestMonsterRepo:
         emap = monster_repo.fetch_egg_types_map(content_conn)
         assert len(emap) == 15
         mammott = next(e for e in emap.values() if e.name == "Mammott")
-        assert mammott.breeding_time_seconds == 1800
+        assert mammott.breeding_time_seconds == 120
 
     def test_fetch_requirements(self, content_conn, id_maps):
         reqs = monster_repo.fetch_requirements_for_monster(content_conn, id_maps["monsters"]["Galvana"])
@@ -40,12 +40,17 @@ class TestMonsterRepo:
 
 class TestTargetRepo:
     def test_insert_and_fetch(self, userstate_conn):
-        tid = target_repo.insert_target(userstate_conn, monster_id=1)
+        tid = target_repo.insert_target(
+            userstate_conn,
+            monster_id=1,
+            monster_key="monster:wublin:test",
+        )
         userstate_conn.commit()
         targets = target_repo.fetch_all_targets(userstate_conn)
         assert len(targets) == 1
         assert targets[0].id == tid
         assert targets[0].monster_id == 1
+        assert targets[0].monster_key == "monster:wublin:test"
 
     def test_delete_target(self, userstate_conn):
         tid = target_repo.insert_target(userstate_conn, monster_id=1)
@@ -66,11 +71,14 @@ class TestTargetRepo:
         from app.domain.models import MonsterRequirement
         tid = target_repo.insert_target(userstate_conn, monster_id=id_maps["monsters"]["Zynth"])
         reqs = monster_repo.fetch_requirements_for_monster(content_conn, id_maps["monsters"]["Zynth"])
-        target_repo.materialize_progress(userstate_conn, tid, reqs)
+        egg_map = monster_repo.fetch_egg_types_map(content_conn)
+        egg_keys = {egg.id: egg.content_key for egg in egg_map.values()}
+        target_repo.materialize_progress(userstate_conn, tid, reqs, egg_keys)
         userstate_conn.commit()
 
         progress = target_repo.fetch_all_progress(userstate_conn)
         assert len(progress) == 4
+        assert all(row.egg_key for row in progress)
 
     def test_increment_and_fetch(self, userstate_conn, content_conn, id_maps):
         tid = target_repo.insert_target(userstate_conn, monster_id=id_maps["monsters"]["Zynth"])

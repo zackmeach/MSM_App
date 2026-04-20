@@ -8,6 +8,7 @@ from typing import TYPE_CHECKING
 
 from PySide6.QtCore import QObject, Signal
 
+from app.assets import resolver
 from app.domain.breed_list import derive_breed_list
 from app.domain.models import MonsterType, SortOrder
 from app.repositories import monster_repo, settings_repo, target_repo
@@ -53,13 +54,13 @@ class AppService(QObject):
 
     # ── Command execution ────────────────────────────────────────────
 
-    def execute_command(self, cmd: Command) -> None:
+    def execute_command(self, cmd: Command) -> bool:
         try:
             cmd.execute()
         except Exception as exc:
             logger.error("Command failed: %s", exc, exc_info=True)
             self.error_occurred.emit(str(exc))
-            return
+            return False
 
         self._undo_stack.append(cmd)
         self._redo_stack.clear()
@@ -70,6 +71,7 @@ class AppService(QObject):
             self.completion_event.emit(completed_egg)
 
         self._emit_state()
+        return True
 
     def undo(self) -> None:
         if not self._undo_stack:
@@ -116,7 +118,8 @@ class AppService(QObject):
             conn_userstate=self._conn_userstate,
             requirements_cache=self._requirements_cache,
         )
-        self.execute_command(cmd)
+        if not self.execute_command(cmd):
+            return
 
         m = monster_repo.fetch_monster_by_id(self._conn_content, monster_id)
         if m is not None:
@@ -182,7 +185,7 @@ class AppService(QObject):
             active_counts[t.monster_id] = active_counts.get(t.monster_id, 0) + 1
         items = []
         for m in monsters:
-            from app.assets import resolver
+
             items.append(
                 MonsterCatalogItemViewModel(
                     monster_id=m.id,

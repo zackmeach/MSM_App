@@ -14,12 +14,16 @@ import sqlite3
 from pathlib import Path
 
 import pytest
+from PySide6.QtWidgets import QApplication
 
 from app.bootstrap import open_content_db
+from app.domain.models import egg_content_key, monster_content_key
 from app.db.migrations import run_migrations
 from app.domain.reconciliation import reconcile
 from app.repositories import monster_repo, target_repo
 from app.services.app_service import AppService
+from app.ui.main_window import MainWindow
+from app.ui.viewmodels import SettingsUpdateState
 from app.updater.update_service import UpdateService, _remove_wal_sidecars
 
 
@@ -32,16 +36,21 @@ def _make_content_db(path: Path, version: str = "1.0.0") -> None:
     conn.execute("PRAGMA foreign_keys=ON")
     run_migrations(conn, "content")
     conn.execute(
-        "INSERT INTO egg_types(name, breeding_time_seconds, breeding_time_display, egg_image_path) "
-        "VALUES('Mammott', 5, '5s', 'images/eggs/mammott_egg.png')"
+        "INSERT INTO egg_types("
+        "name, breeding_time_seconds, breeding_time_display, egg_image_path, content_key"
+        ") VALUES('Mammott', 5, '5s', 'images/eggs/mammott_egg.png', ?)",
+        (egg_content_key("Mammott"),),
     )
     conn.execute(
-        "INSERT INTO egg_types(name, breeding_time_seconds, breeding_time_display, egg_image_path) "
-        "VALUES('Noggin', 5, '5s', 'images/eggs/noggin_egg.png')"
+        "INSERT INTO egg_types("
+        "name, breeding_time_seconds, breeding_time_display, egg_image_path, content_key"
+        ") VALUES('Noggin', 5, '5s', 'images/eggs/noggin_egg.png', ?)",
+        (egg_content_key("Noggin"),),
     )
     conn.execute(
-        "INSERT INTO monsters(name, monster_type, image_path, wiki_slug) "
-        "VALUES('Zynth', 'wublin', 'images/monsters/zynth.png', 'Zynth')"
+        "INSERT INTO monsters(name, monster_type, image_path, wiki_slug, content_key) "
+        "VALUES('Zynth', 'wublin', 'images/monsters/zynth.png', 'Zynth', ?)",
+        (monster_content_key("wublin", "Zynth"),),
     )
     egg_id = conn.execute("SELECT id FROM egg_types WHERE name='Mammott'").fetchone()[0]
     mon_id = conn.execute("SELECT id FROM monsters WHERE name='Zynth'").fetchone()[0]
@@ -243,6 +252,101 @@ class TestPostUpdateReconciliation:
         updated_progress = target_repo.fetch_progress_for_egg(conn_us, egg_id)
         assert updated_progress[0].satisfied_count == 2
 
+        conn_content.close()
+        conn_us.close()
+
+    def test_reconciliation_uses_stable_keys_and_updates_requirements(self, qtbot, tmp_path):
+        data_dir = tmp_path / "appdata"
+        bundle_dir = tmp_path / "bundle"
+        data_dir.mkdir()
+        bundle_dir.mkdir()
+
+        _make_content_db(data_dir / "content.db", "1.0.0")
+        conn_content = open_content_db(data_dir / "content.db")
+
+        us_path = data_dir / "userstate.db"
+        conn_us = sqlite3.connect(str(us_path))
+        conn_us.execute("PRAGMA foreign_keys=ON")
+        run_migrations(conn_us, "userstate")
+
+        svc = AppService(conn_content, conn_us)
+        zynth_id = conn_content.execute(
+            "SELECT id FROM monsters WHERE name='Zynth'"
+        ).fetchone()[0]
+        mammott_id = conn_content.execute(
+            "SELECT id FROM egg_types WHERE name='Mammott'"
+        ).fetchone()[0]
+        svc.handle_add_target(zynth_id)
+
+        target = target_repo.fetch_all_targets(conn_us)[0]
+        target_repo.set_progress(conn_us, target.id, mammott_id, 3)
+        conn_us.commit()
+
+        updated_path = data_dir / "content_v2.db"
+        conn_v2 = sqlite3.connect(str(updated_path))
+        conn_v2.execute("PRAGMA foreign_keys=ON")
+        run_migrations(conn_v2, "content")
+        conn_v2.execute(
+            "INSERT INTO egg_types("
+            "name, breeding_time_seconds, breeding_time_display, egg_image_path, content_key"
+            ") VALUES('Noggin', 5, '5s', 'images/eggs/noggin_egg.png', ?)",
+            (egg_content_key("Noggin"),),
+        )
+        conn_v2.execute(
+            "INSERT INTO egg_types("
+            "name, breeding_time_seconds, breeding_time_display, egg_image_path, content_key"
+            ") VALUES('Mammott', 5, '5s', 'images/eggs/mammott_egg.png', ?)",
+            (egg_content_key("Mammott"),),
+        )
+        conn_v2.execute(
+            "INSERT INTO monsters(name, monster_type, image_path, wiki_slug, content_key) "
+            "VALUES('Zynth', 'wublin', 'images/monsters/zynth.png', 'Zynth', ?)",
+            (monster_content_key("wublin", "Zynth"),),
+        )
+        new_mammott_id = conn_v2.execute(
+            "SELECT id FROM egg_types WHERE name='Mammott'"
+        ).fetchone()[0]
+        new_zynth_id = conn_v2.execute(
+            "SELECT id FROM monsters WHERE name='Zynth'"
+        ).fetchone()[0]
+        conn_v2.execute(
+            "INSERT INTO monster_requirements(monster_id, egg_type_id, quantity) VALUES(?, ?, 2)",
+            (new_zynth_id, new_mammott_id),
+        )
+        conn_v2.execute("UPDATE update_metadata SET value='2.0.0' WHERE key='content_version'")
+        conn_v2.execute(
+            "UPDATE update_metadata SET value='2026-01-01T00:00:00Z' WHERE key='last_updated_utc'"
+        )
+        conn_v2.execute("UPDATE update_metadata SET value='test' WHERE key='source'")
+        conn_v2.commit()
+
+        from app.bootstrap import AppContext
+
+        window = MainWindow(
+            AppContext(
+                data_dir=data_dir,
+                bundle_dir=bundle_dir,
+                conn_content=conn_content,
+                conn_userstate=conn_us,
+            )
+        )
+        qtbot.addWidget(window)
+
+        window._run_post_update_reconciliation(conn_v2)
+
+        updated_target = target_repo.fetch_all_targets(conn_us)[0]
+        assert updated_target.monster_id == new_zynth_id
+        assert updated_target.monster_key == "monster:wublin:zynth"
+
+        updated_rows = target_repo.fetch_progress_for_target(conn_us, updated_target.id)
+        assert len(updated_rows) == 1
+        assert updated_rows[0].egg_type_id == new_mammott_id
+        assert updated_rows[0].egg_key == "egg:mammott"
+        assert updated_rows[0].required_count == 2
+        assert updated_rows[0].satisfied_count == 2
+
+        window.close()
+        conn_v2.close()
         conn_content.close()
         conn_us.close()
 

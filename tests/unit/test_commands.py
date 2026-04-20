@@ -22,9 +22,11 @@ class TestAddTargetCommand:
         targets = target_repo.fetch_all_targets(userstate_conn)
         assert len(targets) == 1
         assert targets[0].monster_id == mid
+        assert targets[0].monster_key == "monster:wublin:zynth"
 
         progress = target_repo.fetch_all_progress(userstate_conn)
         assert len(progress) == 4  # Zynth needs 4 egg types
+        assert all(row.egg_key for row in progress)
 
     def test_undo_removes_target_and_progress(self, content_conn, userstate_conn, id_maps):
         reqs = monster_repo.fetch_all_requirements(content_conn)
@@ -118,10 +120,12 @@ class TestCloseOutTargetCommand:
         targets = target_repo.fetch_all_targets(userstate_conn)
         assert len(targets) == 1
         assert targets[0].monster_id == mid
+        assert targets[0].monster_key == "monster:celestial:galvana"
 
         # Progress should be restored including the increment
         mammott_rows = target_repo.fetch_progress_for_egg(userstate_conn, mammott_id)
         assert any(r.satisfied_count == 1 for r in mammott_rows)
+        assert all(r.egg_key for r in mammott_rows)
 
     def test_close_out_does_not_affect_other_targets(self, content_conn, userstate_conn, id_maps):
         reqs = monster_repo.fetch_all_requirements(content_conn)

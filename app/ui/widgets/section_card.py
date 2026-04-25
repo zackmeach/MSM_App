@@ -50,11 +50,11 @@ class SectionCard(QWidget):
         if icon_image_path:
             pix = QPixmap(icon_image_path)
             if not pix.isNull():
-                # Inset by the QSS padding (~4px each side) for a nicer fit.
-                inset = max(s - 12, 16)
+                # Fill the icon container; aspect ratio preserved so non-square
+                # source art letterboxes within the rounded square.
                 icon.setPixmap(
                     pix.scaled(
-                        QSize(inset, inset),
+                        QSize(s, s),
                         Qt.AspectRatioMode.KeepAspectRatio,
                         Qt.TransformationMode.SmoothTransformation,
                     )

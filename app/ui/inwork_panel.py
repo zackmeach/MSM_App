@@ -5,34 +5,17 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from PySide6.QtCore import Qt, Signal
-from PySide6.QtWidgets import QLabel, QScrollArea, QVBoxLayout, QWidget
+from PySide6.QtWidgets import QHBoxLayout, QLabel, QScrollArea, QVBoxLayout, QWidget
 
+from app.assets import resolver
+from app.ui._active_sections import TYPE_CONFIG, TYPE_ORDER
+from app.ui.themes import island_icon_path
 from app.ui.widgets.monster_entry import MonsterEntryRow
 from app.ui.widgets.section_card import SectionCard
 from app.ui.widgets.tip_card import TipCard
 
 if TYPE_CHECKING:
     from app.ui.viewmodels import InWorkMonsterRowViewModel
-
-_TYPE_ORDER = ["wublin", "celestial", "amber"]
-
-_TYPE_CONFIG = {
-    "wublin": {
-        "label": "Wublins",
-        "icon": "\u03df",
-        "empty_text": "No Wublins currently statuesque",
-    },
-    "celestial": {
-        "label": "Celestials",
-        "icon": "\u2726",
-        "empty_text": "The heavens are currently quiet",
-    },
-    "amber": {
-        "label": "Amber Vessels",
-        "icon": "\u25c8",
-        "empty_text": "No vessels undergoing incubation",
-    },
-}
 
 
 class InWorkPanel(QWidget):
@@ -51,9 +34,16 @@ class InWorkPanel(QWidget):
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(24)
 
+        header = QHBoxLayout()
+        header.setSpacing(8)
         title = QLabel("Active Monsters")
         title.setObjectName("panelTitle")
-        layout.addWidget(title)
+        header.addWidget(title)
+        header.addStretch()
+        self._count_badge = QLabel("0 Active")
+        self._count_badge.setObjectName("activeBadge")
+        header.addWidget(self._count_badge)
+        layout.addLayout(header)
 
         scroll = QScrollArea()
         scroll.setObjectName("activeRailScroll")
@@ -69,10 +59,13 @@ class InWorkPanel(QWidget):
         container_layout.setContentsMargins(0, 0, 0, 0)
         container_layout.setSpacing(16)
 
-        for mtype in _TYPE_ORDER:
-            cfg = _TYPE_CONFIG[mtype]
+        for mtype in TYPE_ORDER:
+            cfg = TYPE_CONFIG[mtype]
+            island_path = resolver.resolve(island_icon_path(cfg["island"]))
             section = SectionCard(
-                cfg["label"], cfg["icon"], cfg["empty_text"], interactive=True,
+                cfg["label"], cfg["icon"], cfg["empty_text"],
+                icon_image_path=island_path or None,
+                interactive=True,
             )
             self._sections[mtype] = section
             container_layout.addWidget(section)
@@ -97,17 +90,17 @@ class InWorkPanel(QWidget):
         self, inwork_by_type: dict[str, list[InWorkMonsterRowViewModel]]
     ) -> None:
         self._cards.clear()
-        has_any = False
+        total = 0
 
-        for mtype in _TYPE_ORDER:
+        for mtype in TYPE_ORDER:
             section = self._sections[mtype]
             monsters = inwork_by_type.get(mtype, [])
             entries = section.refresh(monsters, self._on_card_clicked)
             self._cards.extend(entries)
-            if monsters:
-                has_any = True
+            total += len(monsters)
 
-        self._getting_started.setVisible(not has_any)
+        self._count_badge.setText(f"{total} Active" if total else "0 Active")
+        self._getting_started.setVisible(total == 0)
 
     def _on_card_clicked(self, monster_id: int) -> None:
         self.close_out_requested.emit(monster_id)

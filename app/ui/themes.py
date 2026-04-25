@@ -371,7 +371,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
             font-size: {sz(16)};
             min-width: 44px; max-width: 44px;
             min-height: 44px; max-height: 44px;
-            padding: 4px;
+            padding: 0px;
         }}
         #sectionLabel {{
             font-size: {sz(16)};

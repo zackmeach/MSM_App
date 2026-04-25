@@ -53,3 +53,6 @@ pipeline/raw/.cache/
 
 # Theme preview screenshots (root-level only, not app/ui/)
 /ui/
+
+# Screenshot harness output (scripts/screenshot_panels.py)
+screenshots/

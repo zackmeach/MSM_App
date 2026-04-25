@@ -4,7 +4,7 @@ Steps:
   1. (Optional) Inject version string
   2. Run tests
   3. Regenerate bundled content.db
-  4. Generate assets (placeholder, icon, ding)
+  4. Generate assets (placeholder, icon)
   5. Verify bundle integrity
   6. Package with PyInstaller
   7. (Optional) Build Inno Setup installer

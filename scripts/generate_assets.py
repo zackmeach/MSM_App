@@ -1,5 +1,5 @@
-"""Generate bundled assets: UI placeholder, ding audio, and placeholder PNGs
-for every egg/monster image path referenced in the seed data.
+"""Generate bundled assets: UI placeholder, and placeholder PNGs for every
+egg/monster image path referenced in the seed data.
 
 Official assets from the BBB Fan Kit should replace the generated egg/monster
 placeholders before final release. The generator will skip files that already
@@ -13,7 +13,6 @@ from __future__ import annotations
 import math
 import sqlite3
 import struct
-import wave
 import zlib
 from pathlib import Path
 
@@ -61,28 +60,6 @@ def _generate_placeholder_png(path: Path, size: int = 64, label: str = "?") -> N
     path.write_bytes(png)
 
 
-def _generate_ding_wav(path: Path) -> None:
-    """Write a short pleasant ding sound as a WAV file."""
-    sample_rate = 44100
-    duration = 0.3
-    frequency = 880.0
-    n_samples = int(sample_rate * duration)
-
-    path.parent.mkdir(parents=True, exist_ok=True)
-
-    with wave.open(str(path), "w") as wf:
-        wf.setnchannels(1)
-        wf.setsampwidth(2)
-        wf.setframerate(sample_rate)
-        frames = bytearray()
-        for i in range(n_samples):
-            t = i / sample_rate
-            envelope = max(0.0, 1.0 - t / duration)
-            sample = math.sin(2.0 * math.pi * frequency * t) * envelope * 0.6
-            frames.extend(struct.pack("<h", int(sample * 32767)))
-        wf.writeframes(bytes(frames))
-
-
 def _generate_db_referenced_assets(db_path: Path) -> int:
     """Generate placeholder PNGs for every image path in the content DB.
 
@@ -117,10 +94,6 @@ def main() -> None:
     placeholder = RESOURCES / "images" / "ui" / "placeholder.png"
     _generate_placeholder_png(placeholder)
     print(f"  Created {placeholder}")
-
-    ding = RESOURCES / "audio" / "ding.wav"
-    _generate_ding_wav(ding)
-    print(f"  Created {ding}")
 
     db_path = RESOURCES / "db" / "content.db"
     count = _generate_db_referenced_assets(db_path)

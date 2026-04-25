@@ -1,4 +1,4 @@
-"""Tests for AudioPlayer — exposes ding/click/closeout API and tolerates missing files."""
+"""Tests for AudioPlayer — exposes click/closeout API and tolerates missing files."""
 
 from __future__ import annotations
 
@@ -28,7 +28,6 @@ class TestAudioPlayerAPI:
         player = AudioPlayer(audio_dir=None)
         assert player._players == {}
         # All play methods are no-ops on missing files.
-        player.play_ding()
         player.play_click()
         player.play_closeout()
 
@@ -42,13 +41,11 @@ class TestAudioPlayerAPI:
         if not audio_dir.exists():
             pytest.skip("resources/audio not bundled in this checkout")
         player = AudioPlayer(audio_dir=audio_dir)
-        # All three sounds should be loaded if their files exist.
-        for fname, key in [("ding.wav", "ding"), ("click.ogg", "click"), ("close.wav", "closeout")]:
+        for fname, key in [("click.ogg", "click"), ("close.wav", "closeout")]:
             if (audio_dir / fname).exists():
                 assert key in player._players, f"Expected {key} loaded from {fname}"
 
     def test_play_methods_exist(self):
         player = AudioPlayer(audio_dir=None)
-        assert callable(player.play_ding)
         assert callable(player.play_click)
         assert callable(player.play_closeout)

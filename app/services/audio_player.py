@@ -1,6 +1,6 @@
 """Non-blocking audio playback for UI sound effects.
 
-Uses ``QMediaPlayer + QAudioOutput`` so we can play both WAV (close.wav, ding.wav)
+Uses ``QMediaPlayer + QAudioOutput`` so we can play both WAV (close.wav)
 and OGG (click.ogg) without per-format fallbacks. Each effect is preloaded once
 on construction; ``play_*`` methods restart playback from the start so rapid
 successive clicks remain responsive.
@@ -30,7 +30,6 @@ class AudioPlayer:
         if audio_dir is None:
             return
 
-        self._load(audio_dir, "ding", "ding.wav", volume=0.8)
         self._load(audio_dir, "click", "click.ogg", volume=0.35)
         self._load(audio_dir, "closeout", "close.wav", volume=0.85)
 
@@ -61,9 +60,6 @@ class AudioPlayer:
             player.play()
         except Exception:
             logger.warning("Failed to play %s", key, exc_info=True)
-
-    def play_ding(self) -> None:
-        self._play("ding")
 
     def play_click(self) -> None:
         self._play("click")

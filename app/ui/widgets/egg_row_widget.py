@@ -88,6 +88,7 @@ class EggRowWidget(QWidget):
         s = scaled(46)
         self._base_icon_size = s
         self._icon_size_value = s
+        self._row_height_value = scaled(62)
         self._icon_label.setFixedSize(QSize(s, s))
         self._icon_label.setObjectName("eggIconContainer")
         self._icon_label.setScaledContents(True)

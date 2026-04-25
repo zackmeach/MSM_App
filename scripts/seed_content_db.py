@@ -279,6 +279,41 @@ def _load_normalized() -> tuple[list[dict], list[dict], list[dict]] | None:
     return monsters, eggs, reqs
 
 
+def _load_egg_elements() -> dict[str, list[str]]:
+    """Load egg-to-element mappings keyed by egg content_key.
+
+    Returns an empty dict if the file is absent — element pips just don't render.
+    """
+    path = NORMALIZED_DIR / "egg_elements.json"
+    if not path.exists():
+        return {}
+    with open(path, encoding="utf-8") as f:
+        data = json.load(f)
+    return data.get("elements", {})
+
+
+def _populate_egg_elements(
+    conn: sqlite3.Connection,
+    egg_key_to_id: dict[str, int],
+    egg_elements: dict[str, list[str]],
+) -> int:
+    """Insert rows into egg_type_elements; returns the count inserted."""
+    rows = []
+    for egg_key, elements in egg_elements.items():
+        eid = egg_key_to_id.get(egg_key)
+        if eid is None:
+            continue
+        for position, element_key in enumerate(elements):
+            rows.append((eid, element_key, position))
+    if rows:
+        conn.executemany(
+            "INSERT INTO egg_type_elements(egg_type_id, element_key, position) "
+            "VALUES(?, ?, ?)",
+            rows,
+        )
+    return len(rows)
+
+
 # ── Seeding functions ────────────────────────────────────────────────
 
 
@@ -299,6 +334,16 @@ def main() -> None:
     else:
         _seed_from_literals(conn)
         print("(seeded from embedded literal data — normalized files not found)")
+
+    egg_elements = _load_egg_elements()
+    if egg_elements:
+        egg_key_to_id = {
+            row[1]: row[0]
+            for row in conn.execute("SELECT id, content_key FROM egg_types").fetchall()
+            if row[1]
+        }
+        inserted = _populate_egg_elements(conn, egg_key_to_id, egg_elements)
+        print(f"  Egg elements: {inserted} rows from {len(egg_elements)} mappings")
 
     _update_metadata(conn)
     conn.commit()
@@ -402,8 +447,26 @@ def _seed_from_literals(conn: sqlite3.Connection) -> None:
 
 
 def _update_metadata(conn: sqlite3.Connection) -> None:
-    conn.execute("UPDATE update_metadata SET value = '1.0.0' WHERE key = 'content_version'")
-    conn.execute("UPDATE update_metadata SET value = '2026-03-12T00:00:00Z' WHERE key = 'last_updated_utc'")
+    """Stamp content version + timestamp + source into update_metadata.
+
+    Version is read from pipeline/normalized/version.txt (the single source of
+    truth) — bump that file when data changes to force bootstrap to refresh the
+    installed appdata copy.
+    """
+    from datetime import datetime, timezone
+
+    from pipeline.version import load_content_version
+
+    version = load_content_version()
+    now_iso = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    conn.execute(
+        "UPDATE update_metadata SET value = ? WHERE key = 'content_version'",
+        (version,),
+    )
+    conn.execute(
+        "UPDATE update_metadata SET value = ? WHERE key = 'last_updated_utc'",
+        (now_iso,),
+    )
     conn.execute("UPDATE update_metadata SET value = 'bundled' WHERE key = 'source'")
 
 

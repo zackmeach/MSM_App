@@ -170,10 +170,19 @@ class TestContentMigrations:
         assert "build_id" in meta
         assert "git_sha" in meta
 
-    def test_schema_migrations_records_v2(self):
+    def test_schema_migrations_records_latest(self):
         conn = _make_content_db()
         row = conn.execute("SELECT MAX(version) FROM schema_migrations").fetchone()
-        assert row[0] == 2
+        # Latest migration: 0003 added the egg_type_elements table.
+        assert row[0] == 3
+
+    def test_v3_adds_egg_type_elements_table(self):
+        conn = _make_content_db()
+        tables = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+        assert "egg_type_elements" in tables
+        # Confirm columns are as expected.
+        cols = {r[1] for r in conn.execute("PRAGMA table_info(egg_type_elements)").fetchall()}
+        assert {"egg_type_id", "element_key", "position"} <= cols
 
     def test_upgrade_from_v1(self):
         """Upgrading a v1 DB with existing data preserves rows."""

@@ -1,0 +1,73 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Egg Elements",
+  "description": "Maps egg content_key -> ordered list of element keys. Element keys must match a PNG filename (without extension) under resources/images/elements/.",
+  "type": "object",
+  "properties": {
+    "_comment": { "type": "string" },
+    "elements": {
+      "type": "object",
+      "patternProperties": {
+        "^egg:[a-z0-9-]+$": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "celestial",
+              "dipster",
+              "ethereal-crystal",
+              "ethereal-mech",
+              "ethereal-plasma",
+              "ethereal-poison",
+              "ethereal-shadow",
+              "legendary",
+              "magical-bone",
+              "magical-faerie",
+              "magical-light",
+              "magical-psychic",
+              "mythical-dream",
+              "mythical-mythical",
+              "natural-air",
+              "natural-cold",
+              "natural-earth",
+              "natural-fire",
+              "natural-plant",
+              "natural-water",
+              "paironormal-control",
+              "paironormal-depths",
+              "paironormal-hoax",
+              "paironormal-ruin",
+              "primordial-air",
+              "primordial-cold",
+              "primordial-earth",
+              "primordial-plant",
+              "primordial-water",
+              "seasonal-(aux.)-beat-hereafter",
+              "seasonal-(aux.)-cloverspell",
+              "seasonal-(aux.)-crescendo-moon",
+              "seasonal-(aux.)-echoes-of-eco",
+              "seasonal-(aux.)-feast-ember",
+              "seasonal-(aux.)-life-formula",
+              "seasonal-(aux.)-mindboggle",
+              "seasonal-(aux.)-perplexplore",
+              "seasonal-(aux.)-skypainting",
+              "seasonal-(core)-eggs-travaganza",
+              "seasonal-(core)-festival-of-yay",
+              "seasonal-(core)-season-of-love",
+              "seasonal-(core)-spooktacle",
+              "seasonal-(core)-summersong",
+              "seasonal-anniversary-month",
+              "supernatural-electricity",
+              "titansoul"
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 4
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": ["elements"],
+  "additionalProperties": false
+}

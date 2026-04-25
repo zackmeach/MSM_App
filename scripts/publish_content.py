@@ -89,8 +89,11 @@ def main() -> int:
         description="Build and publish content artifacts from normalized data.",
     )
     parser.add_argument(
-        "--content-version", required=True,
-        help="Semver version string for this content release (e.g., 1.0.0)",
+        "--content-version", default=None,
+        help=(
+            "Semver version string for this content release. "
+            "Defaults to pipeline/normalized/version.txt."
+        ),
     )
     parser.add_argument(
         "--output-dir", default="content",
@@ -110,7 +113,8 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    content_version = args.content_version
+    from pipeline.version import load_content_version
+    content_version = args.content_version or load_content_version()
     output_dir = Path(args.output_dir)
     baseline_db = Path(args.baseline_db) if args.baseline_db else None
     base_url = args.base_url

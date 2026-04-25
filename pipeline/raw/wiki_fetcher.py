@@ -120,32 +120,34 @@ KNOWN_MONSTER_TYPES: dict[str, str] = {
 KNOWN_BREEDING_TIMES: dict[str, tuple[int, str]] = {
     # ── Single-element (Natural Island starters) ──
     "Noggin":       (5,      "5s"),
-    "Mammott":      (5,      "5s"),
-    "Toe Jammer":   (5,      "5s"),
-    "Potbelly":     (5,      "5s"),
-    "Tweedle":      (5,      "5s"),
-    # ── Two-element (Natural Islands) ──
+    "Toe Jammer":   (60,     "1m"),
+    "Mammott":      (120,    "2m"),
+    "Potbelly":     (7200,   "2h"),
+    "Tweedle":      (14400,  "4h"),
+    # ── Two-element (Natural Islands — 30m tier) ──
     "Drumpler":     (1800,   "30m"),
     "Fwog":         (1800,   "30m"),
     "Maw":          (1800,   "30m"),
-    "Shrubb":       (1800,   "30m"),
-    "Furcorn":      (5400,   "1h 30m"),
-    "Pango":        (7200,   "2h"),
-    "Oaktopus":     (7200,   "2h"),
-    # ── Three-element (Natural Islands) ──
+    # ── Two-element (Natural Islands — 8h tier) ──
+    "Shrubb":       (28800,  "8h"),
+    "Furcorn":      (28800,  "8h"),
+    "Pango":        (28800,  "8h"),
+    "Oaktopus":     (28800,  "8h"),
+    # ── Three-element (Natural Islands — 8h tier) ──
     "Cybop":        (28800,  "8h"),
     "Quibble":      (28800,  "8h"),
     "Dandidoo":     (28800,  "8h"),
-    "Scups":        (28800,  "8h"),
-    "Reedling":     (28800,  "8h"),
     "T-Rox":        (28800,  "8h"),
-    "Pummel":       (28800,  "8h"),
-    "Congle":       (28800,  "8h"),
-    "Spunge":       (28800,  "8h"),
-    "Clamble":      (28800,  "8h"),
-    "PomPom":       (28800,  "8h"),
-    "Bowgart":      (30600,  "8h 30m"),
-    "Thumpies":     (27000,  "7h 30m"),
+    # ── Three-element (Natural Islands — 12h tier) ──
+    "Scups":        (43200,  "12h"),
+    "Reedling":     (43200,  "12h"),
+    "Pummel":       (43200,  "12h"),
+    "Congle":       (43200,  "12h"),
+    "Spunge":       (43200,  "12h"),
+    "Clamble":      (43200,  "12h"),
+    "PomPom":       (43200,  "12h"),
+    "Bowgart":      (43200,  "12h"),
+    "Thumpies":     (43200,  "12h"),
     # ── Four-element (Natural Islands) ──
     "Entbrat":      (86400,  "24h"),
     "Deedge":       (86400,  "24h"),

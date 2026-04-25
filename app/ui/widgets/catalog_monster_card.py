@@ -82,7 +82,12 @@ class CatalogMonsterCard(QWidget):
         if count > 0:
             self._badge.setText(str(count))
             self._badge.adjustSize()
-            self._badge.move(self.width() - self._badge.width() - 6, 6)
+            # Inset matches the card's 12px border-radius so the badge sits
+            # fully inside the rounded corner instead of clipping against it.
+            self._badge.move(
+                self.width() - self._badge.width() - 10,
+                10,
+            )
             self._badge.show()
             self._badge.raise_()
         else:

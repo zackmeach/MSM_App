@@ -9,13 +9,11 @@ from typing import TYPE_CHECKING
 from PySide6.QtCore import QObject, Signal
 
 from app.assets import resolver
-from app.domain.breed_list import derive_breed_list
-from app.domain.models import MonsterType, SortOrder
+from app.domain.models import SortOrder
 from app.repositories import monster_repo, settings_repo, target_repo
+from app.services import view_model_builder as vmb
 from app.ui.viewmodels import (
     AppStateViewModel,
-    BreedListRowViewModel,
-    InWorkMonsterRowViewModel,
     MonsterCatalogItemViewModel,
     SettingsDataRowViewModel,
     SettingsViewModel,
@@ -158,6 +156,117 @@ class AppService(QObject):
         self._requirements_cache = monster_repo.fetch_all_requirements(conn_content)
         self._egg_types_map = monster_repo.fetch_egg_types_map(conn_content)
 
+    def reconcile_after_content_update(self) -> None:
+        """Reconcile user state against the (just-rebound) content DB.
+
+        Walks every active target:
+          - Drop targets whose monster_key no longer exists or is deprecated.
+          - Re-link targets whose numeric monster_id changed but content_key still resolves.
+          - Insert progress rows for newly-required eggs.
+          - Clip satisfied_count to the new required quantity.
+          - Update progress identity (egg_type_id + egg_key) when egg IDs shifted.
+          - Delete progress rows for eggs no longer required.
+
+        Must be called AFTER rebind_content() so the new requirements_cache and
+        egg_types_map are in scope.
+        """
+        targets = target_repo.fetch_all_targets(self._conn_userstate)
+        requirements_map = self._requirements_cache
+        egg_keys_by_id = {egg.id: egg.content_key for egg in self._egg_types_map.values()}
+
+        with self._conn_userstate:
+            for target in targets:
+                if not target.monster_key:
+                    logger.warning(
+                        "Dropping target %s during reconciliation — missing monster_key",
+                        target.id,
+                    )
+                    target_repo.delete_progress_for_target(self._conn_userstate, target.id)
+                    target_repo.delete_target(self._conn_userstate, target.id)
+                    continue
+
+                monster = monster_repo.fetch_monster_by_key(
+                    self._conn_content, target.monster_key
+                )
+                if monster is None or monster.is_deprecated:
+                    target_repo.delete_progress_for_target(self._conn_userstate, target.id)
+                    target_repo.delete_target(self._conn_userstate, target.id)
+                    continue
+
+                if monster.id != target.monster_id:
+                    target_repo.update_target_identity(
+                        self._conn_userstate,
+                        target.id,
+                        monster.id,
+                        monster.content_key,
+                    )
+
+                progress_rows = target_repo.fetch_progress_for_target(
+                    self._conn_userstate, target.id
+                )
+                progress_by_key = {
+                    row.egg_key: row for row in progress_rows if row.egg_key
+                }
+                progress_by_id = {
+                    row.egg_type_id: row for row in progress_rows if not row.egg_key
+                }
+
+                required_keys: set[str] = set()
+                for requirement in requirements_map.get(monster.id, []):
+                    egg_key = egg_keys_by_id.get(requirement.egg_type_id, "")
+                    if not egg_key:
+                        continue
+                    required_keys.add(egg_key)
+                    existing = progress_by_key.get(egg_key)
+                    if existing is None:
+                        existing = progress_by_id.get(requirement.egg_type_id)
+
+                    if existing is None:
+                        target_repo.insert_progress_row(
+                            self._conn_userstate,
+                            target.id,
+                            requirement.egg_type_id,
+                            requirement.quantity,
+                            egg_key=egg_key,
+                        )
+                        continue
+
+                    satisfied_count = min(existing.satisfied_count, requirement.quantity)
+                    target_repo.update_progress_identity(
+                        self._conn_userstate,
+                        target.id,
+                        existing.egg_type_id,
+                        requirement.egg_type_id,
+                        requirement.quantity,
+                        egg_key,
+                    )
+                    if satisfied_count != existing.satisfied_count:
+                        target_repo.set_progress(
+                            self._conn_userstate,
+                            target.id,
+                            requirement.egg_type_id,
+                            satisfied_count,
+                        )
+
+                for row in progress_rows:
+                    row_key = row.egg_key or egg_keys_by_id.get(row.egg_type_id, "")
+                    if row_key not in required_keys:
+                        self._conn_userstate.execute(
+                            "DELETE FROM target_requirement_progress "
+                            "WHERE active_target_id = ? AND egg_type_id = ?",
+                            (target.id, row.egg_type_id),
+                        )
+
+    # ── UI preferences ───────────────────────────────────────────────
+
+    def get_ui_pref(self, key: str, default: str = "") -> str:
+        """Read a UI preference from userstate."""
+        return settings_repo.get(self._conn_userstate, key, default)
+
+    def set_ui_pref(self, key: str, value: str) -> None:
+        """Persist a UI preference to userstate."""
+        settings_repo.set_value(self._conn_userstate, key, value)
+
     def clear_undo_redo(self) -> None:
         """Clear undo/redo stacks (e.g. after a content update)."""
         self._undo_stack.clear()
@@ -225,24 +334,21 @@ class AppService(QObject):
 
     def get_app_state(self) -> AppStateViewModel:
         progress = target_repo.fetch_all_progress(self._conn_userstate)
-        breed_rows = derive_breed_list(progress, self._egg_types_map, self._sort_order)
+        targets = target_repo.fetch_all_targets(self._conn_userstate)
 
-        from app.assets import resolver
-        bl_vms = [
-            BreedListRowViewModel(
-                egg_type_id=r.egg_type_id,
-                name=r.name,
-                breeding_time_display=r.breeding_time_display,
-                egg_image_path=resolver.resolve(r.egg_image_path),
-                bred_count=r.bred_count,
-                total_needed=r.total_needed,
-                remaining=r.remaining,
-                progress_fraction=r.bred_count / r.total_needed if r.total_needed else 0,
-            )
-            for r in breed_rows
-        ]
+        active_monster_ids = {t.monster_id for t in targets}
+        consumer_cards = vmb.build_consumer_cards(
+            self._conn_content, active_monster_ids, self._requirements_cache
+        )
 
-        inwork = self._derive_inwork()
+        bl_vms = vmb.build_breed_list_vms(
+            progress, self._egg_types_map, self._sort_order, consumer_cards
+        )
+
+        grouped: dict[int, int] = {}
+        for t in targets:
+            grouped[t.monster_id] = grouped.get(t.monster_id, 0) + 1
+        inwork = vmb.build_inwork_vms(self._conn_content, grouped)
 
         return AppStateViewModel(
             breed_list_rows=bl_vms,
@@ -252,31 +358,6 @@ class AppService(QObject):
             can_redo=bool(self._redo_stack),
         )
 
-    def _derive_inwork(self) -> dict[str, list[InWorkMonsterRowViewModel]]:
-        targets = target_repo.fetch_all_targets(self._conn_userstate)
-        grouped: dict[int, int] = {}
-        for t in targets:
-            grouped[t.monster_id] = grouped.get(t.monster_id, 0) + 1
-
-        from app.assets import resolver
-        by_type: dict[str, list[InWorkMonsterRowViewModel]] = {}
-        for mid, count in grouped.items():
-            m = monster_repo.fetch_monster_by_id(self._conn_content, mid)
-            if m is None:
-                continue
-            display = f"{m.name} \u00d7 {count}" if count > 1 else m.name
-            vm = InWorkMonsterRowViewModel(
-                monster_id=m.id,
-                name=m.name,
-                monster_type=m.monster_type.value,
-                image_path=resolver.resolve(m.image_path),
-                is_placeholder=m.is_placeholder,
-                count=count,
-                display_name=display,
-            )
-            by_type.setdefault(m.monster_type.value, []).append(vm)
-        return by_type
-
     def _get_content_schema_version(self) -> int:
         row = self._conn_content.execute(
             "SELECT COALESCE(MAX(version), 0) FROM schema_migrations"
@@ -284,47 +365,9 @@ class AppService(QObject):
         return int(row[0]) if row else 0
 
     def _build_settings_data_rows(self) -> list[SettingsDataRowViewModel]:
-        from app.assets import resolver
-
         requirements_map = monster_repo.fetch_all_requirements(self._conn_content)
         monsters = monster_repo.fetch_all_monsters(self._conn_content)
-        rows: list[SettingsDataRowViewModel] = []
-
-        for monster in monsters:
-            requirements = requirements_map.get(monster.id, [])
-            eggs_required = sum(req.quantity for req in requirements)
-            rows.append(
-                SettingsDataRowViewModel(
-                    monster_id=monster.id,
-                    monster_name=monster.name,
-                    monster_type=monster.monster_type.value,
-                    monster_type_label=_TYPE_LABELS[monster.monster_type],
-                    image_path=resolver.resolve(monster.image_path),
-                    is_placeholder=monster.is_placeholder,
-                    eggs_required_display=_format_egg_total(eggs_required),
-                    duration_display=_DURATION_LABELS[monster.monster_type],
-                )
-            )
-
-        return rows
+        return vmb.build_settings_data_rows(monsters, requirements_map)
 
     def _emit_state(self) -> None:
         self.state_changed.emit(self.get_app_state())
-
-
-_TYPE_LABELS = {
-    MonsterType.WUBLIN: "Wublin",
-    MonsterType.CELESTIAL: "Celestial",
-    MonsterType.AMBER: "Amber Vessel",
-}
-
-_DURATION_LABELS = {
-    MonsterType.WUBLIN: "N/A",
-    MonsterType.CELESTIAL: "Permanent",
-    MonsterType.AMBER: "30 Days",
-}
-
-
-def _format_egg_total(total: int) -> str:
-    unit = "Egg" if total == 1 else "Eggs"
-    return f"{total} {unit}"

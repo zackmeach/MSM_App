@@ -10,9 +10,6 @@ match the active theme.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Dict, Tuple
-
 # ── Theme colour palettes ────────────────────────────────────────────
 
 _DEEP_ISLAND_NIGHT: dict[str, str] = {
@@ -171,6 +168,25 @@ def placeholder_tones_2(monster_type: str) -> tuple[str, str]:
     t = THEMES[_active_theme]
     fallback = (t["thumb_fallback_bg"], t["accent"])
     return _PLACEHOLDER_2.get(_active_theme, {}).get(monster_type, fallback)
+
+
+# ── Element-sigil asset helpers ──────────────────────────────────────
+
+def element_icon_path(element_key: str) -> str:
+    """Relative path under resources/ for an element sigil PNG.
+
+    The path is resolved (cache > bundle > placeholder) by ``app.assets.resolver``.
+    """
+    return f"images/elements/{element_key}.png"
+
+
+def island_icon_path(island_key: str) -> str:
+    """Relative path under resources/ for an island/map icon PNG.
+
+    Used for the Active Monsters section headers (wublin-island, celestial-island,
+    amber-island).
+    """
+    return f"images/islands/{island_key}.png"
 
 
 # ── Font-size helpers ────────────────────────────────────────────────
@@ -351,10 +367,11 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         }}
         #sectionIcon {{
             background-color: {t['elevated']};
-            border-radius: 8px;
+            border-radius: 10px;
             font-size: {sz(16)};
-            min-width: 40px; max-width: 40px;
-            min-height: 40px; max-height: 40px;
+            min-width: 44px; max-width: 44px;
+            min-height: 44px; max-height: 44px;
+            padding: 4px;
         }}
         #sectionLabel {{
             font-size: {sz(16)};
@@ -408,7 +425,10 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
             border: 1px solid {t['border']};
             border-radius: 10px;
         }}
-        #eggRow:hover {{ background-color: {t['interactive']}; }}
+        #eggRow:hover {{
+            background-color: {t['interactive']};
+            border: 1px solid {t['card_hover_border']};
+        }}
         #eggIconContainer {{
             background-color: {t['elevated']};
             border-radius: 8px;
@@ -429,8 +449,12 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         #inworkEntry {{
             background-color: transparent;
             border-radius: 8px;
+            border-left: 3px solid transparent;
         }}
-        #inworkEntry:hover {{ background-color: {t['interactive']}; }}
+        #inworkEntry:hover {{
+            background-color: {t['interactive']};
+            border-left: 3px solid {t['accent']};
+        }}
         #inworkEntryName {{
             font-size: {sz(13)};
             color: {t['text1']};

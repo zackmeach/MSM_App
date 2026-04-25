@@ -383,6 +383,9 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
             font-size: {sz(11)};
             font-weight: 700;
             letter-spacing: 2px;
+            /* Qt's sizeHint doesn't include trailing letter-spacing, so
+               the last letter clips at the right edge without padding. */
+            padding-right: 4px;
         }}
         #sectionBody {{
             background-color: {t['bg_sunken']};

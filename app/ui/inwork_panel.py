@@ -25,6 +25,10 @@ class InWorkPanel(QWidget):
         super().__init__(parent)
         self.setObjectName("activeRailPanel")
         self.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        # Cap the rail width so on wide screens (>=1080p) the section cards
+        # don't stretch absurdly far and the badge floats off in space —
+        # matches the rail width used on the catalog page.
+        self.setMaximumWidth(520)
         self._cards: list[MonsterEntryRow] = []
         self._sections: dict[str, SectionCard] = {}
         self._build_ui()

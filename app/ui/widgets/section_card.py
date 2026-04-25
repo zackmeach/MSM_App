@@ -44,7 +44,7 @@ class SectionCard(QWidget):
         icon = QLabel()
         icon.setObjectName("sectionIcon")
         icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        s = scaled(44)
+        s = scaled(56)
         icon.setFixedSize(s, s)
         icon.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         if icon_image_path:

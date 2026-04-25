@@ -50,18 +50,41 @@ def monster_exists_and_active(conn: sqlite3.Connection, monster_id: int) -> bool
 
 def fetch_all_egg_types(conn: sqlite3.Connection) -> list[EggType]:
     rows = conn.execute("SELECT * FROM egg_types ORDER BY name").fetchall()
-    return [_egg_type_from_row(r) for r in rows]
+    elements_by_id = _fetch_egg_elements(conn)
+    return [_egg_type_from_row(r, elements_by_id.get(r[0], ())) for r in rows]
 
 
 def fetch_egg_types_map(conn: sqlite3.Connection) -> dict[int, EggType]:
     return {et.id: et for et in fetch_all_egg_types(conn)}
 
 
+def _fetch_egg_elements(conn: sqlite3.Connection) -> dict[int, tuple[str, ...]]:
+    """Return {egg_type_id: (element_key, ...)} ordered by position.
+
+    Returns empty dict if the table is missing (pre-migration DB) so callers
+    can JOIN unconditionally without breaking on older schemas.
+    """
+    try:
+        rows = conn.execute(
+            "SELECT egg_type_id, element_key FROM egg_type_elements "
+            "ORDER BY egg_type_id, position"
+        ).fetchall()
+    except sqlite3.OperationalError:
+        return {}
+    out: dict[int, list[str]] = {}
+    for eid, key in rows:
+        out.setdefault(eid, []).append(key)
+    return {eid: tuple(keys) for eid, keys in out.items()}
+
+
 def fetch_egg_type_by_key(conn: sqlite3.Connection, content_key: str) -> EggType | None:
     row = conn.execute(
         "SELECT * FROM egg_types WHERE content_key = ?", (content_key,)
     ).fetchone()
-    return _egg_type_from_row(row) if row else None
+    if not row:
+        return None
+    elements = _fetch_egg_elements(conn).get(row[0], ())
+    return _egg_type_from_row(row, elements)
 
 
 def fetch_requirements_for_monster(conn: sqlite3.Connection, monster_id: int) -> list[MonsterRequirement]:
@@ -105,7 +128,7 @@ def _monster_from_row(row: tuple) -> Monster:
     )
 
 
-def _egg_type_from_row(row: tuple) -> EggType:
+def _egg_type_from_row(row: tuple, elements: tuple[str, ...] = ()) -> EggType:
     has_v2 = len(row) >= _EGG_V2_COLS
     return EggType(
         id=row[0],
@@ -121,4 +144,5 @@ def _egg_type_from_row(row: tuple) -> EggType:
         source_fingerprint=row[10] if has_v2 else "",
         asset_source=row[11] if has_v2 else "generated_placeholder",
         asset_sha256=row[12] if has_v2 else "",
+        elements=elements,
     )

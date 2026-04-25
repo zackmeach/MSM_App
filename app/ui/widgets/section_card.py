@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QSize, Qt
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QVBoxLayout, QWidget
 
 from app.ui.themes import scaled
@@ -23,6 +24,7 @@ class SectionCard(QWidget):
         icon_text: str,
         empty_text: str,
         *,
+        icon_image_path: str | None = None,
         interactive: bool = True,
         parent: QWidget | None = None,
     ) -> None:
@@ -39,12 +41,28 @@ class SectionCard(QWidget):
         header = QHBoxLayout()
         header.setSpacing(12)
 
-        icon = QLabel(icon_text)
+        icon = QLabel()
         icon.setObjectName("sectionIcon")
         icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        s = scaled(40)
+        s = scaled(44)
         icon.setFixedSize(s, s)
         icon.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        if icon_image_path:
+            pix = QPixmap(icon_image_path)
+            if not pix.isNull():
+                # Inset by the QSS padding (~4px each side) for a nicer fit.
+                inset = max(s - 12, 16)
+                icon.setPixmap(
+                    pix.scaled(
+                        QSize(inset, inset),
+                        Qt.AspectRatioMode.KeepAspectRatio,
+                        Qt.TransformationMode.SmoothTransformation,
+                    )
+                )
+            else:
+                icon.setText(icon_text)
+        else:
+            icon.setText(icon_text)
         header.addWidget(icon)
 
         name = QLabel(label)

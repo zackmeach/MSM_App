@@ -47,6 +47,7 @@ def derive_breed_list(
                 total_needed=total,
                 bred_count=bred,
                 remaining=remaining,
+                elements=et.elements,
             )
         )
 

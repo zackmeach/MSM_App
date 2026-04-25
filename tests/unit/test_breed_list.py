@@ -8,15 +8,16 @@ from app.domain.breed_list import derive_breed_list
 from app.domain.models import EggType, SortOrder, TargetRequirementProgress
 
 
-def _egg(eid: int, name: str, seconds: int) -> EggType:
+def _egg(eid: int, name: str, seconds: int, elements: tuple[str, ...] = ()) -> EggType:
     return EggType(id=eid, name=name, breeding_time_seconds=seconds,
-                   breeding_time_display=f"{seconds}s", egg_image_path="", is_placeholder=True)
+                   breeding_time_display=f"{seconds}s", egg_image_path="", is_placeholder=True,
+                   elements=elements)
 
 
 _EGGS = {
-    1: _egg(1, "Mammott", 1800),
+    1: _egg(1, "Mammott", 1800, ("natural-cold",)),
     2: _egg(2, "Bowgart", 30600),
-    3: _egg(3, "Tweedle", 1800),
+    3: _egg(3, "Tweedle", 1800, ("natural-air",)),
 }
 
 
@@ -63,6 +64,16 @@ class TestDerivation:
         ]
         rows = derive_breed_list(progress, _EGGS)
         assert rows == []
+
+    def test_elements_propagate_from_egg_type(self):
+        progress = [TargetRequirementProgress(1, 1, 4, 1)]  # Mammott
+        rows = derive_breed_list(progress, _EGGS)
+        assert rows[0].elements == ("natural-cold",)
+
+    def test_elements_default_empty_tuple_when_unset(self):
+        progress = [TargetRequirementProgress(1, 2, 2, 0)]  # Bowgart, no elements
+        rows = derive_breed_list(progress, _EGGS)
+        assert rows[0].elements == ()
 
 
 class TestSorting:

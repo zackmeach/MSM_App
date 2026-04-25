@@ -73,6 +73,10 @@ class CatalogMonsterCard(QWidget):
         self._badge.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._badge.hide()
 
+    @property
+    def monster_id(self) -> int:
+        return self._monster_id
+
     def set_active_count(self, count: int) -> None:
         """Show/hide the iOS-style notification badge with the active count."""
         if count > 0:

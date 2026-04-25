@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from PySide6.QtCore import QSize, Qt, Signal
+from PySide6.QtCore import QPropertyAnimation, QSize, Qt, QTimer, Signal
 from PySide6.QtGui import QPixmap
-from PySide6.QtWidgets import QHBoxLayout, QLabel, QWidget
+from PySide6.QtWidgets import QGraphicsOpacityEffect, QHBoxLayout, QLabel, QWidget
 
 from app.ui.themes import placeholder_tones_2, scaled
 
@@ -70,9 +70,24 @@ class MonsterEntryRow(QWidget):
             f"font-size: 14px; font-weight: bold; color: {fg};"
         )
 
+    def _flash_and_emit(self) -> None:
+        """Brief opacity pulse then emit clicked signal after a short delay."""
+        if getattr(self, '_press_pending', False):
+            return
+        self._press_pending = True
+        effect = QGraphicsOpacityEffect(self)
+        self.setGraphicsEffect(effect)
+        anim = QPropertyAnimation(effect, b"opacity")
+        anim.setDuration(150)
+        anim.setStartValue(0.4)
+        anim.setEndValue(1.0)
+        anim.start()
+        self._press_anim = anim  # prevent GC
+        QTimer.singleShot(150, lambda: self.clicked.emit(self._monster_id))
+
     def mousePressEvent(self, event) -> None:
         if self._interactive:
-            self.clicked.emit(self._monster_id)
+            self._flash_and_emit()
         super().mousePressEvent(event)
 
 

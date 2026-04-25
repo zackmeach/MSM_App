@@ -12,6 +12,7 @@ A Windows desktop companion app for *My Singing Monsters* built with Python + Py
 # First-time setup
 pip install -r requirements.txt
 python scripts/seed_content_db.py       # builds resources/db/content.db from pipeline/normalized/*.json
+                                         # (reads version from pipeline/normalized/version.txt — bump on any data change)
 python scripts/generate_assets.py       # creates placeholder PNGs (skips existing files)
 python scripts/generate_icon.py         # creates placeholder .ico
 python scripts/import_fankit_images.py  # copies BBB Fan Kit images (skips existing)

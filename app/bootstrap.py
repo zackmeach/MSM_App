@@ -65,6 +65,19 @@ def open_content_db(db_path: Path) -> sqlite3.Connection:
     return conn
 
 
+def _get_content_version(db_path: Path) -> str:
+    """Read content_version from a content.db, returning '' on any failure."""
+    try:
+        conn = sqlite3.connect(str(db_path))
+        row = conn.execute(
+            "SELECT value FROM update_metadata WHERE key = 'content_version'"
+        ).fetchone()
+        conn.close()
+        return row[0] if row else ""
+    except Exception:
+        return ""
+
+
 def _init_content_db(data_dir: Path, bundle_dir: Path) -> sqlite3.Connection:
     db_path = data_dir / "content.db"
     bundled = bundle_dir / "db" / "content.db"
@@ -76,6 +89,17 @@ def _init_content_db(data_dir: Path, bundle_dir: Path) -> sqlite3.Connection:
         else:
             logger.warning(
                 "No bundled content.db found at %s — creating empty", bundled
+            )
+    elif bundled.exists():
+        # Replace installed copy when the bundled version is newer
+        installed_ver = _get_content_version(db_path)
+        bundled_ver = _get_content_version(bundled)
+        if bundled_ver and bundled_ver != installed_ver:
+            shutil.copy2(bundled, db_path)
+            logger.info(
+                "Upgraded content.db from %s to %s",
+                installed_ver or "unknown",
+                bundled_ver,
             )
 
     return open_content_db(db_path)

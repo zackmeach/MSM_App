@@ -78,6 +78,16 @@ def _get_content_version(db_path: Path) -> str:
         return ""
 
 
+def _parse_version(s: str) -> tuple[int, ...] | None:
+    """Parse a dotted-int version like '1.2.3' into a tuple. None if unparseable."""
+    if not s:
+        return None
+    try:
+        return tuple(int(part) for part in s.split("."))
+    except ValueError:
+        return None
+
+
 def _init_content_db(data_dir: Path, bundle_dir: Path) -> sqlite3.Connection:
     db_path = data_dir / "content.db"
     bundled = bundle_dir / "db" / "content.db"
@@ -91,13 +101,21 @@ def _init_content_db(data_dir: Path, bundle_dir: Path) -> sqlite3.Connection:
                 "No bundled content.db found at %s — creating empty", bundled
             )
     elif bundled.exists():
-        # Replace installed copy when the bundled version is newer
+        # Replace installed copy only when the bundle is strictly newer.
+        # The in-app updater writes to the same path, so an inequality
+        # check would silently downgrade user-applied updates on relaunch.
         installed_ver = _get_content_version(db_path)
         bundled_ver = _get_content_version(bundled)
-        if bundled_ver and bundled_ver != installed_ver:
+        installed_parsed = _parse_version(installed_ver)
+        bundled_parsed = _parse_version(bundled_ver)
+        if (
+            bundled_parsed is not None
+            and installed_parsed is not None
+            and bundled_parsed > installed_parsed
+        ):
             shutil.copy2(bundled, db_path)
             logger.info(
-                "Upgraded content.db from %s to %s",
+                "Replaced installed content.db (was %s, bundled %s)",
                 installed_ver or "unknown",
                 bundled_ver,
             )

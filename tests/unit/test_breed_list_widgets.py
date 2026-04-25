@@ -1,13 +1,16 @@
-"""Tests for ElementPipRow and ConsumerCardRow widgets."""
+"""Tests for ElementPipRow, ConsumerCardRow, and MonsterEntryRow widgets."""
 
 from __future__ import annotations
 
 import pytest
+from PySide6.QtCore import QEvent, QPointF, Qt
+from PySide6.QtGui import QMouseEvent
 from PySide6.QtWidgets import QApplication
 
 from app.ui.viewmodels import ConsumerCardViewModel
 from app.ui.widgets.consumer_card_row import ConsumerCardRow
 from app.ui.widgets.element_pip_row import ElementPipRow
+from app.ui.widgets.monster_entry import MonsterEntryRow
 
 
 @pytest.fixture(scope="module", autouse=True)
@@ -102,3 +105,40 @@ class TestConsumerCardRow:
         qtbot.addWidget(w)
         w.set_cards((_card(3, "C"),))
         assert len(w._labels) == 1
+
+
+def _press(widget) -> None:
+    pos = QPointF(widget.rect().center())
+    ev = QMouseEvent(
+        QEvent.Type.MouseButtonPress,
+        pos,
+        Qt.MouseButton.LeftButton,
+        Qt.MouseButton.LeftButton,
+        Qt.KeyboardModifier.NoModifier,
+    )
+    QApplication.sendEvent(widget, ev)
+
+
+class TestMonsterEntryRow:
+    def test_press_pending_initialized_false(self, qtbot):
+        row = MonsterEntryRow(1, "Mammott", "", monster_type="natural")
+        qtbot.addWidget(row)
+        assert row._press_pending is False
+
+    def test_consecutive_clicks_both_emit(self, qtbot):
+        """Regression: _press_pending must reset so a second click after the
+        debounce window still fires (matters when handle_close_out hits its
+        early-return path and no state_changed rebuilds the row)."""
+        row = MonsterEntryRow(42, "Mammott", "", monster_type="natural")
+        qtbot.addWidget(row)
+        emitted: list[int] = []
+        row.clicked.connect(emitted.append)
+
+        _press(row)
+        qtbot.wait(200)  # debounce window is 150ms
+        assert emitted == [42]
+        assert row._press_pending is False, "flag must reset after emit"
+
+        _press(row)
+        qtbot.wait(200)
+        assert emitted == [42, 42]

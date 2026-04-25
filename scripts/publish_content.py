@@ -215,7 +215,13 @@ def main() -> int:
     print("  Step 5: Running publish validation")
     print(f"{'='*60}")
 
-    checks = run_publish_validation(built_db_path, assets, review_items)
+    checks = run_publish_validation(
+        built_db_path,
+        assets,
+        review_items,
+        egg_elements_path=NORMALIZED_DIR / "egg_elements.json",
+        schema_path=ROOT / "pipeline" / "schemas" / "egg_elements.schema.json",
+    )
     blockers = [c for c in checks if c.status == "fail" and c.blocking_level == "publish_blocker"]
     warnings = [c for c in checks if c.status == "warn"]
 

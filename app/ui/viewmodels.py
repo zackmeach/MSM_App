@@ -7,6 +7,17 @@ from enum import Enum
 
 
 @dataclass(frozen=True)
+class ConsumerCardViewModel:
+    """One active-target monster that consumes the egg in this row."""
+
+    monster_id: int
+    name: str
+    image_path: str
+    monster_type: str  # "wublin" | "celestial" | "amber" — drives ring color
+    is_placeholder: bool = False
+
+
+@dataclass(frozen=True)
 class BreedListRowViewModel:
     egg_type_id: int
     name: str
@@ -16,6 +27,8 @@ class BreedListRowViewModel:
     total_needed: int
     remaining: int
     progress_fraction: float
+    elements: tuple[str, ...] = ()
+    consumer_cards: tuple[ConsumerCardViewModel, ...] = ()
 
 
 @dataclass(frozen=True)

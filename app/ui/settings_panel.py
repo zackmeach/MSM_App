@@ -307,15 +307,28 @@ class SettingsPanel(QWidget):
         self._ui_apply_btn.setEnabled(True)
 
     def set_ui_options(self, theme: str, font_size_label: str) -> None:
-        """Set the combo box selections (e.g. on page load)."""
+        """Set the combo box selections (e.g. on page load).
+
+        Falls back to index 0 if the stored label doesn't match any item
+        (e.g. after a theme or font-size option is renamed/removed).
+        """
+        matched = False
         for i in range(self._theme_combo.count()):
             if self._theme_combo.itemData(i) == theme:
                 self._theme_combo.setCurrentIndex(i)
+                matched = True
                 break
+        if not matched:
+            self._theme_combo.setCurrentIndex(0)
+
+        matched = False
         for i in range(self._font_combo.count()):
             if self._font_combo.itemData(i) == font_size_label:
                 self._font_combo.setCurrentIndex(i)
+                matched = True
                 break
+        if not matched:
+            self._font_combo.setCurrentIndex(0)
 
     # ── Data View card ─────────────────────────────────────────────
 

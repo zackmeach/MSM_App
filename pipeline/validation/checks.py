@@ -261,12 +261,87 @@ def check_placeholder_count(assets: list[dict]) -> ValidationCheck:
     )
 
 
+def check_egg_elements_schema(
+    egg_elements_path: Path,
+    schema_path: Path,
+) -> ValidationCheck:
+    """Validate egg_elements.json against its JSON Schema.
+
+    A typo like `naturl-cold` in the data file silently produces a broken
+    pixmap at runtime; this check catches it at publish time.
+    """
+    import json
+
+    if not egg_elements_path.exists():
+        return ValidationCheck(
+            check_id="data.egg_elements_schema",
+            owner_module="pipeline.validation.data",
+            scope="egg_elements.json",
+            status="pass",
+            severity="warning",
+            blocking_level="warning_only",
+            message="No egg_elements.json present — no element pips will render",
+        )
+
+    try:
+        import jsonschema  # type: ignore
+    except ImportError:
+        return ValidationCheck(
+            check_id="data.egg_elements_schema",
+            owner_module="pipeline.validation.data",
+            scope="egg_elements.json",
+            status="warn",
+            severity="warning",
+            blocking_level="warning_only",
+            message="jsonschema not installed — skipping element schema check",
+        )
+
+    try:
+        with open(schema_path, encoding="utf-8") as f:
+            schema = json.load(f)
+        with open(egg_elements_path, encoding="utf-8") as f:
+            data = json.load(f)
+        jsonschema.validate(data, schema)
+        return ValidationCheck(
+            check_id="data.egg_elements_schema",
+            owner_module="pipeline.validation.data",
+            scope="egg_elements.json",
+            status="pass",
+            severity="error",
+            blocking_level="publish_blocker",
+            message="egg_elements.json conforms to schema",
+        )
+    except jsonschema.ValidationError as exc:
+        return ValidationCheck(
+            check_id="data.egg_elements_schema",
+            owner_module="pipeline.validation.data",
+            scope="egg_elements.json",
+            status="fail",
+            severity="error",
+            blocking_level="publish_blocker",
+            message=f"egg_elements.json schema violation: {exc.message} at {list(exc.path)}",
+        )
+    except Exception as exc:
+        return ValidationCheck(
+            check_id="data.egg_elements_schema",
+            owner_module="pipeline.validation.data",
+            scope="egg_elements.json",
+            status="fail",
+            severity="error",
+            blocking_level="publish_blocker",
+            message=f"Schema check failed: {exc}",
+        )
+
+
 def run_publish_validation(
     db_path: Path,
     assets: list[dict],
     review_items: list[dict],
+    *,
+    egg_elements_path: Path | None = None,
+    schema_path: Path | None = None,
 ) -> list[ValidationCheck]:
-    return [
+    checks = [
         check_db_integrity(db_path),
         check_required_tables(db_path),
         check_required_metadata(db_path),
@@ -275,3 +350,6 @@ def run_publish_validation(
         check_no_blocking_review_items(review_items),
         check_placeholder_count(assets),
     ]
+    if egg_elements_path and schema_path:
+        checks.append(check_egg_elements_schema(egg_elements_path, schema_path))
+    return checks

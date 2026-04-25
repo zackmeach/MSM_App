@@ -65,6 +65,29 @@ def open_content_db(db_path: Path) -> sqlite3.Connection:
     return conn
 
 
+def _get_content_version(db_path: Path) -> str:
+    """Read content_version from a content.db, returning '' on any failure."""
+    try:
+        conn = sqlite3.connect(str(db_path))
+        row = conn.execute(
+            "SELECT value FROM update_metadata WHERE key = 'content_version'"
+        ).fetchone()
+        conn.close()
+        return row[0] if row else ""
+    except Exception:
+        return ""
+
+
+def _parse_version(s: str) -> tuple[int, ...] | None:
+    """Parse a dotted-int version like '1.2.3' into a tuple. None if unparseable."""
+    if not s:
+        return None
+    try:
+        return tuple(int(part) for part in s.split("."))
+    except ValueError:
+        return None
+
+
 def _init_content_db(data_dir: Path, bundle_dir: Path) -> sqlite3.Connection:
     db_path = data_dir / "content.db"
     bundled = bundle_dir / "db" / "content.db"
@@ -76,6 +99,25 @@ def _init_content_db(data_dir: Path, bundle_dir: Path) -> sqlite3.Connection:
         else:
             logger.warning(
                 "No bundled content.db found at %s — creating empty", bundled
+            )
+    elif bundled.exists():
+        # Replace installed copy only when the bundle is strictly newer.
+        # The in-app updater writes to the same path, so an inequality
+        # check would silently downgrade user-applied updates on relaunch.
+        installed_ver = _get_content_version(db_path)
+        bundled_ver = _get_content_version(bundled)
+        installed_parsed = _parse_version(installed_ver)
+        bundled_parsed = _parse_version(bundled_ver)
+        if (
+            bundled_parsed is not None
+            and installed_parsed is not None
+            and bundled_parsed > installed_parsed
+        ):
+            shutil.copy2(bundled, db_path)
+            logger.info(
+                "Replaced installed content.db (was %s, bundled %s)",
+                installed_ver or "unknown",
+                bundled_ver,
             )
 
     return open_content_db(db_path)

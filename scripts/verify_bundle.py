@@ -1,7 +1,7 @@
 """Verify that the resource bundle contains all expected files.
 
 Checks:
-- Core resources (content.db, placeholder, icon, ding audio)
+- Core resources (content.db, placeholder, icon)
 - Every image path referenced in content.db exists under resources/
 - Row count assertions match seeded expectations
 
@@ -31,7 +31,6 @@ def main() -> int:
     core_files = [
         RESOURCES / "images" / "ui" / "placeholder.png",
         RESOURCES / "images" / "ui" / "app_icon.ico",
-        RESOURCES / "audio" / "ding.wav",
     ]
     for f in core_files:
         if not f.exists():

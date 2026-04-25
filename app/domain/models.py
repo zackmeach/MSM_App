@@ -85,6 +85,7 @@ class EggType:
     source_fingerprint: str = ""
     asset_source: str = "generated_placeholder"
     asset_sha256: str = ""
+    elements: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -127,6 +128,7 @@ class BreedListRow:
     total_needed: int
     bred_count: int
     remaining: int
+    elements: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)

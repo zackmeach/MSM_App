@@ -332,7 +332,9 @@ class TestPostUpdateReconciliation:
         )
         qtbot.addWidget(window)
 
-        window._run_post_update_reconciliation(conn_v2)
+        # Reconciliation now lives on AppService; rebind first so caches use the new content DB.
+        window._service.rebind_content(conn_v2)
+        window._service.reconcile_after_content_update()
 
         updated_target = target_repo.fetch_all_targets(conn_us)[0]
         assert updated_target.monster_id == new_zynth_id

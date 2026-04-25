@@ -89,8 +89,11 @@ def main() -> int:
         description="Build and publish content artifacts from normalized data.",
     )
     parser.add_argument(
-        "--content-version", required=True,
-        help="Semver version string for this content release (e.g., 1.0.0)",
+        "--content-version", default=None,
+        help=(
+            "Semver version string for this content release. "
+            "Defaults to pipeline/normalized/version.txt."
+        ),
     )
     parser.add_argument(
         "--output-dir", default="content",
@@ -110,7 +113,8 @@ def main() -> int:
     )
     args = parser.parse_args()
 
-    content_version = args.content_version
+    from pipeline.version import load_content_version
+    content_version = args.content_version or load_content_version()
     output_dir = Path(args.output_dir)
     baseline_db = Path(args.baseline_db) if args.baseline_db else None
     base_url = args.base_url
@@ -211,7 +215,13 @@ def main() -> int:
     print("  Step 5: Running publish validation")
     print(f"{'='*60}")
 
-    checks = run_publish_validation(built_db_path, assets, review_items)
+    checks = run_publish_validation(
+        built_db_path,
+        assets,
+        review_items,
+        egg_elements_path=NORMALIZED_DIR / "egg_elements.json",
+        schema_path=ROOT / "pipeline" / "schemas" / "egg_elements.schema.json",
+    )
     blockers = [c for c in checks if c.status == "fail" and c.blocking_level == "publish_blocker"]
     warnings = [c for c in checks if c.status == "warn"]
 

@@ -22,7 +22,6 @@ from PySide6.QtWidgets import (
 import logging
 
 from app.assets import resolver
-from app.repositories import settings_repo
 from app.services.app_service import AppService
 from app.services.audio_player import AudioPlayer
 from app.ui.catalog_view import CatalogView
@@ -53,7 +52,7 @@ class MainWindow(QMainWindow):
         )
 
         self._service = AppService(context.conn_content, context.conn_userstate)
-        self._audio = AudioPlayer(context.bundle_dir / "audio" / "ding.wav")
+        self._audio = AudioPlayer(context.bundle_dir / "audio")
         self._updater = UpdateService(context.data_dir, context.conn_content)
         self._update_state = SettingsUpdateState.idle()
         self._load_ui_prefs()
@@ -120,6 +119,9 @@ class MainWindow(QMainWindow):
         self._stack.addWidget(self._catalog)
         self._stack.addWidget(self._settings)
         root.addWidget(self._stack, stretch=1)
+
+        # Inject audio so egg-row clicks and close-outs play sfx.
+        self._home.breed_list_panel.set_audio(self._audio)
 
         self._toast = ToastWidget(central)
 
@@ -190,7 +192,9 @@ class MainWindow(QMainWindow):
         self._btn_redo.setEnabled(state.can_redo)
 
     def _on_completion(self, egg_type_id: int) -> None:
-        self._audio.play_ding()
+        # The row's own animation plays the closeout sound at the start of its
+        # grow/collapse sequence — no separate ding here, since both firing at
+        # the same instant overlap and muddy the audio cue.
         self._home.breed_list_panel.on_completion(egg_type_id)
 
     def _navigate_to(self, index: int) -> None:
@@ -262,7 +266,7 @@ class MainWindow(QMainWindow):
         self._service.rebind_content(new_conn)
         self._updater.rebind_content(new_conn)
 
-        self._run_post_update_reconciliation(new_conn)
+        self._service.reconcile_after_content_update()
 
         self._service.clear_undo_redo()
 
@@ -283,95 +287,6 @@ class MainWindow(QMainWindow):
             SettingsUpdateState.error(f"Update failed during apply: {error_detail}")
         )
 
-    def _run_post_update_reconciliation(self, conn_content: 'sqlite3.Connection') -> None:
-        """Clip/purge userstate progress that exceeds updated requirements."""
-        from app.repositories import monster_repo, target_repo
-
-        targets = target_repo.fetch_all_targets(self._ctx.conn_userstate)
-        requirements_map = monster_repo.fetch_all_requirements(conn_content)
-        egg_types = monster_repo.fetch_egg_types_map(conn_content)
-        egg_keys_by_id = {egg.id: egg.content_key for egg in egg_types.values()}
-        with self._ctx.conn_userstate:
-            for target in targets:
-                if not target.monster_key:
-                    logger.warning(
-                        "Dropping target %s during reconciliation because it has no monster_key",
-                        target.id,
-                    )
-                    target_repo.delete_progress_for_target(self._ctx.conn_userstate, target.id)
-                    target_repo.delete_target(self._ctx.conn_userstate, target.id)
-                    continue
-
-                monster = monster_repo.fetch_monster_by_key(conn_content, target.monster_key)
-                if monster is None or monster.is_deprecated:
-                    target_repo.delete_progress_for_target(self._ctx.conn_userstate, target.id)
-                    target_repo.delete_target(self._ctx.conn_userstate, target.id)
-                    continue
-
-                if monster.id != target.monster_id:
-                    target_repo.update_target_identity(
-                        self._ctx.conn_userstate,
-                        target.id,
-                        monster.id,
-                        monster.content_key,
-                    )
-
-                progress_rows = target_repo.fetch_progress_for_target(
-                    self._ctx.conn_userstate, target.id
-                )
-                progress_by_key = {
-                    row.egg_key: row for row in progress_rows if row.egg_key
-                }
-                progress_by_id = {
-                    row.egg_type_id: row for row in progress_rows if not row.egg_key
-                }
-
-                required_keys: set[str] = set()
-                for requirement in requirements_map.get(monster.id, []):
-                    egg_key = egg_keys_by_id.get(requirement.egg_type_id, "")
-                    if not egg_key:
-                        continue
-                    required_keys.add(egg_key)
-                    existing = progress_by_key.get(egg_key)
-                    if existing is None:
-                        existing = progress_by_id.get(requirement.egg_type_id)
-
-                    if existing is None:
-                        target_repo.insert_progress_row(
-                            self._ctx.conn_userstate,
-                            target.id,
-                            requirement.egg_type_id,
-                            requirement.quantity,
-                            egg_key=egg_key,
-                        )
-                        continue
-
-                    satisfied_count = min(existing.satisfied_count, requirement.quantity)
-                    target_repo.update_progress_identity(
-                        self._ctx.conn_userstate,
-                        target.id,
-                        existing.egg_type_id,
-                        requirement.egg_type_id,
-                        requirement.quantity,
-                        egg_key,
-                    )
-                    if satisfied_count != existing.satisfied_count:
-                        target_repo.set_progress(
-                            self._ctx.conn_userstate,
-                            target.id,
-                            requirement.egg_type_id,
-                            satisfied_count,
-                        )
-
-                for row in progress_rows:
-                    row_key = row.egg_key or egg_keys_by_id.get(row.egg_type_id, "")
-                    if row_key not in required_keys:
-                        self._ctx.conn_userstate.execute(
-                            "DELETE FROM target_requirement_progress "
-                            "WHERE active_target_id = ? AND egg_type_id = ?",
-                            (target.id, row.egg_type_id),
-                        )
-
     def _apply_stylesheet(self) -> None:
         self.setStyleSheet(themes.build_stylesheet())
 
@@ -379,12 +294,8 @@ class MainWindow(QMainWindow):
 
     def _load_ui_prefs(self) -> None:
         """Load saved theme/font preferences and activate them."""
-        saved_theme = settings_repo.get(
-            self._ctx.conn_userstate, "ui_theme", themes.DEFAULT_THEME
-        )
-        saved_font = settings_repo.get(
-            self._ctx.conn_userstate, "ui_font_size", "Default"
-        )
+        saved_theme = self._service.get_ui_pref("ui_theme", themes.DEFAULT_THEME)
+        saved_font = self._service.get_ui_pref("ui_font_size", "Default")
         font_offset = 0
         for label, offset in themes.FONT_SIZE_OPTIONS:
             if label == saved_font:
@@ -402,8 +313,8 @@ class MainWindow(QMainWindow):
 
         themes.set_active(theme_name, font_offset)
 
-        settings_repo.set_value(self._ctx.conn_userstate, "ui_theme", theme_name)
-        settings_repo.set_value(self._ctx.conn_userstate, "ui_font_size", font_size_label)
+        self._service.set_ui_pref("ui_theme", theme_name)
+        self._service.set_ui_pref("ui_font_size", font_size_label)
 
         self._apply_stylesheet()
 

@@ -10,9 +10,6 @@ match the active theme.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-from typing import Dict, Tuple
-
 # ── Theme colour palettes ────────────────────────────────────────────
 
 _DEEP_ISLAND_NIGHT: dict[str, str] = {
@@ -171,6 +168,25 @@ def placeholder_tones_2(monster_type: str) -> tuple[str, str]:
     t = THEMES[_active_theme]
     fallback = (t["thumb_fallback_bg"], t["accent"])
     return _PLACEHOLDER_2.get(_active_theme, {}).get(monster_type, fallback)
+
+
+# ── Element-sigil asset helpers ──────────────────────────────────────
+
+def element_icon_path(element_key: str) -> str:
+    """Relative path under resources/ for an element sigil PNG.
+
+    The path is resolved (cache > bundle > placeholder) by ``app.assets.resolver``.
+    """
+    return f"images/elements/{element_key}.png"
+
+
+def island_icon_path(island_key: str) -> str:
+    """Relative path under resources/ for an island/map icon PNG.
+
+    Used for the Active Monsters section headers (wublin-island, celestial-island,
+    amber-island).
+    """
+    return f"images/islands/{island_key}.png"
 
 
 # ── Font-size helpers ────────────────────────────────────────────────
@@ -351,10 +367,11 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         }}
         #sectionIcon {{
             background-color: {t['elevated']};
-            border-radius: 8px;
-            font-size: {sz(16)};
-            min-width: 40px; max-width: 40px;
-            min-height: 40px; max-height: 40px;
+            border-radius: 12px;
+            font-size: {sz(20)};
+            min-width: 56px; max-width: 56px;
+            min-height: 56px; max-height: 56px;
+            padding: 0px;
         }}
         #sectionLabel {{
             font-size: {sz(16)};
@@ -366,6 +383,9 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
             font-size: {sz(11)};
             font-weight: 700;
             letter-spacing: 2px;
+            /* Qt's sizeHint doesn't include trailing letter-spacing, so
+               the last letter clips at the right edge without padding. */
+            padding-right: 4px;
         }}
         #sectionBody {{
             background-color: {t['bg_sunken']};
@@ -408,7 +428,10 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
             border: 1px solid {t['border']};
             border-radius: 10px;
         }}
-        #eggRow:hover {{ background-color: {t['interactive']}; }}
+        #eggRow:hover {{
+            background-color: {t['interactive']};
+            border: 1px solid {t['card_hover_border']};
+        }}
         #eggIconContainer {{
             background-color: {t['elevated']};
             border-radius: 8px;
@@ -429,8 +452,12 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         #inworkEntry {{
             background-color: transparent;
             border-radius: 8px;
+            border-left: 3px solid transparent;
         }}
-        #inworkEntry:hover {{ background-color: {t['interactive']}; }}
+        #inworkEntry:hover {{
+            background-color: {t['interactive']};
+            border-left: 3px solid {t['accent']};
+        }}
         #inworkEntryName {{
             font-size: {sz(13)};
             color: {t['text1']};

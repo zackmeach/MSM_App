@@ -18,6 +18,7 @@ from PySide6.QtWidgets import (
 from app.ui.widgets.egg_row_widget import EggRowWidget
 
 if TYPE_CHECKING:
+    from app.services.audio_player import AudioPlayer
     from app.ui.viewmodels import BreedListRowViewModel
 
 
@@ -29,7 +30,12 @@ class BreedListPanel(QWidget):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self._row_widgets: dict[int, EggRowWidget] = {}
+        self._audio: "AudioPlayer | None" = None
         self._build_ui()
+
+    def set_audio(self, audio: "AudioPlayer") -> None:
+        """Inject the audio player so newly-built rows can play click/closeout sfx."""
+        self._audio = audio
 
     def _build_ui(self) -> None:
         layout = QVBoxLayout(self)
@@ -101,7 +107,14 @@ class BreedListPanel(QWidget):
         incoming_ids = {r.egg_type_id for r in rows}
         for eid in list(self._row_widgets):
             if eid not in incoming_ids:
-                w = self._row_widgets.pop(eid)
+                w = self._row_widgets[eid]
+                # Don't tear down a row mid-completion-animation — it removes
+                # the QPropertyAnimation's target and Qt logs warnings.  The
+                # widget will emit completion_finished when the animation ends
+                # and we'll clean it up there.
+                if w.is_completing:
+                    continue
+                self._row_widgets.pop(eid)
                 self._list_layout.removeWidget(w)
                 w.deleteLater()
 
@@ -109,8 +122,9 @@ class BreedListPanel(QWidget):
             if row_vm.egg_type_id in self._row_widgets:
                 self._row_widgets[row_vm.egg_type_id].update_data(row_vm)
             else:
-                w = EggRowWidget(row_vm)
+                w = EggRowWidget(row_vm, audio=self._audio)
                 w.clicked.connect(self._on_row_clicked)
+                w.completion_finished.connect(self._on_row_completion_finished)
                 self._row_widgets[row_vm.egg_type_id] = w
 
             w = self._row_widgets[row_vm.egg_type_id]
@@ -138,6 +152,13 @@ class BreedListPanel(QWidget):
 
     def _on_row_clicked(self, egg_type_id: int) -> None:
         self.increment_requested.emit(egg_type_id)
+
+    def _on_row_completion_finished(self, egg_type_id: int) -> None:
+        """Tear down a completed row after its close-out animation finishes."""
+        w = self._row_widgets.pop(egg_type_id, None)
+        if w is not None:
+            self._list_layout.removeWidget(w)
+            w.deleteLater()
 
     def _on_sort_changed(self) -> None:
         order = self._sort_combo.currentData()

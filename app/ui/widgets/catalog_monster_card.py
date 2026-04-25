@@ -73,16 +73,30 @@ class CatalogMonsterCard(QWidget):
         self._badge.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._badge.hide()
 
+    @property
+    def monster_id(self) -> int:
+        return self._monster_id
+
     def set_active_count(self, count: int) -> None:
         """Show/hide the iOS-style notification badge with the active count."""
-        if count > 0:
-            self._badge.setText(str(count))
-            self._badge.adjustSize()
-            self._badge.move(self.width() - self._badge.width() - 6, 6)
-            self._badge.show()
-            self._badge.raise_()
-        else:
+        if count <= 0:
             self._badge.hide()
+            return
+
+        self._badge.setText(str(count))
+        # adjustSize() / sizeHint() return the bare-text size (~6px) until a
+        # full paint cycle realises QSS. Compute the rendered size directly
+        # from the QSS spec instead — min-width 20+offset, padding 0 5px
+        # left/right, height locked at 20+offset. Add a few extra px for
+        # multi-digit counts so they aren't truncated.
+        text_w = self._badge.fontMetrics().horizontalAdvance(str(count))
+        badge_w = max(scaled(20) + 10, text_w + 10)
+        badge_h = scaled(20)
+        self._badge.setFixedSize(badge_w, badge_h)
+        # 10px inset keeps the badge clear of the card's 12px border-radius.
+        self._badge.move(self.width() - badge_w - 10, 10)
+        self._badge.show()
+        self._badge.raise_()
 
     def _set_initials(self, name: str) -> None:
         initials = "".join(part[0] for part in name.split()[:2]).upper()

@@ -141,7 +141,7 @@ class CatalogBrowserPanel(QWidget):
     def update_active_counts(self, counts: dict[int, int]) -> None:
         """Update badge counts on visible cards without rebuilding the grid."""
         for card in self._cards:
-            card.set_active_count(counts.get(card._monster_id, 0))
+            card.set_active_count(counts.get(card.monster_id, 0))
 
     # ── Internal ──
 

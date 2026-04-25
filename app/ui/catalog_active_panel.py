@@ -7,6 +7,8 @@ from typing import TYPE_CHECKING
 from PySide6.QtCore import Qt, Signal
 from PySide6.QtWidgets import QHBoxLayout, QLabel, QScrollArea, QVBoxLayout, QWidget
 
+from app.assets import resolver
+from app.ui.themes import island_icon_path
 from app.ui.widgets.monster_entry import MonsterEntryRow
 from app.ui.widgets.section_card import SectionCard
 from app.ui.widgets.tip_card import TipCard
@@ -20,16 +22,19 @@ _TYPE_CONFIG = {
     "wublin": {
         "label": "Wublins",
         "icon": "\u03df",
+        "island": "wublin-island",
         "empty_text": "All Wublins still slumbering on their pedestals\u2026",
     },
     "celestial": {
         "label": "Celestials",
         "icon": "\u2726",
+        "island": "celestial-island",
         "empty_text": "The Celestial realm awaits its first spark\u2026",
     },
     "amber": {
         "label": "Amber Vessels",
         "icon": "\u25c8",
+        "island": "amber-island",
         "empty_text": "No amber echoes stirring in the deep\u2026",
     },
 }
@@ -80,8 +85,10 @@ class CatalogActivePanel(QWidget):
 
         for mtype in _TYPE_ORDER:
             cfg = _TYPE_CONFIG[mtype]
+            island_path = resolver.resolve(island_icon_path(cfg["island"]))
             section = SectionCard(
                 cfg["label"], cfg["icon"], cfg["empty_text"],
+                icon_image_path=island_path or None,
                 interactive=True,
             )
             self._sections[mtype] = section

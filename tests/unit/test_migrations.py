@@ -406,6 +406,80 @@ class TestRepositoryV2Fields:
 # ── Startup with both old and new DBs ───────────────────────────────
 
 
+class TestMigrationAtomicity:
+    """Verify migrations apply atomically — partial failure rolls back fully."""
+
+    def test_partial_migration_failure_rolls_back(self, tmp_path):
+        """A migration that fails midway must NOT leave partial DDL behind.
+
+        Without atomicity, sqlite3.Connection.executescript() commits each
+        statement individually, so a multi-statement migration that fails on
+        statement N persists statements 1..N-1 but never inserts the version
+        row. The next launch re-runs the whole file and aborts on
+        'duplicate column'. This test makes that regression visible.
+        """
+        conn = _make_content_db_v1_only()
+
+        migrations_dir = tmp_path / "broken_migrations"
+        migrations_dir.mkdir()
+        # First statement is valid; the second references a missing table.
+        # If the migration is atomic, neither persists.
+        (migrations_dir / "0002_partial_failure.sql").write_text(
+            "ALTER TABLE monsters ADD COLUMN partial_marker TEXT;\n"
+            "ALTER TABLE nonexistent_table ADD COLUMN never_runs TEXT;\n",
+            encoding="utf-8",
+        )
+
+        with pytest.raises(sqlite3.OperationalError):
+            run_migrations(conn, "content", migrations_dir=migrations_dir)
+
+        cols = {r[1] for r in conn.execute("PRAGMA table_info(monsters)").fetchall()}
+        assert "partial_marker" not in cols, (
+            "Migration applied non-atomically: the first ALTER persisted "
+            "after a later statement failed. Re-running the migration will "
+            "abort with 'duplicate column'."
+        )
+
+        max_version = conn.execute(
+            "SELECT COALESCE(MAX(version), 0) FROM schema_migrations"
+        ).fetchone()[0]
+        assert max_version == 1, "Failed migration must not be recorded as applied"
+
+    def test_atomic_migration_can_be_retried_after_failure(self, tmp_path):
+        """After a rolled-back failed migration, a fixed version applies cleanly.
+
+        This is the practical user-facing benefit: a release with a buggy
+        migration doesn't brick the install — fixing the migration and
+        relaunching just works.
+        """
+        conn = _make_content_db_v1_only()
+
+        broken_dir = tmp_path / "broken"
+        broken_dir.mkdir()
+        (broken_dir / "0002_broken.sql").write_text(
+            "ALTER TABLE monsters ADD COLUMN good_col TEXT;\n"
+            "ALTER TABLE missing_table ADD COLUMN bad_col TEXT;\n",
+            encoding="utf-8",
+        )
+
+        with pytest.raises(sqlite3.OperationalError):
+            run_migrations(conn, "content", migrations_dir=broken_dir)
+
+        # Operator ships a fix in 0002_fixed.sql.
+        fixed_dir = tmp_path / "fixed"
+        fixed_dir.mkdir()
+        (fixed_dir / "0002_fixed.sql").write_text(
+            "ALTER TABLE monsters ADD COLUMN good_col TEXT;\n",
+            encoding="utf-8",
+        )
+
+        applied = run_migrations(conn, "content", migrations_dir=fixed_dir)
+        assert applied == 1
+
+        cols = {r[1] for r in conn.execute("PRAGMA table_info(monsters)").fetchall()}
+        assert "good_col" in cols
+
+
 class TestMixedSchemaStartup:
     def test_old_content_new_userstate(self):
         """Old content v1, new userstate v2 -- backfill can't populate keys but doesn't crash."""

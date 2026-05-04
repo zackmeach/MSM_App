@@ -1,4 +1,9 @@
-"""Simple numbered-SQL migration runner for both content and userstate DBs."""
+"""Simple numbered-SQL migration runner for both content and userstate DBs.
+
+Migration .sql files must NOT contain their own BEGIN/COMMIT/ROLLBACK. The
+runner wraps each file in an explicit transaction so partial failures roll
+back fully — an inner COMMIT would close that transaction prematurely.
+"""
 
 from __future__ import annotations
 
@@ -53,8 +58,14 @@ def run_migrations(
         sql = sql_file.read_text(encoding="utf-8")
         logger.info("Applying migration %s/%s", db_name, sql_file.name)
 
+        # Wrap the migration in an explicit transaction so partial failures
+        # roll back atomically. In legacy autocommit mode each statement in
+        # executescript() is committed individually, so without the leading
+        # BEGIN a multi-statement migration that fails on statement N leaves
+        # statements 1..N-1 persisted while the version row is never written,
+        # bricking startup with "duplicate column" on the next launch.
         try:
-            conn.executescript(sql)
+            conn.executescript("BEGIN;\n" + sql)
             conn.execute(
                 "INSERT INTO schema_migrations(version, name, applied_at) VALUES(?, ?, ?)",
                 (version, sql_file.stem, datetime.now(timezone.utc).isoformat()),
@@ -62,6 +73,10 @@ def run_migrations(
             conn.commit()
             applied += 1
         except sqlite3.Error:
+            try:
+                conn.rollback()
+            except sqlite3.Error:
+                pass
             logger.exception("Migration %s failed — aborting", sql_file.name)
             raise
 

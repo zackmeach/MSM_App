@@ -175,7 +175,11 @@ class AppService(QObject):
         requirements_map = self._requirements_cache
         egg_keys_by_id = {egg.id: egg.content_key for egg in self._egg_types_map.values()}
 
-        with self._conn_userstate:
+        # The whole pass must be atomic: if any write fails, every write since
+        # the start of the loop must roll back. Use the canonical helper rather
+        # than relying on the connection's isolation_level for transactional
+        # semantics.
+        with transaction(self._conn_userstate):
             for target in targets:
                 if not target.monster_key:
                     logger.warning(

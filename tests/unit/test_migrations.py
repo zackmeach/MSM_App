@@ -173,8 +173,8 @@ class TestContentMigrations:
     def test_schema_migrations_records_latest(self):
         conn = _make_content_db()
         row = conn.execute("SELECT MAX(version) FROM schema_migrations").fetchone()
-        # Latest migration: 0003 added the egg_type_elements table.
-        assert row[0] == 3
+        # Latest migration: 0004 added partial unique indexes on content_key.
+        assert row[0] == 4
 
     def test_v3_adds_egg_type_elements_table(self):
         conn = _make_content_db()
@@ -515,4 +515,100 @@ class TestMixedSchemaStartup:
         backfill_stable_keys(content, userstate)
 
         row = content.execute("SELECT content_key FROM monsters WHERE name='Zynth'").fetchone()
+        assert row[0] == "monster:wublin:zynth"
+
+
+# ── content_key uniqueness (migration 0004) ─────────────────────────
+
+
+class TestContentKeyUniqueness:
+    """Migration 0004 adds partial UNIQUE indexes on monsters.content_key
+    and egg_types.content_key (excluding empty-string placeholders).
+
+    These tests pin down the integrity guarantee: populated keys must be
+    unique, but multiple empty-string rows can still coexist while the
+    launch-time backfill in app/bootstrap.py runs.
+    """
+
+    def test_monsters_unique_index_exists(self):
+        conn = _make_content_db()
+        idxs = {
+            r[0]
+            for r in conn.execute(
+                "SELECT name FROM sqlite_master WHERE type='index'"
+            ).fetchall()
+        }
+        assert "uq_monsters_content_key" in idxs
+
+    def test_egg_types_unique_index_exists(self):
+        conn = _make_content_db()
+        idxs = {
+            r[0]
+            for r in conn.execute(
+                "SELECT name FROM sqlite_master WHERE type='index'"
+            ).fetchall()
+        }
+        assert "uq_egg_types_content_key" in idxs
+
+    def test_duplicate_populated_monster_key_rejected(self):
+        conn = _make_content_db()
+        _seed_monster(conn, "Zynth", "wublin", content_key="monster:wublin:zynth")
+        with pytest.raises(sqlite3.IntegrityError):
+            # Second insert: same content_key, different name (so the
+            # name UNIQUE constraint doesn't trip first).
+            conn.execute(
+                "INSERT INTO monsters(name, monster_type, image_path, wiki_slug, is_placeholder, content_key) "
+                "VALUES('Zynth Duplicate', 'wublin', '', '', 1, 'monster:wublin:zynth')"
+            )
+            conn.commit()
+
+    def test_duplicate_empty_monster_keys_allowed(self):
+        """Multiple monsters with content_key='' must coexist — the partial
+        index excludes empty values so that backfill can populate them."""
+        conn = _make_content_db()
+        _seed_monster(conn, "Mon1", "wublin", content_key="")
+        _seed_monster(conn, "Mon2", "wublin", content_key="")
+        rows = conn.execute(
+            "SELECT name FROM monsters WHERE content_key='' ORDER BY id"
+        ).fetchall()
+        assert [r[0] for r in rows] == ["Mon1", "Mon2"]
+
+    def test_duplicate_populated_egg_key_rejected(self):
+        conn = _make_content_db()
+        _seed_egg(conn, "Noggin", content_key="egg:noggin")
+        with pytest.raises(sqlite3.IntegrityError):
+            conn.execute(
+                "INSERT INTO egg_types(name, breeding_time_seconds, breeding_time_display, "
+                "egg_image_path, is_placeholder, content_key) "
+                "VALUES('Noggin Duplicate', 5, '5s', '', 1, 'egg:noggin')"
+            )
+            conn.commit()
+
+    def test_duplicate_empty_egg_keys_allowed(self):
+        conn = _make_content_db()
+        _seed_egg(conn, "Egg1", content_key="")
+        _seed_egg(conn, "Egg2", content_key="")
+        rows = conn.execute(
+            "SELECT name FROM egg_types WHERE content_key='' ORDER BY id"
+        ).fetchall()
+        assert [r[0] for r in rows] == ["Egg1", "Egg2"]
+
+    def test_default_seed_loads_under_unique_constraint(self):
+        """Regression: a fresh content DB with the standard fixture rows
+        used elsewhere in the suite must migrate cleanly."""
+        conn = _make_content_db()
+        # Mirror what TestBackfillStableKeys.test_backfill_userstate_keys
+        # does — proves the default fixture is compatible with 0004.
+        us = _make_userstate_db()
+        mid = _seed_monster(conn, "Zynth", "wublin")
+        eid = _seed_egg(conn, "Noggin")
+        conn.execute(
+            "INSERT INTO monster_requirements(monster_id, egg_type_id, quantity) VALUES(?, ?, 3)",
+            (mid, eid),
+        )
+        conn.commit()
+        backfill_stable_keys(conn, us)
+        row = conn.execute(
+            "SELECT content_key FROM monsters WHERE id=?", (mid,)
+        ).fetchone()
         assert row[0] == "monster:wublin:zynth"

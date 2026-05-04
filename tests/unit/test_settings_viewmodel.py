@@ -140,7 +140,7 @@ class TestSettingsViewModelFromAppService:
         svc = AppService(content_conn, userstate_conn)
         vm = svc.get_settings_viewmodel()
         assert vm.content_version == "1.5.0"
-        assert vm.schema_version == "3"
+        assert vm.schema_version == "4"
         assert "2026-06-15" in vm.last_updated_display
         assert len(vm.data_rows) > 0
         assert vm.update_state.status == UpdateStatus.IDLE

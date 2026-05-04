@@ -110,6 +110,97 @@ class TestAC_R04_UndoRestoresCompletePriorState:
             assert rb.total_needed == ra.total_needed
 
 
+class TestAC_R03_NoClipWhenSatisfiedBelowRequired:
+    """SRS AC-R03: when ``satisfied_count <= required_count`` for all progress
+    rows, reconciliation must not clip — the row remains intact.
+
+    The satisfaction-aware model only clips when content requirements drop
+    below already-satisfied counts (e.g., after a content update). Normal
+    close-outs delete progress rows directly and do not invoke reconcile.
+    AC-R03 specifically pins the negative behavior: reconcile is a no-op
+    when nothing needs clipping.
+    """
+
+    def test_no_clip_when_all_below_required(self, content_conn, userstate_conn, id_maps):
+        from app.domain.reconciliation import reconcile
+
+        reqs = monster_repo.fetch_all_requirements(content_conn)
+        AddTargetCommand(
+            id_maps["monsters"]["Galvana"], content_conn, userstate_conn, reqs
+        ).execute()
+        IncrementEggCommand(id_maps["eggs"]["Mammott"], userstate_conn).execute()
+
+        progress = target_repo.fetch_all_progress(userstate_conn)
+        clips = reconcile(progress)
+
+        assert clips == [], "reconcile() must not clip when satisfied < required"
+
+    def test_no_clip_when_exactly_at_required(self, content_conn, userstate_conn, id_maps):
+        from app.domain.reconciliation import reconcile
+
+        reqs = monster_repo.fetch_all_requirements(content_conn)
+        AddTargetCommand(
+            id_maps["monsters"]["Dwumrohl"], content_conn, userstate_conn, reqs
+        ).execute()
+        # Dwumrohl needs 2 Mammott. Bred exactly 2.
+        mammott_id = id_maps["eggs"]["Mammott"]
+        for _ in range(2):
+            IncrementEggCommand(mammott_id, userstate_conn).execute()
+
+        progress = target_repo.fetch_all_progress(userstate_conn)
+        clips = reconcile(progress)
+
+        assert clips == [], "reconcile() must not clip when satisfied == required"
+
+
+class TestAC_R06_SilentRemovalOnCloseOut:
+    """SRS AC-R06: closing a target with partial progress on a now-orphaned
+    egg silently removes the row — no ding, no fade.
+
+    At the command level: CloseOutTargetCommand never sets was_completion,
+    so AppService's completion check (which fires the ding) reads False.
+    At the data level: the orphan progress row is gone after close-out.
+    """
+
+    def test_close_out_has_no_completion_flag(self, userstate_conn):
+        cmd = CloseOutTargetCommand(active_target_id=1, conn_userstate=userstate_conn)
+        assert getattr(cmd, "was_completion", False) is False, (
+            "CloseOutTargetCommand must not signal completion — it would "
+            "trigger the ding on what should be silent orphan removal."
+        )
+
+    def test_partial_progress_orphan_silently_removed(self, content_conn, userstate_conn, id_maps):
+        reqs = monster_repo.fetch_all_requirements(content_conn)
+        # Add two targets so Mammott (shared) survives but Tweedle (Galvana-only) gets orphaned.
+        AddTargetCommand(
+            id_maps["monsters"]["Galvana"], content_conn, userstate_conn, reqs
+        ).execute()
+        AddTargetCommand(
+            id_maps["monsters"]["Dwumrohl"], content_conn, userstate_conn, reqs
+        ).execute()
+
+        # Partial progress on Tweedle (Galvana-only egg).
+        tweedle_id = id_maps["eggs"]["Tweedle"]
+        IncrementEggCommand(tweedle_id, userstate_conn).execute()
+
+        rows_before = _derive(userstate_conn, content_conn)
+        tweedle_before = next((r for r in rows_before if r.name == "Tweedle"), None)
+        assert tweedle_before is not None
+        assert 0 < tweedle_before.bred_count < tweedle_before.total_needed
+
+        # Close out Galvana — Tweedle becomes orphaned.
+        targets = target_repo.fetch_all_targets(userstate_conn)
+        galvana_t = next(t for t in targets if t.monster_id == id_maps["monsters"]["Galvana"])
+        CloseOutTargetCommand(galvana_t.id, userstate_conn).execute()
+
+        # Tweedle row is silently gone.
+        rows_after = _derive(userstate_conn, content_conn)
+        assert not any(r.name == "Tweedle" for r in rows_after)
+        # No orphan progress rows linger in userstate.
+        progress_after = target_repo.fetch_all_progress(userstate_conn)
+        assert not any(p.egg_type_id == tweedle_id for p in progress_after)
+
+
 class TestAC_R05_BredCountNeverExceedsTotal:
     """Invariant: bred_count <= total_needed after every operation."""
 

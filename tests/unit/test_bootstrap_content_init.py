@@ -134,3 +134,58 @@ def test_no_swap_when_installed_unparseable(dirs: tuple[Path, Path]) -> None:
     conn.close()
 
     assert _content_version_of(installed) == "garble"
+
+
+class TestOpenContentDbReadOnly:
+    """Runtime content.db connections must reject writes.
+
+    CLAUDE.md and README both document content.db as read-only at runtime.
+    Without enforcement a stray UPDATE in a future repo function or a buggy
+    migration could silently mutate content.db, breaking the integrity
+    guarantee that user state references remain valid across DB rebuilds.
+    """
+
+    def test_reads_succeed(self, tmp_path: Path) -> None:
+        from app.bootstrap import open_content_db_readonly
+
+        db_path = tmp_path / "content.db"
+        _write_content_db(db_path, "1.0.0")
+
+        conn = open_content_db_readonly(db_path)
+        try:
+            row = conn.execute(
+                "SELECT value FROM update_metadata WHERE key='content_version'"
+            ).fetchone()
+            assert row[0] == "1.0.0"
+        finally:
+            conn.close()
+
+    def test_inserts_raise(self, tmp_path: Path) -> None:
+        from app.bootstrap import open_content_db_readonly
+
+        db_path = tmp_path / "content.db"
+        _write_content_db(db_path, "1.0.0")
+
+        conn = open_content_db_readonly(db_path)
+        try:
+            with pytest.raises(sqlite3.OperationalError):
+                conn.execute(
+                    "INSERT INTO update_metadata(key, value) VALUES('hijack', 'x')"
+                )
+        finally:
+            conn.close()
+
+    def test_updates_raise(self, tmp_path: Path) -> None:
+        from app.bootstrap import open_content_db_readonly
+
+        db_path = tmp_path / "content.db"
+        _write_content_db(db_path, "1.0.0")
+
+        conn = open_content_db_readonly(db_path)
+        try:
+            with pytest.raises(sqlite3.OperationalError):
+                conn.execute(
+                    "UPDATE update_metadata SET value='2.0.0' WHERE key='content_version'"
+                )
+        finally:
+            conn.close()

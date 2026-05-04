@@ -58,9 +58,26 @@ def _setup_logging(data_dir: Path) -> None:
 
 
 def open_content_db(db_path: Path) -> sqlite3.Connection:
-    """Open (or reopen) a content.db file with standard pragmas."""
+    """Open (or reopen) a content.db file writable, with standard pragmas.
+
+    Use this only for migrations, backfill, and updater swap operations.
+    Runtime code must use :func:`open_content_db_readonly` instead.
+    """
     conn = sqlite3.connect(str(db_path))
     conn.execute("PRAGMA journal_mode=WAL")
+    conn.execute("PRAGMA foreign_keys=ON")
+    return conn
+
+
+def open_content_db_readonly(db_path: Path) -> sqlite3.Connection:
+    """Open content.db read-only via SQLite URI mode.
+
+    Any write attempt on the returned connection raises
+    ``sqlite3.OperationalError``. Used at runtime to enforce the documented
+    invariant that content.db is immutable between updater swaps — protects
+    the integrity guarantee that user progress doesn't get orphaned.
+    """
+    conn = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
     conn.execute("PRAGMA foreign_keys=ON")
     return conn
 
@@ -161,6 +178,12 @@ def bootstrap() -> AppContext:
 
     _seed_userstate_defaults(conn_userstate)
     backfill_stable_keys(conn_content, conn_userstate)
+
+    # Migrations and backfill are complete. Reopen content.db read-only for
+    # runtime — the app must never mutate content.db at runtime; the updater
+    # opens its own writable handle when swapping the file.
+    conn_content.close()
+    conn_content = open_content_db_readonly(data_dir / "content.db")
 
     return AppContext(
         data_dir=data_dir,

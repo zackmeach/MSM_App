@@ -257,9 +257,9 @@ class UpdateService(QObject):
         except OSError:
             shutil.move(str(staging), str(current))
 
-        from app.bootstrap import open_content_db
+        from app.bootstrap import open_content_db_readonly
 
-        new_conn = open_content_db(current)
+        new_conn = open_content_db_readonly(current)
         return new_conn
 
     def rollback_update(self) -> sqlite3.Connection | None:
@@ -280,9 +280,9 @@ class UpdateService(QObject):
         except OSError:
             shutil.move(str(backup), str(current))
 
-        from app.bootstrap import open_content_db
+        from app.bootstrap import open_content_db_readonly
 
-        return open_content_db(current)
+        return open_content_db_readonly(current)
 
     def cleanup_staging_files(self) -> None:
         """Remove staging and backup files after a successful update."""

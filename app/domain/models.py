@@ -129,12 +129,3 @@ class BreedListRow:
     bred_count: int
     remaining: int
     elements: tuple[str, ...] = ()
-
-
-@dataclass(frozen=True)
-class ReconciliationResult:
-    """Delta produced by reconcile(); describes what changed."""
-
-    deleted_progress_rows: list[tuple[int, int]]
-    clipped_rows: list[tuple[int, int, int]]
-    prior_snapshot: list[TargetRequirementProgress]

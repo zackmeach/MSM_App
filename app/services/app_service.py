@@ -9,6 +9,9 @@ from typing import TYPE_CHECKING
 from PySide6.QtCore import QObject, Signal
 
 from app.assets import resolver
+from app.commands.add_target import AddTargetCommand
+from app.commands.close_out_target import CloseOutTargetCommand
+from app.commands.increment_egg import IncrementEggCommand
 from app.db.connection import transaction
 from app.domain.models import SortOrder
 from app.repositories import monster_repo, settings_repo, target_repo
@@ -109,8 +112,6 @@ class AppService(QObject):
     # ── Add / Close-out / Increment handlers ─────────────────────────
 
     def handle_add_target(self, monster_id: int) -> None:
-        from app.commands.add_target import AddTargetCommand
-
         cmd = AddTargetCommand(
             monster_id=monster_id,
             conn_content=self._conn_content,
@@ -125,8 +126,6 @@ class AppService(QObject):
             self.target_added.emit(m.name)
 
     def handle_close_out(self, monster_id: int) -> None:
-        from app.commands.close_out_target import CloseOutTargetCommand
-
         target = target_repo.fetch_newest_target_for_monster(
             self._conn_userstate, monster_id
         )
@@ -139,8 +138,6 @@ class AppService(QObject):
         self.execute_command(cmd)
 
     def handle_increment_egg(self, egg_type_id: int) -> None:
-        from app.commands.increment_egg import IncrementEggCommand
-
         cmd = IncrementEggCommand(
             egg_type_id=egg_type_id,
             conn_userstate=self._conn_userstate,

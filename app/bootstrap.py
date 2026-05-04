@@ -194,8 +194,10 @@ def bootstrap() -> AppContext:
 
 
 def _has_column(conn: sqlite3.Connection, table: str, column: str) -> bool:
-    cols = conn.execute(f"PRAGMA table_info({table})").fetchall()  # noqa: S608
-    return any(c[1] == column for c in cols)
+    cols = conn.execute(
+        "SELECT name FROM pragma_table_info(?)", (table,)
+    ).fetchall()
+    return any(c[0] == column for c in cols)
 
 
 def backfill_stable_keys(

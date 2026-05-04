@@ -217,11 +217,33 @@ def backfill_stable_keys(
             "SELECT id, name, monster_type FROM monsters WHERE content_key = ''"
         ).fetchall()
         if rows:
-            conn_content.executemany(
-                "UPDATE monsters SET content_key = ? WHERE id = ?",
-                [(monster_content_key(r[2], r[1]), r[0]) for r in rows],
-            )
-            logger.info("Backfilled content_key for %d monster(s)", len(rows))
+            applied, skipped = 0, 0
+            for mid, name, mtype in rows:
+                key = monster_content_key(mtype, name)
+                # Migration 0004 enforces a partial UNIQUE index on
+                # populated content_key values. Two rows whose
+                # canonicalized (monster_type, name) collapse to the
+                # same slug would conflict on the second UPDATE; we
+                # leave the duplicate at '' so the app still starts —
+                # the row is just unreachable by key until a
+                # maintainer fixes the source data.
+                try:
+                    conn_content.execute(
+                        "UPDATE monsters SET content_key = ? WHERE id = ?",
+                        (key, mid),
+                    )
+                    applied += 1
+                except sqlite3.IntegrityError:
+                    logger.error(
+                        "Backfill: monster id=%d name=%r would produce duplicate content_key=%r; "
+                        "leaving content_key='' (row will be unreachable by key)",
+                        mid, name, key,
+                    )
+                    skipped += 1
+            if applied:
+                logger.info("Backfilled content_key for %d monster(s)", applied)
+            if skipped:
+                logger.warning("Skipped %d monster(s) due to duplicate content_key", skipped)
 
         # Backfill wiki_slug as source_slug stand-in (source_fingerprint stays empty for seed data).
         conn_content.execute(
@@ -234,11 +256,26 @@ def backfill_stable_keys(
             "SELECT id, name FROM egg_types WHERE content_key = ''"
         ).fetchall()
         if rows:
-            conn_content.executemany(
-                "UPDATE egg_types SET content_key = ? WHERE id = ?",
-                [(egg_content_key(r[1]), r[0]) for r in rows],
-            )
-            logger.info("Backfilled content_key for %d egg type(s)", len(rows))
+            applied, skipped = 0, 0
+            for eid, name in rows:
+                key = egg_content_key(name)
+                try:
+                    conn_content.execute(
+                        "UPDATE egg_types SET content_key = ? WHERE id = ?",
+                        (key, eid),
+                    )
+                    applied += 1
+                except sqlite3.IntegrityError:
+                    logger.error(
+                        "Backfill: egg id=%d name=%r would produce duplicate content_key=%r; "
+                        "leaving content_key='' (row will be unreachable by key)",
+                        eid, name, key,
+                    )
+                    skipped += 1
+            if applied:
+                logger.info("Backfilled content_key for %d egg type(s)", applied)
+            if skipped:
+                logger.warning("Skipped %d egg type(s) due to duplicate content_key", skipped)
 
     conn_content.commit()
 

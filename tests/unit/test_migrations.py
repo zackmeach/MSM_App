@@ -612,3 +612,75 @@ class TestContentKeyUniqueness:
             "SELECT content_key FROM monsters WHERE id=?", (mid,)
         ).fetchone()
         assert row[0] == "monster:wublin:zynth"
+
+
+class TestBackfillDuplicateTolerance:
+    """When two source rows would canonicalize to the same content_key
+    (e.g., names that differ only in whitespace/punctuation), the
+    launch-time backfill must NOT crash the app.
+
+    Behavior choice (b): skip the duplicate row — it stays at
+    content_key='' and is unreachable by key, but the app starts
+    cleanly. An ERROR is logged for maintainers to investigate.
+    Choice rationale: option (a) would brick startup over a content-data
+    issue the user can't fix; option (c) duplicates SQLite's own
+    uniqueness check.
+    """
+
+    def test_duplicate_canonical_monsters_do_not_crash_backfill(self):
+        """Two monsters whose canonical slug collides should not raise."""
+        conn = _make_content_db()
+        us = _make_userstate_db()
+
+        # "Toe Jammer" and "Toe-Jammer" both canonicalize to
+        # "toe-jammer" → same content_key.
+        first = _seed_monster(conn, "Toe Jammer", "wublin")
+        second = _seed_monster(conn, "Toe-Jammer", "wublin")
+        # sanity: monster_content_key produces the same key for both
+        assert monster_content_key("wublin", "Toe Jammer") == monster_content_key(
+            "wublin", "Toe-Jammer"
+        )
+
+        # Backfill must complete without raising.
+        backfill_stable_keys(conn, us)
+
+        # Exactly one row got the populated key; the other stayed at ''.
+        keys = sorted(
+            r[0]
+            for r in conn.execute("SELECT content_key FROM monsters").fetchall()
+        )
+        assert keys == ["", "monster:wublin:toe-jammer"]
+
+        # The first-encountered row wins (deterministic by id ASC).
+        winner = conn.execute(
+            "SELECT id FROM monsters WHERE content_key='monster:wublin:toe-jammer'"
+        ).fetchone()
+        loser = conn.execute(
+            "SELECT id FROM monsters WHERE content_key=''"
+        ).fetchone()
+        assert winner[0] == first
+        assert loser[0] == second
+
+    def test_duplicate_canonical_eggs_do_not_crash_backfill(self):
+        conn = _make_content_db()
+        us = _make_userstate_db()
+
+        first = _seed_egg(conn, "Toe Jammer")
+        second = _seed_egg(conn, "Toe-Jammer")
+        assert egg_content_key("Toe Jammer") == egg_content_key("Toe-Jammer")
+
+        backfill_stable_keys(conn, us)
+
+        keys = sorted(
+            r[0]
+            for r in conn.execute("SELECT content_key FROM egg_types").fetchall()
+        )
+        assert keys == ["", "egg:toe-jammer"]
+        winner = conn.execute(
+            "SELECT id FROM egg_types WHERE content_key='egg:toe-jammer'"
+        ).fetchone()
+        assert winner[0] == first
+        loser = conn.execute(
+            "SELECT id FROM egg_types WHERE content_key=''"
+        ).fetchone()
+        assert loser[0] == second

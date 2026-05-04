@@ -35,6 +35,35 @@ python -m pytest tests/
 
 ---
 
+## BBB Fan Kit Images (optional)
+
+The "Import official BBB Fan Kit images" step in Quick Start expects an unzipped Fan Kit at `Monsters/` in the project root. The Fan Kit is the set of official monster portraits and egg images distributed by Big Blue Bubble under their Fan Content Policy.
+
+**To use Fan Kit imagery:**
+
+1. Obtain the BBB Fan Kit from Big Blue Bubble's official channels.
+2. Unzip it to the project root so the structure is:
+
+   ```
+   MSM_App/
+     Monsters/
+       Monster Portrait Squares/
+         Zynth.png
+         Mammott.png
+         ...
+       Monster Eggs/
+         Noggin.png
+         ...
+   ```
+
+3. Run `python scripts/import_fankit_images.py`. The script copies, resizes to 256×256, and updates `pipeline/normalized/*.json` metadata to mark the assets as `bbb_fan_kit` rather than `generated_placeholder`.
+
+**Without the Fan Kit:** the app still runs. `python scripts/generate_assets.py` produces placeholder images for any missing slots so you get a working build with generated artwork.
+
+The `Monsters/` directory is intentionally `.gitignore`d — Fan Kit assets are large binaries and are not redistributable under the Fan Content Policy. See [`pipeline/SOURCE_POLICY.md`](pipeline/SOURCE_POLICY.md) for the full image-licensing posture.
+
+---
+
 ## Architecture Overview
 
 The project has a hard boundary between maintainer-side content tooling and the desktop app. They communicate only through a published artifact contract.

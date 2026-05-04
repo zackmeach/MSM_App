@@ -276,8 +276,13 @@ def main() -> None:
         resize = False
 
     if not FANKIT_DIR.exists():
-        print(f"  ERROR: Fan Kit directory not found at {FANKIT_DIR}")
-        print("  Download the BBB Fan Kit and extract to Monsters/ in the project root.")
+        print(f"ERROR: Fan Kit directory not found at {FANKIT_DIR}", file=sys.stderr)
+        print(
+            "The BBB Fan Kit must be unzipped to 'Monsters/' in the project root.\n"
+            "See README.md > 'BBB Fan Kit Images (optional)' for setup details.\n"
+            "Alternatively, run 'python scripts/generate_assets.py' to use generated placeholders.",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
     print(f"Fan Kit: {FANKIT_DIR}")

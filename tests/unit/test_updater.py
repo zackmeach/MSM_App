@@ -118,7 +118,7 @@ class TestManifestContractValidation:
         manifest = {
             "artifact_contract_version": "1.1",
             "content_version": "1.0.0",
-            "content_db_url": "https://example.com/content.db",
+            "content_db_url": "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/content.db",
             "content_db_sha256": "a" * 64,
         }
         validate_manifest_contract(manifest)
@@ -127,14 +127,14 @@ class TestManifestContractValidation:
         manifest = {
             "artifact_contract_version": "99.0",
             "content_version": "1.0.0",
-            "content_db_url": "https://example.com/content.db",
+            "content_db_url": "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/content.db",
             "content_db_sha256": "a" * 64,
         }
         with pytest.raises(ValidationError, match="Unsupported"):
             validate_manifest_contract(manifest)
 
     def test_missing_content_version(self):
-        manifest = {"content_db_url": "https://example.com/content.db"}
+        manifest = {"content_db_url": "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/content.db"}
         with pytest.raises(ValidationError, match="content_version"):
             validate_manifest_contract(manifest)
 
@@ -142,7 +142,7 @@ class TestManifestContractValidation:
         manifest = {
             "artifact_contract_version": "1.1",
             "content_version": "1.0.0",
-            "content_db_url": "https://example.com/content.db",
+            "content_db_url": "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/content.db",
             "content_db_sha256": "tooshort",
         }
         with pytest.raises(ValidationError, match="malformed"):
@@ -152,9 +152,87 @@ class TestManifestContractValidation:
         """Legacy manifests without artifact_contract_version still work."""
         manifest = {
             "content_version": "0.9.0",
-            "content_db_url": "https://example.com/content.db",
+            "content_db_url": "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/content.db",
         }
         validate_manifest_contract(manifest)
+
+
+class TestManifestUrlValidation:
+    """content_db_url must be HTTPS to a host on the allowlist.
+
+    A poisoned manifest can otherwise direct the updater to download from
+    an attacker-controlled URL (or a `file://` for local read leaks).
+    Even with SHA-256 still gating the actual content, the *request*
+    happens — leaking via DNS, query strings, or local file disclosure.
+    """
+
+    def _base_manifest(self) -> dict:
+        return {
+            "artifact_contract_version": "1.1",
+            "content_version": "1.0.0",
+            "content_db_url": (
+                "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/content.db"
+            ),
+            "content_db_sha256": "a" * 64,
+        }
+
+    def test_https_to_allowlisted_host_passes(self):
+        validate_manifest_contract(self._base_manifest())
+
+    def test_http_scheme_rejected(self):
+        m = self._base_manifest()
+        m["content_db_url"] = "http://raw.githubusercontent.com/foo.db"
+        with pytest.raises(ValidationError, match="scheme"):
+            validate_manifest_contract(m)
+
+    def test_file_scheme_rejected(self):
+        m = self._base_manifest()
+        m["content_db_url"] = "file:///C:/Windows/System32/config/SAM"
+        with pytest.raises(ValidationError, match="scheme"):
+            validate_manifest_contract(m)
+
+    def test_ftp_scheme_rejected(self):
+        m = self._base_manifest()
+        m["content_db_url"] = "ftp://attacker.example/foo.db"
+        with pytest.raises(ValidationError, match="scheme"):
+            validate_manifest_contract(m)
+
+    def test_unallowlisted_host_rejected(self):
+        m = self._base_manifest()
+        m["content_db_url"] = "https://attacker.example/foo.db"
+        with pytest.raises(ValidationError, match="host"):
+            validate_manifest_contract(m)
+
+    def test_host_spoofing_via_subdomain_rejected(self):
+        m = self._base_manifest()
+        m["content_db_url"] = "https://raw.githubusercontent.com.attacker.example/foo.db"
+        with pytest.raises(ValidationError, match="host"):
+            validate_manifest_contract(m)
+
+    def test_malformed_url_rejected(self):
+        m = self._base_manifest()
+        m["content_db_url"] = "not-a-url"
+        with pytest.raises(ValidationError):
+            validate_manifest_contract(m)
+
+    def test_legacy_manifest_url_validated_too(self):
+        """URL allowlist applies even when artifact_contract_version is absent."""
+        m = {
+            "content_version": "0.9.0",
+            "content_db_url": "http://attacker.example/foo.db",
+        }
+        with pytest.raises(ValidationError, match="scheme"):
+            validate_manifest_contract(m)
+
+    def test_custom_allowlist_for_local_test_servers(self):
+        """Tests with local HTTP servers can opt into a permissive allowlist."""
+        m = self._base_manifest()
+        m["content_db_url"] = "http://127.0.0.1:54321/content.db"
+        validate_manifest_contract(
+            m,
+            allowed_schemes=("http", "https"),
+            allowed_hosts=("127.0.0.1", "localhost"),
+        )
 
 
 class TestClientCompatibility:
@@ -251,7 +329,7 @@ class TestUpdateWorkerCompatibility:
         manifest = {
             "artifact_contract_version": "1.1",
             "content_version": "9.9.9",
-            "content_db_url": "https://example.com/content.db",
+            "content_db_url": "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/content.db",
             "content_db_sha256": "a" * 64,
             "min_supported_client_version": "99.0.0",
         }

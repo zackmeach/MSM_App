@@ -9,11 +9,18 @@ from __future__ import annotations
 import hashlib
 import sqlite3
 from pathlib import Path
+from urllib.parse import urlparse
 
 REQUIRED_TABLES = {"monsters", "egg_types", "monster_requirements", "update_metadata"}
 REQUIRED_METADATA_KEYS = {"content_version", "last_updated_utc", "source"}
 
 SUPPORTED_ARTIFACT_CONTRACT_VERSIONS = {"1.1"}
+
+# content_db_url must use one of these schemes and target one of these hosts.
+# A poisoned manifest could otherwise redirect the downloader to plain HTTP
+# (downgrade), file:// (local read leak), or an attacker-controlled host.
+ALLOWED_DB_URL_SCHEMES: tuple[str, ...] = ("https",)
+ALLOWED_DB_URL_HOSTS: tuple[str, ...] = ("raw.githubusercontent.com",)
 
 
 class ValidationError(Exception):
@@ -85,8 +92,18 @@ def validate_checksum(file_path: str | Path, expected_sha256: str) -> None:
         )
 
 
-def validate_manifest_contract(manifest: dict) -> None:
-    """Raise ValidationError if the manifest contract is unsupported or malformed."""
+def validate_manifest_contract(
+    manifest: dict,
+    *,
+    allowed_schemes: tuple[str, ...] = ALLOWED_DB_URL_SCHEMES,
+    allowed_hosts: tuple[str, ...] = ALLOWED_DB_URL_HOSTS,
+) -> None:
+    """Raise ValidationError if the manifest contract is unsupported or malformed.
+
+    The *allowed_schemes* and *allowed_hosts* parameters override the default
+    production allowlist; tests with a local HTTP fixture pass a permissive
+    allowlist. Production callers should use defaults.
+    """
     contract = manifest.get("artifact_contract_version", "")
     if contract and contract not in SUPPORTED_ARTIFACT_CONTRACT_VERSIONS:
         raise ValidationError(f"Unsupported artifact contract version: {contract}")
@@ -96,9 +113,27 @@ def validate_manifest_contract(manifest: dict) -> None:
     if not manifest.get("content_db_url"):
         raise ValidationError("Manifest missing content_db_url")
 
+    _validate_db_url(manifest["content_db_url"], allowed_schemes, allowed_hosts)
+
     sha = manifest.get("content_db_sha256", "")
     if contract and (not sha or len(sha) != 64):
         raise ValidationError(f"Manifest has missing or malformed content_db_sha256: {sha!r}")
+
+
+def _validate_db_url(
+    url: str,
+    allowed_schemes: tuple[str, ...],
+    allowed_hosts: tuple[str, ...],
+) -> None:
+    parsed = urlparse(url)
+    if parsed.scheme not in allowed_schemes:
+        raise ValidationError(
+            f"content_db_url scheme {parsed.scheme!r} not in {allowed_schemes}"
+        )
+    if parsed.hostname is None or parsed.hostname not in allowed_hosts:
+        raise ValidationError(
+            f"content_db_url host {parsed.hostname!r} not in {allowed_hosts}"
+        )
 
 
 def validate_client_compatibility(manifest: dict, client_version: str) -> None:

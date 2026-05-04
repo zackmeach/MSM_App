@@ -135,7 +135,11 @@ class TestManifestFetchAndValidation:
         )
 
         # Validate the manifest
-        validate_manifest_contract(manifest)
+        validate_manifest_contract(
+            manifest,
+            allowed_schemes=("http", "https"),
+            allowed_hosts=("127.0.0.1", "localhost"),
+        )
         assert manifest["content_version"] == "2.0.0"
         assert len(manifest["content_db_sha256"]) == 64
         assert manifest["content_db_url"] == f"{base_url}/content.db"
@@ -351,7 +355,11 @@ class TestFullUpdateLoop:
         req = urllib.request.Request(manifest_url)
         with urllib.request.urlopen(req, timeout=10) as resp:
             fetched_manifest = json.loads(resp.read().decode("utf-8"))
-        validate_manifest_contract(fetched_manifest)
+        validate_manifest_contract(
+            fetched_manifest,
+            allowed_schemes=("http", "https"),
+            allowed_hosts=("127.0.0.1", "localhost"),
+        )
 
         # 4. Detect update available
         local_version = conn.execute(

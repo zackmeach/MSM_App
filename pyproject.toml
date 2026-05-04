@@ -1,0 +1,20 @@
+# Tool configuration. Project metadata (name/version) lives in the
+# PyInstaller spec for now; promote to a [project] table here only when a
+# clear pip-install workflow is established.
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+qt_api = "pyside6"
+filterwarnings = [
+    # PySide6 internal API change in QMouseEvent constructor
+    "ignore::DeprecationWarning:tests.unit.test_breed_list_widgets",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+# E/F/W = pycodestyle + pyflakes; I = isort; B = bugbear; UP = pyupgrade.
+select = ["E", "F", "W", "I", "B", "UP"]
+ignore = []

@@ -144,3 +144,20 @@ class TestSettingsViewModelFromAppService:
         assert "2026-06-15" in vm.last_updated_display
         assert len(vm.data_rows) > 0
         assert vm.update_state.status == UpdateStatus.IDLE
+
+    def test_theme_and_font_passed_through(self, content_conn, userstate_conn):
+        """Service must not import ``app.ui.themes``; UI passes theme/font in.
+
+        Pins the W6.1 contract: ``current_theme`` and ``current_font_size_label``
+        are kwargs supplied by the caller (main_window) rather than read from
+        global UI state by the service.
+        """
+        from app.services.app_service import AppService
+
+        svc = AppService(content_conn, userstate_conn)
+        vm = svc.get_settings_viewmodel(
+            current_theme="Classic Dark",
+            current_font_size_label="Large",
+        )
+        assert vm.current_theme == "Classic Dark"
+        assert vm.current_font_size_label == "Large"

@@ -195,9 +195,28 @@ class MainWindow(QMainWindow):
         # the same instant overlap and muddy the audio cue.
         self._home.breed_list_panel.on_completion(egg_type_id)
 
+    def _settings_viewmodel(self):
+        """Build the Settings VM, supplying current theme/font from the UI layer.
+
+        AppService doesn't import ``app.ui.themes`` — the UI owns theme state
+        and passes it in here, keeping the service → UI dependency arrow clean.
+        """
+        return self._service.get_settings_viewmodel(
+            current_theme=themes.get_active_theme(),
+            current_font_size_label=self._current_font_size_label(),
+        )
+
+    def _current_font_size_label(self) -> str:
+        """Map the active font offset back to its display label."""
+        offset = themes.get_active_font_offset()
+        for label, value in themes.FONT_SIZE_OPTIONS:
+            if value == offset:
+                return label
+        return "Default"
+
     def _navigate_to(self, index: int) -> None:
         if index == 2:
-            self._settings.refresh(self._service.get_settings_viewmodel())
+            self._settings.refresh(self._settings_viewmodel())
             self._settings.set_update_state(self._update_state)
         self._stack.setCurrentIndex(index)
         for i, btn in enumerate(self._nav_btns):
@@ -269,7 +288,7 @@ class MainWindow(QMainWindow):
         self._service.clear_undo_redo()
 
         self._catalog.load_catalog(self._service.get_catalog_items())
-        self._settings.refresh(self._service.get_settings_viewmodel())
+        self._settings.refresh(self._settings_viewmodel())
         self._set_update_state(SettingsUpdateState.success(new_version))
 
         self._updater.cleanup_staging_files()
@@ -320,4 +339,4 @@ class MainWindow(QMainWindow):
         self._catalog.load_catalog(self._service.get_catalog_items())
         state = self._service.get_app_state()
         self._on_state_changed(state)
-        self._settings.refresh(self._service.get_settings_viewmodel())
+        self._settings.refresh(self._settings_viewmodel())

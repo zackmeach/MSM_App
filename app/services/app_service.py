@@ -313,25 +313,26 @@ class AppService(QObject):
 
     # ── Settings data ────────────────────────────────────────────────
 
-    def get_settings_viewmodel(self) -> SettingsViewModel:
-        from app.ui.themes import get_active_font_offset, get_active_theme, FONT_SIZE_OPTIONS
+    def get_settings_viewmodel(
+        self,
+        current_theme: str = "",
+        current_font_size_label: str = "",
+    ) -> SettingsViewModel:
+        """Build the Settings page view-model.
 
+        ``current_theme`` and ``current_font_size_label`` are passed in by
+        the UI layer (which owns theme state) so the service does not
+        reach back into ``app.ui.themes``.
+        """
         meta = monster_repo.fetch_update_metadata(self._conn_content)
-
-        current_offset = get_active_font_offset()
-        font_label = "Default"
-        for label, offset in FONT_SIZE_OPTIONS:
-            if offset == current_offset:
-                font_label = label
-                break
 
         return SettingsViewModel(
             content_version=meta.get("content_version", "—"),
             schema_version=str(self._get_content_schema_version()),
             last_updated_display=meta.get("last_updated_utc", "—"),
             data_rows=self._build_settings_data_rows(),
-            current_theme=get_active_theme(),
-            current_font_size_label=font_label,
+            current_theme=current_theme,
+            current_font_size_label=current_font_size_label,
         )
 
     # ── State derivation ─────────────────────────────────────────────

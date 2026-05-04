@@ -2,6 +2,8 @@
 
 A Windows desktop companion app for *My Singing Monsters* that helps players track egg requirements for Amber Vessels, sleeping Wublins, and sleeping Celestials. Built with Python and PySide6 (Qt).
 
+> **Unofficial fan project — not affiliated with, endorsed by, or sponsored by Big Blue Bubble Inc.** See [Legal & Attribution](#legal--attribution) for trademark and licensing details.
+
 ---
 
 ## Quick Start (Development)
@@ -268,3 +270,25 @@ Runs the full pipeline: tests, seed, asset generation, bundle verification, then
 | Packaging | PyInstaller 6+ |
 | Testing | pytest, pytest-qt |
 | Python | 3.10+ |
+
+---
+
+## Legal & Attribution
+
+**Unofficial fan project — not affiliated with, endorsed by, or sponsored by Big Blue Bubble Inc.**
+
+*My Singing Monsters*, *Wublin*, *Celestial*, *Amber Vessel*, the BBB Fan Kit, and all monster names, designs, and artwork are trademarks or copyrights of Big Blue Bubble Inc. This project uses factual game data (names, types, breeding requirements) and official BBB Fan Kit imagery in compliance with Big Blue Bubble's Fan Content Policy. All artwork remains the property of Big Blue Bubble.
+
+### What the license covers
+
+The [LICENSE](LICENSE) file (MIT) covers only the source code authored for this project. It does **not** grant rights to:
+
+- Monster names, artwork, lore, or any other content owned by Big Blue Bubble Inc.
+- BBB Fan Kit imagery imported into `resources/images/` via `scripts/import_fankit_images.py`
+- Game data (egg requirements, breeding times) sourced from the *My Singing Monsters* Fandom Wiki
+
+See [`pipeline/SOURCE_POLICY.md`](pipeline/SOURCE_POLICY.md) for the full content sourcing and licensing posture.
+
+### Reporting concerns
+
+If you represent Big Blue Bubble and have concerns about how this project uses BBB IP, please open a GitHub issue on the [project repository](https://github.com/zackmeach/MSM_App).

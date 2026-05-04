@@ -11,7 +11,7 @@ from PySide6.QtWidgets import QHBoxLayout, QLabel, QWidget
 from app.ui.themes import placeholder_tones_3, scaled
 
 if TYPE_CHECKING:
-    from app.ui.viewmodels import ConsumerCardViewModel
+    from app.services.viewmodels import ConsumerCardViewModel
 
 
 _MAX_VISIBLE = 6

@@ -12,7 +12,7 @@ from app.ui.themes import scaled
 from app.ui.widgets.monster_entry import MonsterEntryRow
 
 if TYPE_CHECKING:
-    from app.ui.viewmodels import InWorkMonsterRowViewModel
+    from app.services.viewmodels import InWorkMonsterRowViewModel
 
 
 class SectionCard(QWidget):

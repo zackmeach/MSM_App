@@ -90,7 +90,7 @@ class _UpdateWorker(QObject):
 
             try:
                 validate_manifest_contract(data)
-                from app.ui.viewmodels import APP_VERSION
+                from app.services.viewmodels import APP_VERSION
 
                 validate_client_compatibility(data, APP_VERSION)
             except ValidationError as ve:
@@ -140,7 +140,7 @@ class _UpdateWorker(QObject):
 
             self.progress.emit("Validating...")
 
-            from app.ui.viewmodels import APP_VERSION
+            from app.services.viewmodels import APP_VERSION
 
             validate_client_compatibility(self._manifest_data, APP_VERSION)
 

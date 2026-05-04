@@ -26,7 +26,7 @@ from app.ui.catalog_view import CatalogView
 from app.ui.home_view import HomeView
 from app.ui.settings_panel import SettingsPanel
 from app.ui import themes
-from app.ui.viewmodels import AppStateViewModel, SettingsUpdateState
+from app.services.viewmodels import AppStateViewModel, SettingsUpdateState
 from app.ui.widgets.toast_widget import ToastWidget
 from app.updater.update_service import UpdateService
 

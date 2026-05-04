@@ -30,7 +30,7 @@ from app.ui.widgets.element_pip_row import ElementPipRow
 
 if TYPE_CHECKING:
     from app.services.audio_player import AudioPlayer
-    from app.ui.viewmodels import BreedListRowViewModel
+    from app.services.viewmodels import BreedListRowViewModel
 
 
 class EggRowWidget(QWidget):

@@ -21,7 +21,7 @@ from app.domain.models import (
     TargetRequirementProgress,
 )
 from app.repositories import monster_repo
-from app.ui.viewmodels import (
+from app.services.viewmodels import (
     BreedListRowViewModel,
     ConsumerCardViewModel,
     InWorkMonsterRowViewModel,

@@ -11,7 +11,7 @@ from app.ui.catalog_active_panel import CatalogActivePanel
 from app.ui.catalog_browser_panel import CatalogBrowserPanel
 
 if TYPE_CHECKING:
-    from app.ui.viewmodels import InWorkMonsterRowViewModel, MonsterCatalogItemViewModel
+    from app.services.viewmodels import InWorkMonsterRowViewModel, MonsterCatalogItemViewModel
 
 
 class CatalogView(QWidget):

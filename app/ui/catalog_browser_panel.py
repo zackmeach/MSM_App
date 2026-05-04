@@ -20,7 +20,7 @@ from app.ui.themes import scaled
 from app.ui.widgets.catalog_monster_card import CatalogMonsterCard
 
 if TYPE_CHECKING:
-    from app.ui.viewmodels import MonsterCatalogItemViewModel
+    from app.services.viewmodels import MonsterCatalogItemViewModel
 
 _TAB_TYPES = [
     ("Wublins", "wublin"),

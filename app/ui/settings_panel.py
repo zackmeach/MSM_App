@@ -27,7 +27,7 @@ from app.ui.widgets.info_row_widget import InfoRowWidget
 from app.ui.widgets.surface_card import SurfaceCard
 
 if TYPE_CHECKING:
-    from app.ui.viewmodels import (
+    from app.services.viewmodels import (
         SettingsDataRowViewModel,
         SettingsUpdateState,
         SettingsViewModel,

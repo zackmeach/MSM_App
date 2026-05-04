@@ -7,7 +7,7 @@ from PySide6.QtCore import QEvent, QPointF, Qt
 from PySide6.QtGui import QMouseEvent
 from PySide6.QtWidgets import QApplication
 
-from app.ui.viewmodels import ConsumerCardViewModel
+from app.services.viewmodels import ConsumerCardViewModel
 from app.ui.widgets.consumer_card_row import ConsumerCardRow
 from app.ui.widgets.element_pip_row import ElementPipRow
 from app.ui.widgets.monster_entry import MonsterEntryRow

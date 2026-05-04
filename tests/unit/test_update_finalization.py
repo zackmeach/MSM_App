@@ -23,7 +23,7 @@ from app.domain.reconciliation import reconcile
 from app.repositories import monster_repo, target_repo
 from app.services.app_service import AppService
 from app.ui.main_window import MainWindow
-from app.ui.viewmodels import SettingsUpdateState
+from app.services.viewmodels import SettingsUpdateState
 from app.updater.update_service import UpdateService, _remove_wal_sidecars
 
 

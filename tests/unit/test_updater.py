@@ -10,7 +10,7 @@ import pytest
 from PySide6.QtCore import QObject
 
 from app.db.migrations import run_migrations
-from app.ui.viewmodels import APP_VERSION
+from app.services.viewmodels import APP_VERSION
 from app.updater.update_service import _UpdateWorker
 from app.updater.validator import (
     ValidationError,

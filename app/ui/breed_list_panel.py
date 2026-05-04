@@ -19,7 +19,7 @@ from app.ui.widgets.egg_row_widget import EggRowWidget
 
 if TYPE_CHECKING:
     from app.services.audio_player import AudioPlayer
-    from app.ui.viewmodels import BreedListRowViewModel
+    from app.services.viewmodels import BreedListRowViewModel
 
 
 class BreedListPanel(QWidget):

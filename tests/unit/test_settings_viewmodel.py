@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from app.ui.viewmodels import (
+from app.services.viewmodels import (
     APP_VERSION,
     BBB_DISCLAIMER,
     SettingsDataRowViewModel,

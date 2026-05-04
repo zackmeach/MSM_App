@@ -16,7 +16,7 @@ from app.db.connection import transaction
 from app.domain.models import SortOrder
 from app.repositories import monster_repo, settings_repo, target_repo
 from app.services import view_model_builder as vmb
-from app.ui.viewmodels import (
+from app.services.viewmodels import (
     AppStateViewModel,
     MonsterCatalogItemViewModel,
     SettingsDataRowViewModel,

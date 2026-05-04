@@ -104,7 +104,7 @@ class TestEggIconIncrement:
     """Only the egg icon triggers increment, not the rest of the row."""
 
     def test_icon_click_emits_signal(self, qtbot, content_conn, id_maps):
-        from app.ui.viewmodels import BreedListRowViewModel
+        from app.services.viewmodels import BreedListRowViewModel
 
         vm = BreedListRowViewModel(
             egg_type_id=id_maps["eggs"]["Mammott"],
@@ -129,7 +129,7 @@ class TestEggIconIncrement:
 
     def test_row_body_click_emits(self, qtbot, id_maps):
         """Clicking anywhere on the row emits the clicked signal."""
-        from app.ui.viewmodels import BreedListRowViewModel
+        from app.services.viewmodels import BreedListRowViewModel
 
         vm = BreedListRowViewModel(
             egg_type_id=id_maps["eggs"]["Mammott"],

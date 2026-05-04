@@ -10,7 +10,7 @@ from PySide6.QtWidgets import QApplication
 from app.db.migrations import run_migrations
 from app.services.app_service import AppService
 from app.ui.settings_panel import SettingsPanel
-from app.ui.viewmodels import (
+from app.services.viewmodels import (
     BBB_DISCLAIMER,
     SettingsDataRowViewModel,
     SettingsUpdateState,

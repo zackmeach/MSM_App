@@ -15,7 +15,7 @@ from app.ui.widgets.section_card import SectionCard
 from app.ui.widgets.tip_card import TipCard
 
 if TYPE_CHECKING:
-    from app.ui.viewmodels import InWorkMonsterRowViewModel
+    from app.services.viewmodels import InWorkMonsterRowViewModel
 
 
 class CatalogActivePanel(QWidget):

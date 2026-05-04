@@ -247,7 +247,7 @@ All 64 monsters and 76 egg types have official artwork from the BBB Fan Kit (por
 
 ## Testing
 
-359 tests across unit and integration suites.
+Run the full pytest suite to verify a clean tree:
 
 ```powershell
 python -m pytest tests/          # full suite
@@ -286,7 +286,7 @@ python scripts/build.py
 
 Runs the full pipeline: tests, seed, asset generation, bundle verification, then PyInstaller packaging. The distributable is written to `dist/MSMAwakeningTracker/`.
 
-> **Current gap**: no installer wrapper (Inno Setup / NSIS) exists yet. The packaged app runs from the `dist/` directory but is not wrapped in a single-file installer. See `RELEASE_CHECKLIST.md` section 4 for packaging gates.
+An Inno Setup script lives at [`installer/msm_tracker.iss`](installer/msm_tracker.iss) for producing a per-user Windows installer. Built artifacts land in `installer/Output/`. See `RELEASE_CHECKLIST.md` section 4 for packaging gates.
 
 ---
 

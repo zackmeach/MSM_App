@@ -22,7 +22,7 @@ python main.py
 python main.py --debug                  # enables DEBUG-level logging
 
 # Tests
-python -m pytest tests/                 # full suite (359 tests)
+python -m pytest tests/                 # full suite
 python -m pytest tests/unit/            # unit only
 python -m pytest tests/integration/     # integration only (uses real in-memory SQLite)
 python -m pytest tests/unit/test_commands.py -v  # single module, verbose

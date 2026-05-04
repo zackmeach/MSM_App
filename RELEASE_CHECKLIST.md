@@ -16,8 +16,8 @@ name are verified by running that script; manual items require a human sign-off.
 | 1.4 | `resources/audio/ding.wav` exists | `scripts/verify_bundle.py` | |
 | 1.5 | Every `monsters.image_path` in content.db resolves to a file under `resources/` | `scripts/verify_bundle.py` | |
 | 1.6 | Every `egg_types.egg_image_path` in content.db resolves to a file under `resources/` | `scripts/verify_bundle.py` | |
-| 1.7 | Monster count >= 39 (19 Wublins, 12 Celestials, 8 Amber) | `scripts/verify_bundle.py` | |
-| 1.8 | Egg type count >= 38 | `scripts/verify_bundle.py` | |
+| 1.7 | Monster count >= 64 (20 Wublins, 12 Celestials, 32 Amber Vessels) | `scripts/verify_bundle.py` | |
+| 1.8 | Egg type count >= 76 | `scripts/verify_bundle.py` | |
 | 1.9 | No orphaned requirement rows | `scripts/verify_bundle.py` | |
 
 **How to verify:** `python scripts/verify_bundle.py` — must exit 0.
@@ -65,7 +65,7 @@ name are verified by running that script; manual items require a human sign-off.
 | 4.5 | `dist/MSMAwakeningTracker/resources/audio/ding.wav` exists | File inspection | |
 | 4.6 | Application icon is embedded in the `.exe` | File inspection | |
 
-**Current gap:** No installer-grade packaging (Inno Setup / NSIS) exists yet. The packaged app runs from the `dist/` directory but is not wrapped in a `.exe` installer. This must be addressed before distribution to end users.
+| 4.7 | `installer/msm_tracker.iss` (Inno Setup) compiles the per-user installer | `iscc installer/msm_tracker.iss` → `installer/Output/` | |
 
 ---
 

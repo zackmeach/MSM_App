@@ -99,4 +99,21 @@ class TestSettingsRepo:
 
     def test_set_and_get(self, userstate_conn):
         settings_repo.set_value(userstate_conn, "breed_list_sort_order", "name_asc")
+        userstate_conn.commit()
         assert settings_repo.get(userstate_conn, "breed_list_sort_order") == "name_asc"
+
+    def test_set_value_does_not_commit(self, userstate_conn):
+        """set_value must leave the transaction open so callers compose transactions.
+
+        Without this guarantee, wrapping multiple set_value calls in
+        ``with transaction(conn):`` would have the inner commit close the
+        outer transaction prematurely.
+        """
+        settings_repo.set_value(userstate_conn, "test_pin", "uncommitted")
+        # If set_value committed, rollback is a no-op and the value persists.
+        userstate_conn.rollback()
+        val = settings_repo.get(userstate_conn, "test_pin", "")
+        assert val == "", (
+            "settings_repo.set_value() committed internally — caller-controlled "
+            "transactions cannot work."
+        )

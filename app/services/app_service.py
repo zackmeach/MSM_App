@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 from PySide6.QtCore import QObject, Signal
 
 from app.assets import resolver
+from app.db.connection import transaction
 from app.domain.models import SortOrder
 from app.repositories import monster_repo, settings_repo, target_repo
 from app.services import view_model_builder as vmb
@@ -265,7 +266,8 @@ class AppService(QObject):
 
     def set_ui_pref(self, key: str, value: str) -> None:
         """Persist a UI preference to userstate."""
-        settings_repo.set_value(self._conn_userstate, key, value)
+        with transaction(self._conn_userstate):
+            settings_repo.set_value(self._conn_userstate, key, value)
 
     def clear_undo_redo(self) -> None:
         """Clear undo/redo stacks (e.g. after a content update)."""
@@ -278,9 +280,10 @@ class AppService(QObject):
             self._sort_order = SortOrder(order_str)
         except ValueError:
             return
-        settings_repo.set_value(
-            self._conn_userstate, "breed_list_sort_order", order_str
-        )
+        with transaction(self._conn_userstate):
+            settings_repo.set_value(
+                self._conn_userstate, "breed_list_sort_order", order_str
+            )
         self._emit_state()
 
     # ── Catalog data ─────────────────────────────────────────────────

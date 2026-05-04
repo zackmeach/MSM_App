@@ -11,9 +11,9 @@ def get(conn: sqlite3.Connection, key: str, default: str = "") -> str:
 
 
 def set_value(conn: sqlite3.Connection, key: str, value: str) -> None:
+    """Upsert an app_settings row. Caller owns the transaction (no commit here)."""
     conn.execute(
         "INSERT INTO app_settings(key, value) VALUES(?, ?) "
         "ON CONFLICT(key) DO UPDATE SET value = excluded.value",
         (key, value),
     )
-    conn.commit()

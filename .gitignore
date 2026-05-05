@@ -48,8 +48,14 @@ Desktop.ini
 packaging/
 publish_output/
 
-# Pipeline caches
+# Pipeline caches (raw HTML fetched from external sources)
+pipeline/raw/cache/
 pipeline/raw/.cache/
+
+# Audit script outputs (generated; not source-of-truth)
+pipeline/curation/element_audit_results.json
+pipeline/curation/element_candidates.json
+pipeline/curation/element_review_queue.json
 
 # Theme preview screenshots (root-level only, not app/ui/)
 /ui/

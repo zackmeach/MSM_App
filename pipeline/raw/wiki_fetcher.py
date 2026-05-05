@@ -20,6 +20,7 @@ import time
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Any
 
 from pipeline.raw.source_cache import CacheEntry, SourceCache
@@ -601,3 +602,147 @@ def fetch_egg_data_from_requirements(
                 }
 
     return list(seen_eggs.values())
+
+
+# ── Element data ────────────────────────────────────────────────────
+
+# Maps lower-cased wiki element names (as they appear in alt/title attrs)
+# to the schema element keys used in egg_elements.json.
+_WIKI_ELEMENT_MAP: dict[str, str] = {
+    # Natural Island
+    "plant element":    "natural-plant",
+    "cold element":     "natural-cold",
+    "air element":      "natural-air",
+    "water element":    "natural-water",
+    "earth element":    "natural-earth",
+    "fire element":     "natural-fire",
+    # Magical Nexus
+    "bone element":     "magical-bone",
+    "faerie element":   "magical-faerie",
+    "light element":    "magical-light",
+    "psychic element":  "magical-psychic",
+    # Ethereal Island
+    "crystal element":  "ethereal-crystal",
+    "mech element":     "ethereal-mech",
+    "plasma element":   "ethereal-plasma",
+    "poison element":   "ethereal-poison",
+    "shadow element":   "ethereal-shadow",
+    # Primordial
+    "primordial air":   "primordial-air",
+    "primordial cold":  "primordial-cold",
+    "primordial earth": "primordial-earth",
+    "primordial plant": "primordial-plant",
+    "primordial water": "primordial-water",
+    # Paironormal
+    "control element":  "paironormal-control",
+    "depths element":   "paironormal-depths",
+    "hoax element":     "paironormal-hoax",
+    "ruin element":     "paironormal-ruin",
+    # Supernatural / special
+    "electricity element": "supernatural-electricity",
+    "legendary":        "legendary",
+    "celestial":        "celestial",
+    "dipster":          "dipster",
+    "titansoul":        "titansoul",
+    "dream":            "mythical-dream",
+    "mythical":         "mythical-mythical",
+}
+
+
+def _parse_elements_from_html(field_html: str) -> list[str]:
+    """Extract ordered element keys from the element infobox field HTML.
+
+    Tries ``alt`` attributes first (primary signal on Fandom wiki), then
+    ``title`` attributes as fallback.  Deduplicates while preserving order.
+    """
+    seen: set[str] = set()
+    results: list[str] = []
+
+    for pattern in (
+        re.compile(r'alt="([^"]*)"', re.IGNORECASE),
+        re.compile(r'title="([^"]*)"', re.IGNORECASE),
+    ):
+        for match in pattern.finditer(field_html):
+            raw = match.group(1).strip().lower()
+            key = _WIKI_ELEMENT_MAP.get(raw)
+            if key and key not in seen:
+                seen.add(key)
+                results.append(key)
+
+    return results
+
+
+def _extract_element_fields(page_html: str) -> str:
+    """Extract combined HTML from element1..element4 infobox fields.
+
+    The MSM wiki stores element data in numbered horizontal-group <td> cells:
+      <td data-source="element1" class="pi-horizontal-group-item ...">...</td>
+    Single-element monsters may use a plain <div data-source="element"> cell.
+    This function collects all matching HTML and returns it concatenated.
+    """
+    combined: list[str] = []
+
+    # Multi-element: numbered <td> cells (element1 .. element4)
+    td_pattern = re.compile(
+        r'<td[^>]*data-source="element(\d+)"[^>]*>(.*?)</td>',
+        re.DOTALL | re.IGNORECASE,
+    )
+    for m in td_pattern.finditer(page_html):
+        combined.append(m.group(2))
+
+    # Single-element fallback: plain <div data-source="element"> cell
+    if not combined:
+        for field_name in ("element", "elements"):
+            fragment = _parse_infobox_field(page_html, field_name)
+            if fragment:
+                combined.append(fragment)
+                break
+
+    return " ".join(combined)
+
+
+def fetch_elements_for_egg(
+    egg_name: str,
+    cache: SourceCache,
+) -> tuple[list[str], list[dict]]:
+    """Fetch the element list for a base monster's wiki page.
+
+    ``egg_name`` is the display name as it appears on the wiki (e.g. "Drumpler",
+    "Pluckbill", "Clavi Gnat").  Returns ``(element_keys, review_items)``.
+    ``element_keys`` is empty when parsing fails or no elements are found.
+    """
+    wiki_slug = egg_name.replace(" ", "_")
+    source_ref = f"wiki/{wiki_slug}/elements"
+
+    # Cache-first: avoid a live fetch when we already have the page.
+    cached = cache.get("fandom", source_ref)
+    if cached:
+        raw_bytes = Path(cached.payload_path).read_bytes()
+    else:
+        try:
+            url = f"{WIKI_BASE_URL}/wiki/{wiki_slug}"
+            raw_bytes = _fetch_url(url)
+            cache.store("fandom", source_ref, raw_bytes)
+        except (urllib.error.URLError, OSError) as exc:
+            return [], [_make_review_item(
+                "source_fetch_failed", source_ref,
+                f"Failed to fetch page for '{egg_name}': {exc}",
+            )]
+
+    page_html = raw_bytes.decode("utf-8", errors="replace")
+
+    combined_html = _extract_element_fields(page_html)
+    if not combined_html:
+        return [], [_make_review_item(
+            "source_payload_incomplete", source_ref,
+            f"No element field found in infobox for '{egg_name}'",
+        )]
+
+    elements = _parse_elements_from_html(combined_html)
+    if not elements:
+        return [], [_make_review_item(
+            "source_payload_incomplete", source_ref,
+            f"Element field present but no recognised elements parsed for '{egg_name}'",
+        )]
+
+    return elements, []

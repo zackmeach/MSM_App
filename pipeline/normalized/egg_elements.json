@@ -1,47 +1,220 @@
 {
   "_comment": "Maps egg content_key -> ordered list of element keys. Element keys correspond to PNG filenames under resources/images/elements/ (e.g. 'natural-cold' -> natural-cold.png). Pipeline copies these into the egg_type_elements table on content.db. Eggs not listed render with no element pips. Edit + re-run scripts/seed_content_db.py to apply.",
   "elements": {
-    "egg:noggin":      ["natural-plant"],
-    "egg:toe-jammer":  ["natural-water"],
-    "egg:mammott":     ["natural-cold"],
-    "egg:potbelly":    ["natural-earth"],
-    "egg:tweedle":     ["natural-air"],
-
-    "egg:drumpler":    ["natural-plant", "natural-earth"],
-    "egg:fwog":        ["natural-plant", "natural-water"],
-    "egg:maw":         ["natural-plant", "natural-cold"],
-
-    "egg:shrubb":      ["natural-plant", "natural-earth"],
-    "egg:furcorn":     ["natural-plant", "natural-cold"],
-    "egg:oaktopus":    ["natural-plant", "natural-water"],
-    "egg:pango":       ["natural-cold", "natural-air"],
-
-    "egg:cybop":       ["natural-earth", "natural-cold", "natural-air"],
-    "egg:quibble":     ["natural-water", "natural-cold", "natural-air"],
-    "egg:dandidoo":    ["natural-plant", "natural-cold", "natural-air"],
-    "egg:t-rox":       ["natural-plant", "natural-earth", "natural-fire"],
-
-    "egg:scups":       ["natural-water", "natural-cold", "natural-earth"],
-    "egg:reedling":    ["natural-plant", "natural-earth", "natural-air"],
-    "egg:pummel":      ["natural-plant", "natural-earth", "natural-cold"],
-    "egg:congle":      ["natural-cold", "natural-earth", "natural-water"],
-    "egg:spunge":      ["natural-water", "natural-plant", "natural-air"],
-    "egg:bowgart":     ["natural-plant", "natural-water", "natural-cold"],
-    "egg:clamble":     ["natural-plant", "natural-earth", "natural-cold"],
-    "egg:pompom":      ["natural-plant", "natural-cold", "natural-air"],
-    "egg:thumpies":    ["natural-plant", "natural-earth", "natural-air"],
-
-    "egg:entbrat":     ["natural-plant", "natural-cold", "natural-water", "natural-earth"],
-    "egg:deedge":      ["natural-plant", "natural-cold", "natural-water", "natural-air"],
-    "egg:shellbeat":   ["natural-plant", "natural-cold", "natural-water", "natural-earth"],
-    "egg:quarrister":  ["natural-plant", "natural-cold", "natural-air", "natural-earth"],
-    "egg:riff":        ["natural-plant", "natural-cold", "natural-air", "natural-water"],
-
-    "egg:kayna":       ["natural-fire"],
-    "egg:glowl":       ["natural-fire", "natural-plant"],
-    "egg:flowah":      ["natural-fire", "natural-water"],
-    "egg:stogg":       ["natural-fire", "natural-earth"],
-    "egg:phangler":    ["natural-fire", "natural-water", "natural-cold"],
-    "egg:boskus":      ["natural-fire", "natural-plant", "natural-earth"]
+    "egg:boskus": [
+      "natural-fire",
+      "natural-plant",
+      "natural-earth"
+    ],
+    "egg:bowgart": [
+      "natural-plant",
+      "natural-water",
+      "natural-cold"
+    ],
+    "egg:bulbo": [
+      "natural-cold",
+      "magical-light"
+    ],
+    "egg:clamble": [
+      "natural-plant",
+      "natural-earth",
+      "natural-cold"
+    ],
+    "egg:congle": [
+      "natural-cold",
+      "natural-earth",
+      "natural-water"
+    ],
+    "egg:cybop": [
+      "natural-earth",
+      "natural-cold",
+      "natural-air"
+    ],
+    "egg:dandidoo": [
+      "natural-plant",
+      "natural-cold",
+      "natural-air"
+    ],
+    "egg:deedge": [
+      "natural-plant",
+      "natural-cold",
+      "natural-water",
+      "natural-air"
+    ],
+    "egg:drumpler": [
+      "natural-earth",
+      "natural-cold"
+    ],
+    "egg:entbrat": [
+      "natural-plant",
+      "natural-cold",
+      "natural-water",
+      "natural-earth"
+    ],
+    "egg:fiddlement": [
+      "natural-cold",
+      "natural-fire",
+      "magical-light"
+    ],
+    "egg:flowah": [
+      "natural-fire",
+      "natural-water"
+    ],
+    "egg:furcorn": [
+      "natural-plant",
+      "natural-cold"
+    ],
+    "egg:fwog": [
+      "natural-earth",
+      "natural-water"
+    ],
+    "egg:glowl": [
+      "natural-fire",
+      "natural-plant"
+    ],
+    "egg:hippityhop": [
+      "natural-earth",
+      "magical-faerie"
+    ],
+    "egg:kayna": [
+      "natural-fire"
+    ],
+    "egg:mammott": [
+      "natural-cold"
+    ],
+    "egg:maw": [
+      "natural-water",
+      "natural-cold"
+    ],
+    "egg:noggin": [
+      "natural-earth"
+    ],
+    "egg:oaktopus": [
+      "natural-plant",
+      "natural-water"
+    ],
+    "egg:pango": [
+      "natural-cold",
+      "natural-air"
+    ],
+    "egg:phangler": [
+      "natural-fire",
+      "natural-water",
+      "natural-cold"
+    ],
+    "egg:pluckbill": [
+      "natural-fire",
+      "natural-air"
+    ],
+    "egg:pompom": [
+      "natural-air",
+      "natural-earth",
+      "natural-cold"
+    ],
+    "egg:potbelly": [
+      "natural-plant"
+    ],
+    "egg:pummel": [
+      "natural-plant",
+      "natural-earth",
+      "natural-cold"
+    ],
+    "egg:quarrister": [
+      "natural-plant",
+      "natural-cold",
+      "natural-air",
+      "natural-earth"
+    ],
+    "egg:quibble": [
+      "natural-water",
+      "natural-cold",
+      "natural-air"
+    ],
+    "egg:reedling": [
+      "natural-plant",
+      "natural-earth",
+      "natural-air"
+    ],
+    "egg:riff": [
+      "natural-air",
+      "natural-earth",
+      "natural-water",
+      "natural-cold"
+    ],
+    "egg:scups": [
+      "natural-water",
+      "natural-cold",
+      "natural-earth"
+    ],
+    "egg:shellbeat": [
+      "natural-plant",
+      "natural-cold",
+      "natural-water",
+      "natural-earth"
+    ],
+    "egg:shrubb": [
+      "natural-plant",
+      "natural-earth"
+    ],
+    "egg:sneyser": [
+      "natural-air",
+      "natural-water",
+      "natural-cold",
+      "natural-fire"
+    ],
+    "egg:spunge": [
+      "natural-water",
+      "natural-plant",
+      "natural-air"
+    ],
+    "egg:spytrap": [
+      "natural-plant",
+      "natural-cold",
+      "magical-light"
+    ],
+    "egg:stogg": [
+      "natural-fire",
+      "natural-earth"
+    ],
+    "egg:t-rox": [
+      "natural-plant",
+      "natural-earth",
+      "natural-fire"
+    ],
+    "egg:tapricorn": [
+      "natural-plant",
+      "natural-water",
+      "magical-psychic"
+    ],
+    "egg:thumpies": [
+      "natural-plant",
+      "natural-earth",
+      "natural-air"
+    ],
+    "egg:toe-jammer": [
+      "natural-water"
+    ],
+    "egg:tweedle": [
+      "natural-air"
+    ],
+    "egg:withur": [
+      "natural-earth",
+      "natural-water",
+      "magical-bone"
+    ],
+    "egg:wynq": [
+      "natural-water",
+      "natural-cold",
+      "natural-fire"
+    ],
+    "egg:yuggler": [
+      "natural-fire",
+      "magical-psychic"
+    ],
+    "egg:ziggurab": [
+      "natural-earth",
+      "natural-cold",
+      "natural-fire"
+    ]
   }
 }

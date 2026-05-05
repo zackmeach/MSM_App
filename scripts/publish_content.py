@@ -46,25 +46,32 @@ REVIEW_QUEUE_PATH = ROOT / "pipeline" / "curation" / "review_queue.json"
 DEFAULT_BASE_URL = "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content"
 
 
-def _load_normalized() -> tuple[list[dict], list[dict], list[dict], list[dict]]:
-    """Load monsters, eggs, requirements, and assets from normalized JSON."""
-    paths = {
+def _load_normalized() -> tuple[list[dict], list[dict], list[dict], list[dict], dict[str, list[str]]]:
+    """Load monsters, eggs, requirements, assets, and egg elements from normalized JSON."""
+    required_paths = {
         "monsters": NORMALIZED_DIR / "monsters.json",
         "eggs": NORMALIZED_DIR / "eggs.json",
         "requirements": NORMALIZED_DIR / "requirements.json",
         "assets": NORMALIZED_DIR / "assets.json",
     }
-    missing = [name for name, p in paths.items() if not p.exists()]
+    missing = [name for name, p in required_paths.items() if not p.exists()]
     if missing:
         print(f"ERROR: Missing normalized files: {', '.join(missing)}")
         sys.exit(1)
 
     loaded = {}
-    for name, p in paths.items():
+    for name, p in required_paths.items():
         with open(p, encoding="utf-8") as f:
             loaded[name] = json.load(f)
 
-    return loaded["monsters"], loaded["eggs"], loaded["requirements"], loaded["assets"]
+    egg_elements: dict[str, list[str]] = {}
+    ee_path = NORMALIZED_DIR / "egg_elements.json"
+    if ee_path.exists():
+        with open(ee_path, encoding="utf-8") as f:
+            ee_raw = json.load(f)
+        egg_elements = ee_raw.get("elements", {})
+
+    return loaded["monsters"], loaded["eggs"], loaded["requirements"], loaded["assets"], egg_elements
 
 
 def _git_sha() -> str:
@@ -147,11 +154,12 @@ def main() -> int:
     print("  Step 2: Loading normalized data")
     print(f"{'='*60}")
 
-    monsters, eggs, requirements, assets = _load_normalized()
+    monsters, eggs, requirements, assets, egg_elements = _load_normalized()
     print(f"  Monsters:     {len(monsters)}")
     print(f"  Eggs:         {len(eggs)}")
     print(f"  Requirements: {len(requirements)}")
     print(f"  Assets:       {len(assets)}")
+    print(f"  Egg elements: {len(egg_elements)} mappings")
 
     # ── Step 3: Build content.db ─────────────────────────────────────
     print(f"\n{'='*60}")
@@ -167,11 +175,13 @@ def main() -> int:
         monsters, eggs, requirements,
         content_version=content_version,
         baseline_db_path=baseline_db,
+        egg_elements=egg_elements,
     )
     print(f"  DB path:      {result.db_path}")
     print(f"  Monsters:     {result.monster_count}")
     print(f"  Eggs:         {result.egg_count}")
     print(f"  Requirements: {result.requirement_count}")
+    print(f"  Egg elements: {result.element_count} rows")
     print(f"  IDs preserved: {result.id_preserved}, reassigned: {result.id_reassigned}")
 
     # ── Step 4: Diff against baseline ────────────────────────────────

@@ -73,7 +73,7 @@ class AppStateViewModel:
     can_redo: bool = False
 
 
-APP_VERSION = "1.0.0"
+APP_VERSION = "1.0.0-beta.3"
 
 BBB_DISCLAIMER = (
     "This app is an unofficial fan creation and is not affiliated with, endorsed by, "

@@ -2,7 +2,7 @@
 
 Usage:  python scripts/inject_version.py --version 1.2.3
 
-The script patches ``app/ui/viewmodels.py`` so that the packaged binary
+The script patches ``app/services/viewmodels.py`` so that the packaged binary
 reports the correct version.  A leading ``v`` prefix is stripped
 automatically (``v1.2.3`` → ``1.2.3``).
 """
@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-VIEWMODELS = ROOT / "app" / "ui" / "viewmodels.py"
+VIEWMODELS = ROOT / "app" / "services" / "viewmodels.py"
 
 _VERSION_RE = re.compile(r'^APP_VERSION\s*=\s*"[^"]*"', re.MULTILINE)
 

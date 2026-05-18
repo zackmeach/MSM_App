@@ -333,11 +333,95 @@ def check_egg_elements_schema(
         )
 
 
+def check_egg_elements_completeness(
+    eggs_path: Path,
+    egg_elements_path: Path,
+    schema_path: Path,
+) -> ValidationCheck:
+    """Every egg in eggs.json must have a non-empty, schema-valid element list.
+
+    Missing element data previously shipped silently (eggs absent from the
+    map just render with no pips). This gate makes any egg without elements,
+    or any element key not in the schema enum, a hard publish blocker.
+    """
+    import json
+
+    try:
+        with open(schema_path, encoding="utf-8") as f:
+            schema = json.load(f)
+        # The allowed element keys live in the schema's items enum.
+        allowed = set(
+            schema["properties"]["elements"]["patternProperties"][
+                "^egg:[a-z0-9-]+$"
+            ]["items"]["enum"]
+        )
+
+        with open(eggs_path, encoding="utf-8") as f:
+            eggs = json.load(f)
+        egg_keys = [
+            e["content_key"]
+            for e in eggs
+            if not e.get("is_deprecated", False)
+        ]
+
+        with open(egg_elements_path, encoding="utf-8") as f:
+            elements_map = json.load(f).get("elements", {})
+
+        missing: list[str] = []
+        unknown: list[str] = []
+        for ck in egg_keys:
+            vals = elements_map.get(ck)
+            if not vals or not isinstance(vals, list):
+                missing.append(ck)
+                continue
+            for el in vals:
+                if el not in allowed:
+                    unknown.append(f"{ck}:{el}")
+
+        if missing or unknown:
+            parts = []
+            if missing:
+                parts.append(f"{len(missing)} egg(s) missing elements: {sorted(missing)}")
+            if unknown:
+                parts.append(f"{len(unknown)} unknown element key(s): {sorted(unknown)}")
+            return ValidationCheck(
+                check_id="data.egg_elements_completeness",
+                owner_module="pipeline.validation.data",
+                scope="egg_elements.json",
+                status="fail",
+                severity="error",
+                blocking_level="publish_blocker",
+                message="; ".join(parts),
+                details={"missing": sorted(missing), "unknown": sorted(unknown)},
+            )
+
+        return ValidationCheck(
+            check_id="data.egg_elements_completeness",
+            owner_module="pipeline.validation.data",
+            scope="egg_elements.json",
+            status="pass",
+            severity="error",
+            blocking_level="publish_blocker",
+            message=f"All {len(egg_keys)} eggs have non-empty, known element lists",
+        )
+    except Exception as exc:
+        return ValidationCheck(
+            check_id="data.egg_elements_completeness",
+            owner_module="pipeline.validation.data",
+            scope="egg_elements.json",
+            status="fail",
+            severity="error",
+            blocking_level="publish_blocker",
+            message=f"Completeness check failed: {exc}",
+        )
+
+
 def run_publish_validation(
     db_path: Path,
     assets: list[dict],
     review_items: list[dict],
     *,
+    eggs_path: Path | None = None,
     egg_elements_path: Path | None = None,
     schema_path: Path | None = None,
 ) -> list[ValidationCheck]:
@@ -352,4 +436,10 @@ def run_publish_validation(
     ]
     if egg_elements_path and schema_path:
         checks.append(check_egg_elements_schema(egg_elements_path, schema_path))
+    if eggs_path and egg_elements_path and schema_path:
+        checks.append(
+            check_egg_elements_completeness(
+                eggs_path, egg_elements_path, schema_path
+            )
+        )
     return checks

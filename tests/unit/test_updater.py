@@ -252,6 +252,124 @@ class TestClientCompatibility:
     def test_no_min_version(self):
         validate_client_compatibility({}, "1.0.0")
 
+    # --- Regression: pre-release of an allowed version must be accepted ---
+
+    def test_prerelease_of_floor_passes(self):
+        """Reported bug: 1.0.0-beta.3 must not be rejected against floor 1.0.0."""
+        manifest = {"min_supported_client_version": "1.0.0"}
+        validate_client_compatibility(manifest, "1.0.0-beta.3")
+
+    def test_genuinely_older_client_rejected(self):
+        manifest = {"min_supported_client_version": "1.0.0"}
+        with pytest.raises(ValidationError, match="below minimum"):
+            validate_client_compatibility(manifest, "0.9.0")
+
+    def test_exact_floor_passes(self):
+        manifest = {"min_supported_client_version": "1.0.0"}
+        validate_client_compatibility(manifest, "1.0.0")
+
+    def test_newer_minor_passes(self):
+        manifest = {"min_supported_client_version": "1.1.0"}
+        validate_client_compatibility(manifest, "1.2.0")
+
+    def test_no_lexical_compare_regression(self):
+        """1.9.0 < 1.10.0 numerically; lexical string compare would wrongly pass."""
+        manifest = {"min_supported_client_version": "1.10.0"}
+        with pytest.raises(ValidationError, match="below minimum"):
+            validate_client_compatibility(manifest, "1.9.0")
+
+    def test_missing_min_version_is_noop(self):
+        validate_client_compatibility({}, "1.0.0-beta.3")
+
+    # --- ImportError fallback path (packaging unavailable) ---
+
+    def test_fallback_helper_prerelease_passes(self):
+        from app.updater.validator import _compatible_fallback
+
+        assert _compatible_fallback("1.0.0-beta.3", "1.0.0") is True
+
+    def test_fallback_helper_older_rejected(self):
+        from app.updater.validator import _compatible_fallback
+
+        assert _compatible_fallback("0.9.0", "1.0.0") is False
+
+    def test_fallback_helper_no_lexical_regression(self):
+        from app.updater.validator import _compatible_fallback
+
+        assert _compatible_fallback("1.9.0", "1.10.0") is False
+        assert _compatible_fallback("1.10.0", "1.9.0") is True
+
+    def test_fallback_via_import_hook(self, monkeypatch):
+        """Force the ImportError branch and confirm 1.0.0-beta.3 passes."""
+        import builtins
+
+        real_import = builtins.__import__
+
+        def fake_import(name, *args, **kwargs):
+            if name == "packaging.version" or name == "packaging":
+                raise ImportError("simulated missing packaging")
+            return real_import(name, *args, **kwargs)
+
+        monkeypatch.setattr(builtins, "__import__", fake_import)
+        manifest = {"min_supported_client_version": "1.0.0"}
+        validate_client_compatibility(manifest, "1.0.0-beta.3")
+        with pytest.raises(ValidationError, match="below minimum"):
+            validate_client_compatibility(manifest, "0.9.0")
+
+
+class TestFallbackReleaseParsing:
+    """Direct regression coverage for the production-critical fallback path.
+
+    The frozen app ships without ``packaging`` (excluded via the spec /
+    not a hard dep historically), so ``_compatible_fallback`` /
+    ``_release_tuple`` ARE the production comparison. They must equal the
+    packaging path for realistic PEP440-ish version strings.
+    """
+
+    def test_release_tuple_outputs(self):
+        from app.updater.validator import _release_tuple
+
+        assert _release_tuple("1.0.0-beta.3") == (1, 0, 0)
+        assert _release_tuple("1.0.0rc1") == (1, 0, 0)
+        assert _release_tuple("1.0.0b3") == (1, 0, 0)
+        assert _release_tuple("1.0.0+ci.5") == (1, 0, 0)
+        assert _release_tuple("v1.2.3") == (1, 2, 3)
+        assert _release_tuple("V1.2.3") == (1, 2, 3)
+        assert _release_tuple("1.0") == (1, 0)
+        assert _release_tuple("") == ()
+
+    def test_prerelease_suffix_compatible(self):
+        from app.updater.validator import _compatible_fallback
+
+        assert _compatible_fallback("1.0.0rc1", "1.0.0") is True
+
+    def test_pep440_beta_form_compatible(self):
+        from app.updater.validator import _compatible_fallback
+
+        assert _compatible_fallback("1.0.0b3", "1.0.0") is True
+
+    def test_build_metadata_compatible(self):
+        from app.updater.validator import _compatible_fallback
+
+        assert _compatible_fallback("1.0.0+ci.5", "1.0.0") is True
+
+    def test_leading_v_compatible(self):
+        from app.updater.validator import _compatible_fallback
+
+        assert _compatible_fallback("v1.0.0", "1.0.0") is True
+
+    def test_short_tuple_is_zero_padded_equal(self):
+        from app.updater.validator import _compatible_fallback
+
+        # 1.0 must compare equal to 1.0.0, both directions.
+        assert _compatible_fallback("1.0", "1.0.0") is True
+        assert _compatible_fallback("1.0.0", "1.0") is True
+
+    def test_short_tuple_older_still_rejected(self):
+        from app.updater.validator import _compatible_fallback
+
+        assert _compatible_fallback("0.9", "1.0.0") is False
+
 
 class TestOrphanEggValidation:
     def test_orphan_egg_refs_detected(self, tmp_path):

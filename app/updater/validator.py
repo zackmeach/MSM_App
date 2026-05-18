@@ -7,6 +7,7 @@ validation for the hardened update path.
 from __future__ import annotations
 
 import hashlib
+import re
 import sqlite3
 from pathlib import Path
 from urllib.parse import urlparse
@@ -136,21 +137,70 @@ def _validate_db_url(
         )
 
 
+def _release_tuple(version: str) -> tuple[int, ...]:
+    """Parse a version string into its numeric release segment.
+
+    Tolerates an optional leading ``v``/``V``, pre-release / dev / post
+    suffixes, and build metadata (e.g. ``1.0.0-beta.3``, ``1.0.0rc1``,
+    ``1.0.0b3``, ``1.0.0+ci.5``, ``v1.2.3``). Anything from the first ``-``
+    or ``+`` is discarded; each ``.``-split segment contributes only its
+    leading digits, and parsing stops at the first segment with no leading
+    digits. So ``int()`` never sees ``"0rc1"``. This makes the fallback path
+    consistent with comparing ``packaging``'s ``base_version``.
+    """
+    head = re.split(r"[-+]", str(version).strip(), maxsplit=1)[0]
+    if head[:1] in ("v", "V"):
+        head = head[1:]
+    parts: list[int] = []
+    for segment in head.split("."):
+        m = re.match(r"\d+", segment)
+        if not m:
+            break
+        parts.append(int(m.group()))
+    return tuple(parts)
+
+
+def _compatible_fallback(client_version: str, min_version: str) -> bool:
+    """``packaging``-free compatibility check on the numeric release segment.
+
+    Returns True if *client_version* is at least *min_version*, comparing
+    release tuples numerically (so ``1.9.0`` < ``1.10.0``, not lexically).
+    The shorter release tuple is zero-padded to the longer's length before
+    comparison, so ``1.0`` is treated as equal to ``1.0.0``.
+    """
+    client = _release_tuple(client_version)
+    floor = _release_tuple(min_version)
+    width = max(len(client), len(floor))
+    client += (0,) * (width - len(client))
+    floor += (0,) * (width - len(floor))
+    return client >= floor
+
+
+def _compatible(client_version: str, min_version: str) -> bool:
+    """True if *client_version* satisfies the *min_version* floor.
+
+    Comparison uses the base/release version on BOTH sides, ignoring
+    pre-release/dev/post suffixes: a pre-release of an allowed version
+    (e.g. ``1.0.0-beta.3`` against floor ``1.0.0``) is accepted, while a
+    genuinely older client (``0.9.0`` against ``1.0.0``) is rejected.
+    """
+    client_version = str(client_version)
+    min_version = str(min_version)
+    try:
+        from packaging.version import Version
+    except ImportError:
+        return _compatible_fallback(client_version, min_version)
+    return Version(Version(client_version).base_version) >= Version(
+        Version(min_version).base_version
+    )
+
+
 def validate_client_compatibility(manifest: dict, client_version: str) -> None:
     """Raise ValidationError if the client version is too old for this release."""
     min_version = manifest.get("min_supported_client_version", "")
     if not min_version:
         return
-    try:
-        from packaging.version import Version
-        if Version(client_version) < Version(min_version):
-            raise ValidationError(
-                f"Client version {client_version} is below minimum {min_version}"
-            )
-    except ImportError:
-        min_parts = [int(x) for x in min_version.split(".")]
-        client_parts = [int(x) for x in client_version.split(".")]
-        if client_parts < min_parts:
-            raise ValidationError(
-                f"Client version {client_version} is below minimum {min_version}"
-            )
+    if not _compatible(client_version, min_version):
+        raise ValidationError(
+            f"Client version {client_version} is below minimum {min_version}"
+        )

@@ -25,6 +25,8 @@ a = Analysis(
         "app.services.audio_player",
         "app.updater.update_service",
         "app.updater.validator",
+        "packaging",
+        "packaging.version",
     ],
     hookspath=[],
     hooksconfig={},

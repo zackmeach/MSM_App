@@ -214,11 +214,39 @@ KNOWN_BREEDING_TIMES: dict[str, tuple[int, str]] = {
 
 
 def _fetch_url(url: str, *, timeout: int = 30) -> bytes:
-    """Fetch a URL and return raw bytes."""
+    """Fetch a URL and return raw bytes.
+
+    Sends browser-like request headers (Fandom blocks bare clients with
+    HTTP 403) and retries transient failures up to 3 times with
+    exponential backoff (1s, 2s, 4s) on HTTP 403/429 and URLError.
+    The final exception is re-raised if all attempts fail.
+    """
     req = urllib.request.Request(url)
     req.add_header("User-Agent", USER_AGENT)
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read()
+    req.add_header(
+        "Accept",
+        "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    )
+    req.add_header("Accept-Language", "en-US,en;q=0.9")
+
+    max_attempts = 3
+    last_exc: Exception | None = None
+    for attempt in range(max_attempts):
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return resp.read()
+        except urllib.error.HTTPError as exc:
+            last_exc = exc
+            if exc.code not in (403, 429):
+                raise
+        except urllib.error.URLError as exc:
+            last_exc = exc
+
+        if attempt < max_attempts - 1:
+            time.sleep(2 ** attempt)  # 1s, 2s, 4s
+
+    assert last_exc is not None
+    raise last_exc
 
 
 def _make_review_item(
@@ -649,6 +677,70 @@ _WIKI_ELEMENT_MAP: dict[str, str] = {
 }
 
 
+def _build_element_order() -> tuple[str, ...]:
+    """Deterministic canonical ordering of schema element keys.
+
+    Leads with the natural elements (plant, cold, water, air, earth,
+    fire), then the magical Nexus elements (bone, faerie, light,
+    psychic), then every remaining ``_WIKI_ELEMENT_MAP`` value in its
+    existing map-insertion order. Used to sort parsed element keys so
+    output is stable regardless of wiki category ordering.
+    """
+    leading = (
+        "natural-plant", "natural-cold", "natural-water",
+        "natural-air", "natural-earth", "natural-fire",
+        "magical-bone", "magical-faerie", "magical-light",
+        "magical-psychic",
+    )
+    order: list[str] = list(leading)
+    seen = set(leading)
+    for key in _WIKI_ELEMENT_MAP.values():
+        if key not in seen:
+            seen.add(key)
+            order.append(key)
+    return tuple(order)
+
+
+ELEMENT_ORDER: tuple[str, ...] = _build_element_order()
+
+# Matches a quoted category that is exactly "<X> Element" (e.g.
+# "Plant Element"). Anchored on the trailing " Element" + closing
+# quote so noise like "Cold Island" is never captured.
+_CATEGORY_ELEMENT_RE = re.compile(r'"([^"]+? Element)"')
+
+
+def _parse_elements_from_categories(page_html: str) -> list[str]:
+    """Extract schema element keys from the page's ``wgCategories`` blob.
+
+    Fandom monster pages embed an authoritative element signal in the
+    RLCONF JS blob as ``"wgCategories":[...,"Plant Element",...]``. This
+    category list is auto-maintained by the wiki and is the reliable
+    ground truth. Categories matching exactly ``"<X> Element"`` are
+    mapped via ``_WIKI_ELEMENT_MAP``; non-element categories are ignored.
+
+    Returns deduped schema keys sorted by ``ELEMENT_ORDER`` index
+    (unknown keys sort last, stable). Empty list if the blob is absent
+    or holds no recognised element categories.
+    """
+    match = re.search(r'"wgCategories"\s*:\s*\[(.*?)\]', page_html, re.DOTALL)
+    if not match:
+        return []
+
+    array_body = match.group(1)
+    keys: list[str] = []
+    seen: set[str] = set()
+    for cat_match in _CATEGORY_ELEMENT_RE.finditer(array_body):
+        raw = html.unescape(cat_match.group(1)).strip().lower()
+        key = _WIKI_ELEMENT_MAP.get(raw)
+        if key and key not in seen:
+            seen.add(key)
+            keys.append(key)
+
+    order_index = {k: i for i, k in enumerate(ELEMENT_ORDER)}
+    keys.sort(key=lambda k: order_index.get(k, len(ELEMENT_ORDER)))
+    return keys
+
+
 def _parse_elements_from_html(field_html: str) -> list[str]:
     """Extract ordered element keys from the element infobox field HTML.
 
@@ -731,18 +823,22 @@ def fetch_elements_for_egg(
 
     page_html = raw_bytes.decode("utf-8", errors="replace")
 
+    # Primary signal: the auto-maintained "wgCategories" element list in
+    # the RLCONF blob. This is authoritative ground truth and far more
+    # reliable than the fragile infobox alt/title scrape.
+    elements = _parse_elements_from_categories(page_html)
+    if elements:
+        return elements, []
+
+    # Fallback: the legacy infobox element-field scrape.
     combined_html = _extract_element_fields(page_html)
-    if not combined_html:
-        return [], [_make_review_item(
-            "source_payload_incomplete", source_ref,
-            f"No element field found in infobox for '{egg_name}'",
-        )]
+    if combined_html:
+        elements = _parse_elements_from_html(combined_html)
+        if elements:
+            return elements, []
 
-    elements = _parse_elements_from_html(combined_html)
-    if not elements:
-        return [], [_make_review_item(
-            "source_payload_incomplete", source_ref,
-            f"Element field present but no recognised elements parsed for '{egg_name}'",
-        )]
-
-    return elements, []
+    return [], [_make_review_item(
+        "source_payload_incomplete", source_ref,
+        f"No recognised elements parsed for '{egg_name}' "
+        "(wgCategories and infobox both empty)",
+    )]

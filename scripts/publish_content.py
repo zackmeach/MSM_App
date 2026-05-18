@@ -229,6 +229,7 @@ def main() -> int:
         built_db_path,
         assets,
         review_items,
+        eggs_path=NORMALIZED_DIR / "eggs.json",
         egg_elements_path=NORMALIZED_DIR / "egg_elements.json",
         schema_path=ROOT / "pipeline" / "schemas" / "egg_elements.schema.json",
     )

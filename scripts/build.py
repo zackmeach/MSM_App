@@ -53,7 +53,7 @@ def _find_iscc() -> Path | None:
 
 def _read_app_version() -> str:
     """Read current APP_VERSION from viewmodels.py as fallback."""
-    text = (ROOT / "app" / "ui" / "viewmodels.py").read_text(encoding="utf-8")
+    text = (ROOT / "app" / "services" / "viewmodels.py").read_text(encoding="utf-8")
     match = re.search(r'APP_VERSION\s*=\s*"([^"]*)"', text)
     return match.group(1) if match else "0.0.0"
 

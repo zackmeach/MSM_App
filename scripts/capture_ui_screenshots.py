@@ -127,6 +127,21 @@ def main() -> int:
             return 1
         saved.append(f"  {filename:<16} {label}  ({pixmap.width()}x{pixmap.height()})")
 
+    # Per-theme Home capture so each theme can be eyeballed side by side.
+    from app.ui.themes import THEME_NAMES
+
+    window._navigate_to(0)
+    for name in THEME_NAMES:
+        window._on_ui_options_apply(name, "Default")
+        _settle(app, 500)
+        slug = name.lower().replace(" & ", "-").replace(" ", "-")
+        fn = f"theme-{slug}.png"
+        pixmap = window.grab()
+        if not pixmap.save(str(OUT_DIR / fn), "PNG"):
+            print(f"  FAILED to save {fn}")
+            return 1
+        saved.append(f"  {fn:<24} Home — {name}  ({pixmap.width()}x{pixmap.height()})")
+
     print(f"Saved {len(saved)} screenshots to {OUT_DIR}:")
     for line in saved:
         print(line)

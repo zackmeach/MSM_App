@@ -191,8 +191,8 @@ class TestSettingsSetUiOptions:
         qtbot.addWidget(panel)
         panel.refresh(svc.get_settings_viewmodel())
 
-        panel.set_ui_options("Classic Dark", "Default")
-        assert panel._theme_combo.currentData() == "Classic Dark"
+        panel.set_ui_options("Umber Studio", "Default")
+        assert panel._theme_combo.currentData() == "Umber Studio"
         panel.close()
 
     def test_set_ui_options_invalid_theme_falls_back(self, qtbot, content_conn, userstate_conn):

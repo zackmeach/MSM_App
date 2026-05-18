@@ -210,5 +210,5 @@ class SettingsViewModel:
     disclaimer_text: str = BBB_DISCLAIMER
     data_rows: list[SettingsDataRowViewModel] = field(default_factory=list)
     update_state: SettingsUpdateState = field(default_factory=SettingsUpdateState)
-    current_theme: str = "Deep Island Night"
+    current_theme: str = "Ink & Brass"
     current_font_size_label: str = "Default"

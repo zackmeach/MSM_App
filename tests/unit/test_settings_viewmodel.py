@@ -156,8 +156,8 @@ class TestSettingsViewModelFromAppService:
 
         svc = AppService(content_conn, userstate_conn)
         vm = svc.get_settings_viewmodel(
-            current_theme="Classic Dark",
+            current_theme="Umber Studio",
             current_font_size_label="Large",
         )
-        assert vm.current_theme == "Classic Dark"
+        assert vm.current_theme == "Umber Studio"
         assert vm.current_font_size_label == "Large"

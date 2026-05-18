@@ -37,9 +37,15 @@ class TestSetActive:
         assert get_active_font_offset() == 0
 
     def test_set_valid_theme(self):
-        set_active("Classic Dark", 4)
-        assert get_active_theme() == "Classic Dark"
+        set_active("Umber Studio", 4)
+        assert get_active_theme() == "Umber Studio"
         assert get_active_font_offset() == 4
+
+    def test_retired_theme_falls_back(self):
+        # Old saved prefs ("Deep Island Night" / "Classic Dark") must
+        # degrade to the default, not crash.
+        set_active("Classic Dark", 0)
+        assert get_active_theme() == DEFAULT_THEME
 
     def test_invalid_theme_falls_back(self):
         set_active("Nonexistent Theme", 2)
@@ -102,11 +108,23 @@ class TestPlaceholderTones:
         assert result == (t["thumb_fallback_bg"], t["accent"])
 
     def test_tones_change_with_theme(self):
-        set_active("Deep Island Night")
-        tones_din = placeholder_tones_3("wublin")
-        set_active("Classic Dark")
-        tones_cd = placeholder_tones_3("wublin")
-        assert tones_din != tones_cd
+        set_active("Ink & Brass")
+        tones_ink = placeholder_tones_3("wublin")
+        set_active("Daylight")
+        tones_day = placeholder_tones_3("wublin")
+        assert tones_ink != tones_day
+
+    def test_every_theme_has_explicit_placeholder_tints(self):
+        # Daylight in particular MUST NOT hit the dark fallback (would
+        # render dark boxes behind monsters on the light surface).
+        from app.ui.themes import _PLACEHOLDER_2, _PLACEHOLDER_3
+
+        for name in THEME_NAMES:
+            assert name in _PLACEHOLDER_3, f"{name} missing _PLACEHOLDER_3"
+            assert name in _PLACEHOLDER_2, f"{name} missing _PLACEHOLDER_2"
+            for mtype in ("wublin", "celestial", "amber"):
+                assert mtype in _PLACEHOLDER_3[name]
+                assert mtype in _PLACEHOLDER_2[name]
 
 
 class TestBuildStylesheet:
@@ -125,10 +143,17 @@ class TestBuildStylesheet:
         assert "#eggRow" in qss
 
     def test_explicit_theme_overrides_active(self):
-        set_active("Deep Island Night")
-        qss = build_stylesheet(theme="Classic Dark")
-        # Classic Dark uses a different bg color
-        assert "#121317" in qss
+        set_active("Ink & Brass")
+        qss = build_stylesheet(theme="Daylight")
+        # Daylight uses a light paper bg the dark themes never use.
+        assert "#f5f2ea" in qss
+
+    def test_every_theme_dict_has_all_tokens(self):
+        # A missing key would KeyError inside build_stylesheet at runtime.
+        ref = set(THEMES[DEFAULT_THEME].keys())
+        for name in THEME_NAMES:
+            missing = ref - set(THEMES[name].keys())
+            assert not missing, f"Theme '{name}' missing tokens: {missing}"
 
     def test_explicit_offset_affects_sizes(self):
         qss_0 = build_stylesheet(font_offset=0)

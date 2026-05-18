@@ -12,126 +12,187 @@ from __future__ import annotations
 
 # ── Theme colour palettes ────────────────────────────────────────────
 
-_DEEP_ISLAND_NIGHT: dict[str, str] = {
+# Ink & Brass — refined dark default. Deep desaturated ink, brushed-brass
+# accent (the single action colour: CTAs, active nav, in-progress bars).
+_INK_AND_BRASS: dict[str, str] = {
     # surfaces
-    "bg":              "#0b1222",
-    "bg_sunken":       "#070e1a",
-    "bg_low":          "#101828",
-    "card":            "#141c2a",
-    "border":          "#1c2636",
-    "interactive":     "#1a2435",
-    "elevated":        "#22304a",
+    "bg":              "#090d16",
+    "bg_sunken":       "#060a12",
+    "bg_low":          "#0f1420",
+    "card":            "#131a27",
+    "border":          "#1f2937",
+    "interactive":     "#1a2333",
+    "elevated":        "#243044",
     # accent
-    "accent":          "#f0c050",
-    "accent_dark":     "#d4920a",
-    "accent_hover_lt": "#f5d070",
-    "accent_hover_dk": "#d9a020",
-    "accent_press_lt": "#d4a830",
-    "accent_press_dk": "#b87808",
-    "accent_focus":    "#f8dc80",
-    "cta_text":        "#1a0e00",
+    "accent":          "#d8b15c",
+    "accent_dark":     "#b8902f",
+    "accent_hover_lt": "#e6c478",
+    "accent_hover_dk": "#c89a3a",
+    "accent_press_lt": "#c8a24a",
+    "accent_press_dk": "#a07c1e",
+    "accent_focus":    "#f0d28a",
+    "cta_text":        "#1a1200",
     # text
-    "text1":           "#e8e4df",
-    "text2":           "#b8b0a0",
-    "text3":           "#8a92a2",
-    "text_muted":      "#909aa5",
-    "text_disabled":   "#3a4050",
+    "text1":           "#e9e6df",
+    "text2":           "#b3ab9c",
+    "text3":           "#8b94a4",
+    "text_muted":      "#8d96a3",
+    "text_disabled":   "#3a4150",
     # semantic
     "success":         "#a6e3a1",
     "error":           "#ffb4ab",
     # decorative
-    "gradient_center": "#101a2a",
-    "dashed_border":   "#1e3040",
-    "tip_border":      "#1c2e42",
-    "tip_bg_rgba":     "rgba(26, 36, 53, 0.85)",
+    "gradient_center": "#111a2a",
+    "dashed_border":   "#233244",
+    "tip_border":      "#1f3043",
+    "tip_bg_rgba":     "rgba(25, 33, 47, 0.85)",
     "icon_border":     "#2a3850",
-    "card_hover_border": "#2a3a52",
-    "scroll_rgba":     "rgba(240, 192, 80, 51)",
-    "scroll_hover_rgba": "rgba(240, 192, 80, 80)",
-    "search_focus_rgba": "rgba(240, 192, 80, 0.4)",
-    "thumb_fallback_bg": "#151e30",
-    "thumb_fallback_border": "#1c2840",
+    "card_hover_border": "#324056",
+    "scroll_rgba":     "rgba(216, 177, 92, 51)",
+    "scroll_hover_rgba": "rgba(216, 177, 92, 80)",
+    "search_focus_rgba": "rgba(216, 177, 92, 0.4)",
+    "thumb_fallback_bg": "#141d2e",
+    "thumb_fallback_border": "#1f2c40",
     # font
     "font_family":     '"Bahnschrift", "Segoe UI", sans-serif',
 }
 
-_CLASSIC_DARK: dict[str, str] = {
+# Umber Studio — warm dark. Brown-black surfaces, parchment text, muted
+# ember/terracotta accent. Cozy, editorial counterpart to the cool default.
+_UMBER_STUDIO: dict[str, str] = {
     # surfaces
-    "bg":              "#121317",
-    "bg_sunken":       "#0d0e12",
-    "bg_low":          "#1a1b20",
-    "card":            "#1f1f24",
-    "border":          "#252530",
-    "interactive":     "#292a2e",
-    "elevated":        "#343439",
+    "bg":              "#15110d",
+    "bg_sunken":       "#100c08",
+    "bg_low":          "#1c1610",
+    "card":            "#1f1814",
+    "border":          "#322619",
+    "interactive":     "#271e16",
+    "elevated":        "#3a2c1f",
     # accent
-    "accent":          "#d0bcff",
-    "accent_dark":     "#9f78ff",
-    "accent_hover_lt": "#ddd0ff",
-    "accent_hover_dk": "#b08aff",
-    "accent_press_lt": "#bfa8ee",
-    "accent_press_dk": "#8a6ae8",
-    "accent_focus":    "#e9ddff",
-    "cta_text":        "#330080",
+    "accent":          "#cf7a4a",
+    "accent_dark":     "#a85a30",
+    "accent_hover_lt": "#e0925f",
+    "accent_hover_dk": "#bd6a3a",
+    "accent_press_lt": "#bd6c3e",
+    "accent_press_dk": "#934d28",
+    "accent_focus":    "#eda877",
+    "cta_text":        "#1c0e04",
     # text
-    "text1":           "#e3e2e7",
-    "text2":           "#cbc3d7",
-    "text3":           "#a09aa8",
-    "text_muted":      "#a8a0b0",
-    "text_disabled":   "#494454",
+    "text1":           "#ece3d4",
+    "text2":           "#c0b09a",
+    "text3":           "#a8977f",
+    "text_muted":      "#a89880",
+    "text_disabled":   "#4a3f30",
     # semantic
-    "success":         "#a6e3a1",
-    "error":           "#ffb4ab",
+    "success":         "#9bbf86",
+    "error":           "#e8a08a",
     # decorative
-    "gradient_center": "#1e1a28",
-    "dashed_border":   "#2d2a38",
-    "tip_border":      "#2d2842",
-    "tip_bg_rgba":     "rgba(52, 52, 57, 0.82)",
-    "icon_border":     "#3a3548",
-    "card_hover_border": "#3d3a4a",
-    "scroll_rgba":     "rgba(208, 188, 255, 51)",
-    "scroll_hover_rgba": "rgba(208, 188, 255, 80)",
-    "search_focus_rgba": "rgba(208, 188, 255, 0.4)",
-    "thumb_fallback_bg": "#262332",
-    "thumb_fallback_border": "#343046",
+    "gradient_center": "#1f1810",
+    "dashed_border":   "#3a2c1c",
+    "tip_border":      "#3a2c1c",
+    "tip_bg_rgba":     "rgba(40, 30, 20, 0.85)",
+    "icon_border":     "#4a3823",
+    "card_hover_border": "#4a3826",
+    "scroll_rgba":     "rgba(207, 122, 74, 51)",
+    "scroll_hover_rgba": "rgba(207, 122, 74, 85)",
+    "search_focus_rgba": "rgba(207, 122, 74, 0.4)",
+    "thumb_fallback_bg": "#241b13",
+    "thumb_fallback_border": "#3a2c1c",
+    # font
+    "font_family":     '"Bahnschrift", "Segoe UI", sans-serif',
+}
+
+# Daylight — light theme. Warm paper, white cards, deep-slate text, one
+# confident deep-teal accent. Note: needs its own light placeholder tints
+# below (the dark fallbacks would render as dark boxes on paper).
+_DAYLIGHT: dict[str, str] = {
+    # surfaces
+    "bg":              "#f5f2ea",
+    "bg_sunken":       "#ece7da",
+    "bg_low":          "#efebe0",
+    "card":            "#ffffff",
+    "border":          "#e4ded0",
+    "interactive":     "#eeeae0",
+    "elevated":        "#e9e3d4",
+    # accent
+    "accent":          "#0f766e",
+    "accent_dark":     "#0b5d56",
+    "accent_hover_lt": "#138f85",
+    "accent_hover_dk": "#0d6760",
+    "accent_press_lt": "#0d645d",
+    "accent_press_dk": "#094c46",
+    "accent_focus":    "#14a89c",
+    "cta_text":        "#ffffff",
+    # text
+    "text1":           "#232a32",
+    "text2":           "#5b6470",
+    "text3":           "#6c7480",
+    "text_muted":      "#76808c",
+    "text_disabled":   "#b8bcc2",
+    # semantic
+    "success":         "#3f9142",
+    "error":           "#c0392b",
+    # decorative
+    "gradient_center": "#ece7da",
+    "dashed_border":   "#cfc8b6",
+    "tip_border":      "#d8d0bd",
+    "tip_bg_rgba":     "rgba(255, 255, 255, 0.85)",
+    "icon_border":     "#ddd6c4",
+    "card_hover_border": "#cfc7b4",
+    "scroll_rgba":     "rgba(35, 42, 50, 40)",
+    "scroll_hover_rgba": "rgba(35, 42, 50, 70)",
+    "search_focus_rgba": "rgba(15, 118, 110, 0.4)",
+    "thumb_fallback_bg": "#eee9db",
+    "thumb_fallback_border": "#ddd6c4",
     # font
     "font_family":     '"Segoe UI", "Inter", sans-serif',
 }
 
 THEMES: dict[str, dict[str, str]] = {
-    "Deep Island Night": _DEEP_ISLAND_NIGHT,
-    "Classic Dark": _CLASSIC_DARK,
+    "Ink & Brass": _INK_AND_BRASS,
+    "Umber Studio": _UMBER_STUDIO,
+    "Daylight": _DAYLIGHT,
 }
 
 THEME_NAMES: list[str] = list(THEMES.keys())
 
-DEFAULT_THEME = "Deep Island Night"
+DEFAULT_THEME = "Ink & Brass"
 
 # ── Per-type placeholder tones ───────────────────────────────────────
 
 _PLACEHOLDER_3: dict[str, dict[str, tuple[str, str, str]]] = {
-    "Deep Island Night": {
+    "Ink & Brass": {
         "wublin":    ("#0e2228", "#1a4050", "#45e9d0"),
         "celestial": ("#2a2510", "#504010", "#ffba20"),
         "amber":     ("#2e201a", "#5a3525", "#ff8a65"),
     },
-    "Classic Dark": {
-        "wublin":    ("#1a2e31", "#275058", "#45e9d0"),
-        "celestial": ("#352d12", "#5c4810", "#ffba20"),
-        "amber":     ("#38251f", "#6a3b2d", "#ff8a65"),
+    "Umber Studio": {
+        "wublin":    ("#13241f", "#2a4a40", "#4fd8c0"),
+        "celestial": ("#2a2210", "#504010", "#ffba20"),
+        "amber":     ("#2e1d14", "#5a3525", "#ff9568"),
+    },
+    "Daylight": {
+        "wublin":    ("#d9efec", "#a9d6cf", "#0f766e"),
+        "celestial": ("#f3ead2", "#d9c89a", "#9a7b1f"),
+        "amber":     ("#f6e0d6", "#e0b29c", "#b65535"),
     },
 }
 
 _PLACEHOLDER_2: dict[str, dict[str, tuple[str, str]]] = {
-    "Deep Island Night": {
+    "Ink & Brass": {
         "wublin":    ("#0e2228", "#45e9d0"),
         "celestial": ("#2a2510", "#ffba20"),
         "amber":     ("#2e201a", "#ff8a65"),
     },
-    "Classic Dark": {
-        "wublin":    ("#1a2e31", "#45e9d0"),
-        "celestial": ("#352d12", "#ffba20"),
-        "amber":     ("#38251f", "#ff8a65"),
+    "Umber Studio": {
+        "wublin":    ("#13241f", "#4fd8c0"),
+        "celestial": ("#2a2210", "#ffba20"),
+        "amber":     ("#2e1d14", "#ff9568"),
+    },
+    "Daylight": {
+        "wublin":    ("#e3f1ee", "#0f766e"),
+        "celestial": ("#f4ecd8", "#9a7b1f"),
+        "amber":     ("#f8e6dc", "#b65535"),
     },
 }
 

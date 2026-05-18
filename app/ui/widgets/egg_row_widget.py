@@ -150,6 +150,12 @@ class EggRowWidget(QWidget):
         self._counter_label.setText(f"{vm.bred_count} / {vm.total_needed}")
         self._progress_bar.setMaximum(vm.total_needed)
         self._progress_bar.setValue(vm.bred_count)
+        # Green only means "done"; in-progress fill uses the accent so a
+        # barely-started bar doesn't read as complete at a glance.
+        is_complete = vm.total_needed > 0 and vm.bred_count >= vm.total_needed
+        self._progress_bar.setProperty("complete", "true" if is_complete else "false")
+        self._progress_bar.style().unpolish(self._progress_bar)
+        self._progress_bar.style().polish(self._progress_bar)
         self._element_row.set_elements(vm.elements)
         self._consumer_row.set_cards(vm.consumer_cards)
 

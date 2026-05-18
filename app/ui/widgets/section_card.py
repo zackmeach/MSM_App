@@ -98,6 +98,11 @@ class SectionCard(QWidget):
     ) -> list[MonsterEntryRow]:
         for entry in self._entries:
             self._body_layout.removeWidget(entry)
+            # removeWidget only detaches from the layout; the widget stays
+            # visible at its last geometry until deleteLater's deferred
+            # destruction runs. setParent(None) removes it from the paint
+            # tree synchronously so rapid refreshes don't stack ghost rows.
+            entry.setParent(None)
             entry.deleteLater()
         self._entries.clear()
 
@@ -106,6 +111,11 @@ class SectionCard(QWidget):
         self._badge.setText(
             f"{len(monsters)} ACTIVE" if has_entries else "INACTIVE"
         )
+        # Dashed border only signals an empty drop-zone; a populated section
+        # gets a solid border so it doesn't read as unfinished.
+        self._body.setProperty("populated", "true" if has_entries else "false")
+        self._body.style().unpolish(self._body)
+        self._body.style().polish(self._body)
 
         for m in monsters:
             badge = f"\u00d7 {m.count}" if m.count > 1 else ""

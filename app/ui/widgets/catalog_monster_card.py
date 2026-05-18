@@ -50,6 +50,9 @@ class CatalogMonsterCard(QWidget):
         self._image.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self._image.setObjectName("catalogCardImage")
         self._image.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        # Drives the faint per-type wash behind the thumbnail (see themes.py
+        # #catalogCardImage[mtype=...]).
+        self._image.setProperty("mtype", monster_type)
 
         if image_path and not self._is_placeholder:
             pix = QPixmap(image_path)
@@ -93,7 +96,7 @@ class CatalogMonsterCard(QWidget):
         badge_w = max(scaled(20) + 10, text_w + 10)
         badge_h = scaled(20)
         self._badge.setFixedSize(badge_w, badge_h)
-        # 10px inset keeps the badge clear of the card's 12px border-radius.
+        # 10px inset keeps the badge clear of the card's rounded corner.
         self._badge.move(self.width() - badge_w - 10, 10)
         self._badge.show()
         self._badge.raise_()
@@ -103,7 +106,7 @@ class CatalogMonsterCard(QWidget):
         bg, border, fg = placeholder_tones_3(self._monster_type)
         self._image.setText(initials or name[:2].upper())
         self._image.setStyleSheet(
-            f"background-color: {bg}; border: 1px solid {border}; border-radius: 12px; "
+            f"background-color: {bg}; border: 1px solid {border}; border-radius: 8px; "
             f"font-size: 28px; font-weight: bold; color: {fg};"
         )
 

@@ -172,6 +172,10 @@ class CatalogBrowserPanel(QWidget):
     def _populate_grid(self, items: list[MonsterCatalogItemViewModel]) -> None:
         for c in self._cards:
             self._grid_layout.removeWidget(c)
+            # See SectionCard.refresh: detach from the paint tree now so a
+            # rapid re-populate (tab switch / search keystroke) can't leave
+            # the prior grid ghosted under the new one.
+            c.setParent(None)
             c.deleteLater()
         self._cards.clear()
 

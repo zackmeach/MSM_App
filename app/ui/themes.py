@@ -221,6 +221,14 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
     def sz(base: int) -> str:
         return f"{base + offset}px"
 
+    # ── Radius scale (by element role, not one-size-fits-all) ──
+    r_lg = "10px"   # cards, panels, large containers
+    r_md = "8px"    # inputs, icon tiles, buttons, inner surfaces
+    r_sm = "6px"    # chips, small utility controls
+
+    # Per-type faint wash behind catalog thumbnails (reuses placeholder tones).
+    _pt2 = _PLACEHOLDER_2.get(name, _PLACEHOLDER_2[DEFAULT_THEME])
+
     return f"""
         /* ── Base surfaces ── */
         QMainWindow {{ background-color: {t['bg']}; }}
@@ -280,7 +288,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
             background-color: transparent;
             color: {t['text_muted']};
             border: none;
-            border-radius: 4px;
+            border-radius: {r_sm};
             padding: 6px 12px;
             font-size: {sz(12)};
         }}
@@ -305,7 +313,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
             background-color: {t['bg_low']};
             color: {t['text_muted']};
             border: 1px solid {t['border']};
-            border-radius: 12px;
+            border-radius: {r_sm};
             padding: 4px 12px;
             font-size: {sz(12)};
         }}
@@ -316,7 +324,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
                 cx:0.5, cy:0.5, radius:0.7, fx:0.5, fy:0.5,
                 stop:0 {t['gradient_center']}, stop:1 {t['bg_low']});
             border: none;
-            border-radius: 12px;
+            border-radius: {r_lg};
         }}
         #emptyStateIcon {{
             background-color: {t['interactive']};
@@ -326,7 +334,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
             font-size: {sz(28)};
         }}
         #emptyStateTitle {{
-            font-size: {sz(20)};
+            font-size: {sz(22)};
             font-weight: 700;
             color: {t['text1']};
         }}
@@ -342,7 +350,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
                 stop:0 {t['accent']}, stop:1 {t['accent_dark']});
             color: {t['cta_text']};
             border: none;
-            border-radius: 12px;
+            border-radius: {r_md};
             padding: 12px 28px;
             font-size: {sz(14)};
             font-weight: 700;
@@ -363,11 +371,11 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         #sectionCard {{
             background-color: {t['card']};
             border: 1px solid {t['border']};
-            border-radius: 12px;
+            border-radius: {r_lg};
         }}
         #sectionIcon {{
             background-color: {t['elevated']};
-            border-radius: 12px;
+            border-radius: {r_md};
             font-size: {sz(20)};
             min-width: 56px; max-width: 56px;
             min-height: 56px; max-height: 56px;
@@ -382,16 +390,18 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
             color: {t['text_muted']};
             font-size: {sz(11)};
             font-weight: 700;
-            letter-spacing: 2px;
-            /* Qt's sizeHint doesn't include trailing letter-spacing, so
-               the last letter clips at the right edge without padding. */
-            padding-right: 4px;
+            letter-spacing: 1px;
+            /* trailing pad: Qt sizeHint omits letter-spacing */
+            padding-right: 2px;
         }}
         #sectionBody {{
             background-color: {t['bg_sunken']};
-            border: 1px dashed {t['dashed_border']};
-            border-radius: 12px;
+            border: 1px solid {t['border']};
+            border-radius: {r_lg};
             min-height: 96px;
+        }}
+        #sectionBody[populated="false"] {{
+            border: 1px dashed {t['dashed_border']};
         }}
         #sectionEmptyText {{
             color: {t['text_muted']};
@@ -404,7 +414,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         #gettingStartedCard {{
             background-color: {t['tip_bg_rgba']};
             border: 1px solid {t['tip_border']};
-            border-radius: 12px;
+            border-radius: {r_lg};
         }}
         #gettingStartedIcon {{
             background: transparent;
@@ -426,7 +436,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         #eggRow {{
             background-color: {t['card']};
             border: 1px solid {t['border']};
-            border-radius: 10px;
+            border-radius: {r_lg};
         }}
         #eggRow:hover {{
             background-color: {t['interactive']};
@@ -434,7 +444,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         }}
         #eggIconContainer {{
             background-color: {t['elevated']};
-            border-radius: 8px;
+            border-radius: {r_md};
         }}
         #eggName {{
             font-weight: 600;
@@ -451,12 +461,12 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         /* ── In-work entry ── */
         #inworkEntry {{
             background-color: transparent;
-            border-radius: 8px;
-            border-left: 3px solid transparent;
+            border: 1px solid transparent;
+            border-radius: {r_md};
         }}
         #inworkEntry:hover {{
             background-color: {t['interactive']};
-            border-left: 3px solid {t['accent']};
+            border: 1px solid {t['card_hover_border']};
         }}
         #inworkEntryName {{
             font-size: {sz(13)};
@@ -468,7 +478,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
             background-color: {t['interactive']};
             color: {t['text1']};
             border: none;
-            border-radius: 6px;
+            border-radius: {r_md};
             padding: 6px 16px;
             font-size: {sz(13)};
         }}
@@ -485,7 +495,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
             background-color: {t['interactive']};
             color: {t['text1']};
             border: 1px solid {t['elevated']};
-            border-radius: 4px;
+            border-radius: {r_md};
             padding: 4px 8px;
         }}
         QComboBox:focus {{ border: 1px solid {t['accent']}; }}
@@ -508,7 +518,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
             background-color: {t['interactive']};
             color: {t['text1']};
             border: 1px solid {t['elevated']};
-            border-radius: 4px;
+            border-radius: {r_md};
             padding: 6px 10px;
         }}
         QLineEdit:focus {{ border: 1px solid {t['accent']}; }}
@@ -562,7 +572,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         #catalogSearchRow {{
             background-color: {t['card']};
             border: 1px solid {t['border']};
-            border-radius: 12px;
+            border-radius: {r_lg};
             min-height: 46px;
         }}
         #catalogSearchIcon {{
@@ -603,20 +613,23 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
 
         /* ── Catalog: monster card ── */
         #catalogCard {{
-            background-color: {t['card']};
-            border: 1px solid {t['border']};
-            border-radius: 12px;
+            background-color: transparent;
+            border: 1px solid transparent;
+            border-radius: {r_lg};
         }}
         #catalogCard:hover {{
-            background-color: {t['interactive']};
-            border: 1px solid {t['card_hover_border']};
+            background-color: {t['card']};
+            border: 1px solid {t['border']};
         }}
         #catalogCardImage {{
             background-color: {t['bg_sunken']};
-            border-radius: 12px;
+            border-radius: {r_md};
         }}
+        #catalogCardImage[mtype="wublin"] {{ background-color: {_pt2['wublin'][0]}; }}
+        #catalogCardImage[mtype="celestial"] {{ background-color: {_pt2['celestial'][0]}; }}
+        #catalogCardImage[mtype="amber"] {{ background-color: {_pt2['amber'][0]}; }}
         #catalogCardName {{
-            font-size: {sz(15)};
+            font-size: {sz(14)};
             font-weight: 700;
             color: {t['text1']};
         }}
@@ -630,15 +643,18 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
 
         /* ── Progress bar ── */
         QProgressBar {{
-            background-color: {t['interactive']};
+            background-color: {t['bg_sunken']};
             border: none;
             border-radius: 4px;
             max-height: 8px;
             min-height: 8px;
         }}
         QProgressBar::chunk {{
-            background-color: {t['success']};
+            background-color: {t['accent']};
             border-radius: 4px;
+        }}
+        QProgressBar[complete="true"]::chunk {{
+            background-color: {t['success']};
         }}
 
         /* ── Toast notification ── */
@@ -646,7 +662,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
             background-color: {t['elevated']};
             color: {t['text1']};
             border: 1px solid {t['accent']};
-            border-radius: 8px;
+            border-radius: {r_md};
             padding: 8px 20px;
             font-size: {sz(13)};
             font-weight: 500;
@@ -670,16 +686,16 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         #settingsCard {{
             background-color: {t['card']};
             border: 1px solid {t['border']};
-            border-radius: 12px;
+            border-radius: {r_lg};
         }}
         #settingsCardLow {{
             background-color: {t['bg_low']};
             border: 1px solid {t['border']};
-            border-radius: 12px;
+            border-radius: {r_lg};
         }}
         #settingsCardIcon {{
             background-color: {t['elevated']};
-            border-radius: 8px;
+            border-radius: {r_md};
             font-size: {sz(18)};
             min-width: 40px; max-width: 40px;
             min-height: 40px; max-height: 40px;
@@ -704,7 +720,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         #settingsInfoValue {{
             font-size: {sz(14)};
             font-weight: 700;
-            color: {t['accent']};
+            color: {t['text1']};
         }}
         #settingsInfoDivider {{
             background-color: {t['border']};
@@ -716,12 +732,12 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         #settingsStatusStrip {{
             background-color: {t['bg_sunken']};
             border: 1px solid {t['border']};
-            border-radius: 12px;
+            border-radius: {r_lg};
         }}
         #settingsStatusBadge {{
-            font-size: {sz(10)};
+            font-size: {sz(11)};
             font-weight: 700;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
         }}
         #settingsStatusBadge[tone="neutral"] {{ color: {t['text_muted']}; }}
         #settingsStatusBadge[tone="accent"]  {{ color: {t['accent']}; }}
@@ -747,7 +763,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         #settingsDataCard {{
             background-color: {t['card']};
             border: 1px solid {t['border']};
-            border-radius: 12px;
+            border-radius: {r_lg};
         }}
         #settingsDataTable {{
             background-color: transparent;
@@ -775,7 +791,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         #settingsDataThumbFallback {{
             background-color: {t['thumb_fallback_bg']};
             border: 1px solid {t['thumb_fallback_border']};
-            border-radius: 8px;
+            border-radius: {r_md};
             color: {t['accent']};
             font-size: {sz(12)};
             font-weight: 700;
@@ -783,7 +799,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
 
         /* ── MonsterCard (compact in-work cards) ── */
         #monsterCard {{
-            background-color: {t['interactive']}; border-radius: 8px;
+            background-color: {t['interactive']}; border-radius: {r_md};
         }}
         #monsterCard:hover {{ background-color: {t['elevated']}; }}
         #cardLabel {{ font-size: {sz(11)}; color: {t['text1']}; }}
@@ -792,7 +808,7 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
         #catalogBadge {{
             background-color: {t['accent']};
             color: {t['cta_text']};
-            font-size: {sz(10)};
+            font-size: {sz(11)};
             font-weight: 700;
             border-radius: {(20 + offset) // 2}px;
             min-width: {20 + offset}px;

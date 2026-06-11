@@ -116,8 +116,10 @@ def validate_manifest_contract(
 
     _validate_db_url(manifest["content_db_url"], allowed_schemes, allowed_hosts)
 
+    # SHA-256 is mandatory regardless of contract version: a manifest without
+    # it would let the downloaded DB skip integrity checking entirely.
     sha = manifest.get("content_db_sha256", "")
-    if contract and (not sha or len(sha) != 64):
+    if not sha or len(sha) != 64:
         raise ValidationError(f"Manifest has missing or malformed content_db_sha256: {sha!r}")
 
 

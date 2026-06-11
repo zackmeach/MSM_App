@@ -216,7 +216,7 @@ class TestIncrementEggCommand:
         bowgart_id = id_maps["eggs"]["Bowgart"]
         IncrementEggCommand(bowgart_id, userstate_conn).execute()
 
-        with pytest.raises(RuntimeError, match="No unsatisfied target"):
+        with pytest.raises(RuntimeError, match="no remaining targets"):
             IncrementEggCommand(bowgart_id, userstate_conn).execute()
 
     def test_undo_restores_prior_count(self, content_conn, userstate_conn, id_maps):

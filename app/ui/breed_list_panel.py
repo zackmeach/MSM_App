@@ -30,6 +30,7 @@ class BreedListPanel(QWidget):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self._row_widgets: dict[int, EggRowWidget] = {}
+        self._last_rows: list[BreedListRowViewModel] = []
         self._audio: "AudioPlayer | None" = None
         self._build_ui()
 
@@ -104,6 +105,7 @@ class BreedListPanel(QWidget):
                 break
 
     def refresh(self, rows: list[BreedListRowViewModel]) -> None:
+        self._last_rows = list(rows)
         incoming_ids = {r.egg_type_id for r in rows}
         for eid in list(self._row_widgets):
             if eid not in incoming_ids:
@@ -159,6 +161,12 @@ class BreedListPanel(QWidget):
         if w is not None:
             self._list_layout.removeWidget(w)
             w.deleteLater()
+        # If the egg became required again mid-animation (a new target was
+        # added during the ~380ms close-out), the latest refresh skipped the
+        # completing widget — rebuild from the last known rows so the row
+        # doesn't vanish until the next state change.
+        if any(r.egg_type_id == egg_type_id for r in self._last_rows):
+            self.refresh(self._last_rows)
 
     def _on_sort_changed(self) -> None:
         order = self._sort_combo.currentData()

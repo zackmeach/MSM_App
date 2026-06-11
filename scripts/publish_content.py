@@ -74,6 +74,106 @@ def _load_normalized() -> tuple[list[dict], list[dict], list[dict], list[dict], 
     return loaded["monsters"], loaded["eggs"], loaded["requirements"], loaded["assets"], egg_elements
 
 
+def _extract_baseline_records(
+    db_path: Path,
+) -> tuple[list[dict], list[dict], list[dict], list[dict]]:
+    """Extract normalized-shaped records from a baseline content.db.
+
+    Returns (monsters, eggs, requirements, assets) keyed/shaped the way
+    compute_diff expects, so the diff report reflects real changes instead
+    of claiming everything is new.
+    """
+    import sqlite3
+
+    conn = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+    try:
+        monsters = [
+            {
+                "content_key": r[0],
+                "display_name": r[1],
+                "monster_type": r[2],
+                "wiki_slug": r[3],
+                "image_path": r[4],
+                "is_placeholder": bool(r[5]),
+                "is_deprecated": bool(r[6]),
+                "deprecation_reason": r[7],
+                "source_fingerprint": r[8],
+                "asset_source": r[9],
+            }
+            for r in conn.execute(
+                "SELECT content_key, name, monster_type, wiki_slug, image_path, "
+                "is_placeholder, is_deprecated, deprecation_reason, source_fingerprint, "
+                "asset_source FROM monsters WHERE content_key != ''"
+            )
+        ]
+        eggs = [
+            {
+                "content_key": r[0],
+                "display_name": r[1],
+                "breeding_time_seconds": r[2],
+                "breeding_time_display": r[3],
+                "egg_image_path": r[4],
+                "is_placeholder": bool(r[5]),
+                "is_deprecated": bool(r[6]),
+                "deprecation_reason": r[7],
+                "source_fingerprint": r[8],
+                "asset_source": r[9],
+            }
+            for r in conn.execute(
+                "SELECT content_key, name, breeding_time_seconds, breeding_time_display, "
+                "egg_image_path, is_placeholder, is_deprecated, deprecation_reason, "
+                "source_fingerprint, asset_source FROM egg_types WHERE content_key != ''"
+            )
+        ]
+        requirements = [
+            {"monster_key": r[0], "egg_key": r[1], "quantity": r[2]}
+            for r in conn.execute(
+                "SELECT m.content_key, e.content_key, mr.quantity "
+                "FROM monster_requirements mr "
+                "JOIN monsters m ON mr.monster_id = m.id "
+                "JOIN egg_types e ON mr.egg_type_id = e.id "
+                "WHERE m.content_key != '' AND e.content_key != ''"
+            )
+        ]
+        assets = [
+            {
+                "entity_type": r[0],
+                "content_key": r[1],
+                "relative_path": r[2],
+                "sha256": r[3],
+                "status": "placeholder" if r[4] else "official",
+                "is_placeholder": bool(r[4]),
+            }
+            for r in conn.execute(
+                "SELECT 'monster', content_key, image_path, asset_sha256, is_placeholder "
+                "FROM monsters WHERE image_path != '' "
+                "UNION ALL "
+                "SELECT 'egg', content_key, egg_image_path, asset_sha256, is_placeholder "
+                "FROM egg_types WHERE egg_image_path != ''"
+            )
+        ]
+        return monsters, eggs, requirements, assets
+    finally:
+        conn.close()
+
+
+def _baseline_version(db_path: Path) -> str:
+    """Read content_version from the baseline DB, '0.0.0' on failure."""
+    import sqlite3
+
+    try:
+        conn = sqlite3.connect(f"file:{db_path}?mode=ro", uri=True)
+        try:
+            row = conn.execute(
+                "SELECT value FROM update_metadata WHERE key = 'content_version'"
+            ).fetchone()
+            return row[0] if row and row[0] else "0.0.0"
+        finally:
+            conn.close()
+    except sqlite3.Error:
+        return "0.0.0"
+
+
 def _git_sha() -> str:
     """Get current git SHA, or 'unknown' if not in a git repo."""
     try:
@@ -190,22 +290,26 @@ def main() -> int:
     print(f"{'='*60}")
 
     if baseline_db:
-        # Load baseline normalized data for diffing
-        # For simplicity, use empty baselines — the diff will show everything as "new"
-        # A more complete implementation would extract records from the baseline DB
         print(f"  Baseline: {baseline_db}")
-        baseline_monsters: list[dict] = []
-        baseline_eggs: list[dict] = []
-        baseline_requirements: list[dict] = []
-        baseline_assets: list[dict] = []
+        (
+            baseline_monsters,
+            baseline_eggs,
+            baseline_requirements,
+            baseline_assets,
+        ) = _extract_baseline_records(baseline_db)
+        previous_version = _baseline_version(baseline_db)
+        print(
+            f"  Extracted: {len(baseline_monsters)} monsters, "
+            f"{len(baseline_eggs)} eggs, {len(baseline_requirements)} reqs "
+            f"(version {previous_version})"
+        )
     else:
         print("  No baseline provided — all content will appear as 'new'")
         baseline_monsters = []
         baseline_eggs = []
         baseline_requirements = []
         baseline_assets = []
-
-    previous_version = "0.0.0"
+        previous_version = "0.0.0"
     diff_result = compute_diff(
         baseline_monsters, monsters,
         baseline_eggs, eggs,

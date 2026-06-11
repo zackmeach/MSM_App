@@ -148,11 +148,21 @@ class TestManifestContractValidation:
         with pytest.raises(ValidationError, match="malformed"):
             validate_manifest_contract(manifest)
 
-    def test_legacy_manifest_no_contract(self):
-        """Legacy manifests without artifact_contract_version still work."""
+    def test_legacy_manifest_no_contract_needs_sha(self):
+        """SHA-256 is mandatory even without artifact_contract_version —
+        a manifest omitting it must not skip integrity checking."""
         manifest = {
             "content_version": "0.9.0",
             "content_db_url": "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/content.db",
+        }
+        with pytest.raises(ValidationError, match="content_db_sha256"):
+            validate_manifest_contract(manifest)
+
+    def test_legacy_manifest_with_sha_passes(self):
+        manifest = {
+            "content_version": "0.9.0",
+            "content_db_url": "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/content.db",
+            "content_db_sha256": "a" * 64,
         }
         validate_manifest_contract(manifest)
 

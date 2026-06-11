@@ -44,6 +44,12 @@ DEFAULT_MANIFEST_URL = (
     "https://raw.githubusercontent.com/zackmeach/MSM_App/main/content/manifest.json"
 )
 
+# Hard ceiling on the staged DB download. content.db is ~1 MB today; this is
+# generous headroom while still bounding memory/disk if the URL ever serves
+# something unexpected.
+MAX_DB_DOWNLOAD_BYTES = 64 * 1024 * 1024
+_DOWNLOAD_CHUNK = 64 * 1024
+
 
 @dataclass(frozen=True)
 class UpdateCheckResult:
@@ -73,12 +79,13 @@ class _UpdateWorker(QObject):
         data_dir: Path,
         manifest_url: str,
         current_version: str,
+        manifest_data: dict | None = None,
     ) -> None:
         super().__init__()
         self._data_dir = data_dir
         self._manifest_url = manifest_url
         self._current_version = current_version
-        self._manifest_data: dict | None = None
+        self._manifest_data = manifest_data
 
     def do_check(self) -> None:
         try:
@@ -107,6 +114,9 @@ class _UpdateWorker(QObject):
                 return
 
             self._manifest_data = data
+            # Deliberate: ANY version difference counts as an update, including
+            # an older remote version. This lets a bad content release be
+            # pulled by re-publishing the prior version.
             available = remote_version != self._current_version
             self.check_finished.emit(
                 UpdateCheckResult(available, self._current_version, remote_version)
@@ -135,8 +145,18 @@ class _UpdateWorker(QObject):
             self.progress.emit("Downloading update...")
             req = urllib.request.Request(db_url, method="GET")
             req.add_header("User-Agent", "MSMAwakeningTracker/1.0")
-            with urllib.request.urlopen(req, timeout=60) as resp:
-                staging.write_bytes(resp.read())
+            with urllib.request.urlopen(req, timeout=60) as resp, open(staging, "wb") as fh:
+                total = 0
+                while True:
+                    chunk = resp.read(_DOWNLOAD_CHUNK)
+                    if not chunk:
+                        break
+                    total += len(chunk)
+                    if total > MAX_DB_DOWNLOAD_BYTES:
+                        raise ValidationError(
+                            f"Download exceeds {MAX_DB_DOWNLOAD_BYTES} byte limit"
+                        )
+                    fh.write(chunk)
 
             self.progress.emit("Validating...")
 
@@ -145,8 +165,11 @@ class _UpdateWorker(QObject):
             validate_client_compatibility(self._manifest_data, APP_VERSION)
 
             expected_sha = self._manifest_data.get("content_db_sha256", "")
-            if expected_sha:
-                validate_checksum(staging, expected_sha)
+            if not expected_sha:
+                # validate_manifest_contract already requires this at check
+                # time; re-assert here so staging can never skip integrity.
+                raise ValidationError("Manifest missing content_db_sha256")
+            validate_checksum(staging, expected_sha)
 
             validate_content_db(str(staging))
 
@@ -180,6 +203,11 @@ class UpdateService(QObject):
         self._manifest_url = manifest_url
         self._thread: QThread | None = None
         self._worker: _UpdateWorker | None = None
+        # Manifest captured from the last successful check; handed to the
+        # staging worker so each phase gets a FRESH worker. Reusing one worker
+        # across threads relies on GC having destroyed the previous QThread
+        # before moveToThread() — fragile, so we don't.
+        self._manifest_data: dict | None = None
 
     def rebind_content(self, conn_content: sqlite3.Connection) -> None:
         """Update the content connection after finalization."""
@@ -216,10 +244,16 @@ class UpdateService(QObject):
         When staging succeeds, ``staging_ready`` is emitted. The caller
         (MainWindow) is responsible for wiring that to the finalization path.
         """
-        if not self._worker or (self._thread and self._thread.isRunning()):
+        if not self._manifest_data or (self._thread and self._thread.isRunning()):
             return
 
         self._thread = QThread()
+        self._worker = _UpdateWorker(
+            self._data_dir,
+            self._manifest_url,
+            self.current_version,
+            manifest_data=self._manifest_data,
+        )
         self._worker.moveToThread(self._thread)
 
         self._thread.started.connect(self._worker.do_stage)
@@ -293,6 +327,8 @@ class UpdateService(QObject):
     # ── Internal ──────────────────────────────────────────────────────
 
     def _on_check_finished(self, result: UpdateCheckResult) -> None:
+        if self._worker is not None:
+            self._manifest_data = self._worker._manifest_data
         self._cleanup_thread()
         self.check_result.emit(result)
 
@@ -309,7 +345,11 @@ class UpdateService(QObject):
         if self._thread:
             self._thread.quit()
             self._thread.wait(5000)
+            self._thread.deleteLater()
             self._thread = None
+        if self._worker:
+            self._worker.deleteLater()
+            self._worker = None
 
 
 def _remove_wal_sidecars(db_path: Path) -> None:

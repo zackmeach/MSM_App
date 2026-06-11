@@ -31,11 +31,13 @@ class AddTargetCommand(Command):
     def execute(self) -> None:
         monster = monster_repo.fetch_monster_by_id(self._conn_content, self._monster_id)
         if monster is None or monster.is_deprecated:
-            raise RuntimeError(f"Monster {self._monster_id} not found or deprecated")
+            logger.warning("Monster %d not found or deprecated", self._monster_id)
+            raise RuntimeError("That monster is no longer available.")
 
         reqs = self._requirements_cache.get(self._monster_id, [])
         if not reqs:
-            raise RuntimeError(f"Monster {self._monster_id} has no requirements")
+            logger.warning("Monster %d has no requirements", self._monster_id)
+            raise RuntimeError("This monster has no egg requirements to track.")
 
         egg_types = monster_repo.fetch_egg_types_map(self._conn_content)
         egg_keys = {

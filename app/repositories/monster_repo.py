@@ -6,14 +6,23 @@ import sqlite3
 
 from app.domain.models import EggType, Monster, MonsterRequirement, MonsterType
 
-# Column names used by SELECT * on the v2 schema.  The repo gracefully
-# falls back when extra columns are absent (pre-migration DB).
-_MONSTER_V2_COLS = 13  # id..deprecation_reason
-_EGG_V2_COLS = 13      # id..asset_sha256
+# Explicit column lists: SELECT * with positional mapping silently breaks the
+# moment a migration adds or reorders a column. Order here is the mapping
+# contract for _monster_from_row / _egg_type_from_row.
+_MONSTER_COLS = (
+    "id, name, monster_type, image_path, is_placeholder, wiki_slug, is_deprecated, "
+    "content_key, source_fingerprint, asset_source, asset_sha256, "
+    "deprecated_at_utc, deprecation_reason"
+)
+_EGG_COLS = (
+    "id, name, breeding_time_seconds, breeding_time_display, egg_image_path, "
+    "is_placeholder, content_key, is_deprecated, deprecated_at_utc, "
+    "deprecation_reason, source_fingerprint, asset_source, asset_sha256"
+)
 
 
 def fetch_all_monsters(conn: sqlite3.Connection, *, include_deprecated: bool = False) -> list[Monster]:
-    sql = "SELECT * FROM monsters"
+    sql = f"SELECT {_MONSTER_COLS} FROM monsters"
     if not include_deprecated:
         sql += " WHERE is_deprecated = 0"
     sql += " ORDER BY monster_type, name"
@@ -23,20 +32,23 @@ def fetch_all_monsters(conn: sqlite3.Connection, *, include_deprecated: bool = F
 
 def fetch_monsters_by_type(conn: sqlite3.Connection, monster_type: MonsterType) -> list[Monster]:
     rows = conn.execute(
-        "SELECT * FROM monsters WHERE monster_type = ? AND is_deprecated = 0 ORDER BY name",
+        f"SELECT {_MONSTER_COLS} FROM monsters "
+        "WHERE monster_type = ? AND is_deprecated = 0 ORDER BY name",
         (monster_type.value,),
     ).fetchall()
     return [_monster_from_row(r) for r in rows]
 
 
 def fetch_monster_by_id(conn: sqlite3.Connection, monster_id: int) -> Monster | None:
-    row = conn.execute("SELECT * FROM monsters WHERE id = ?", (monster_id,)).fetchone()
+    row = conn.execute(
+        f"SELECT {_MONSTER_COLS} FROM monsters WHERE id = ?", (monster_id,)
+    ).fetchone()
     return _monster_from_row(row) if row else None
 
 
 def fetch_monster_by_key(conn: sqlite3.Connection, content_key: str) -> Monster | None:
     row = conn.execute(
-        "SELECT * FROM monsters WHERE content_key = ?", (content_key,)
+        f"SELECT {_MONSTER_COLS} FROM monsters WHERE content_key = ?", (content_key,)
     ).fetchone()
     return _monster_from_row(row) if row else None
 
@@ -49,7 +61,7 @@ def monster_exists_and_active(conn: sqlite3.Connection, monster_id: int) -> bool
 
 
 def fetch_all_egg_types(conn: sqlite3.Connection) -> list[EggType]:
-    rows = conn.execute("SELECT * FROM egg_types ORDER BY name").fetchall()
+    rows = conn.execute(f"SELECT {_EGG_COLS} FROM egg_types ORDER BY name").fetchall()
     elements_by_id = _fetch_egg_elements(conn)
     return [_egg_type_from_row(r, elements_by_id.get(r[0], ())) for r in rows]
 
@@ -79,7 +91,7 @@ def _fetch_egg_elements(conn: sqlite3.Connection) -> dict[int, tuple[str, ...]]:
 
 def fetch_egg_type_by_key(conn: sqlite3.Connection, content_key: str) -> EggType | None:
     row = conn.execute(
-        "SELECT * FROM egg_types WHERE content_key = ?", (content_key,)
+        f"SELECT {_EGG_COLS} FROM egg_types WHERE content_key = ?", (content_key,)
     ).fetchone()
     if not row:
         return None
@@ -110,7 +122,8 @@ def fetch_update_metadata(conn: sqlite3.Connection) -> dict[str, str]:
 
 
 def _monster_from_row(row: tuple) -> Monster:
-    has_v2 = len(row) >= _MONSTER_V2_COLS
+    # Positions match _MONSTER_COLS exactly; migrations run before any repo
+    # call at runtime, so the v2 columns always exist.
     return Monster(
         id=row[0],
         name=row[1],
@@ -119,17 +132,17 @@ def _monster_from_row(row: tuple) -> Monster:
         is_placeholder=bool(row[4]),
         wiki_slug=row[5],
         is_deprecated=bool(row[6]),
-        content_key=row[7] if has_v2 else "",
-        source_fingerprint=row[8] if has_v2 else "",
-        asset_source=row[9] if has_v2 else "generated_placeholder",
-        asset_sha256=row[10] if has_v2 else "",
-        deprecated_at_utc=row[11] if has_v2 else None,
-        deprecation_reason=row[12] if has_v2 else None,
+        content_key=row[7],
+        source_fingerprint=row[8],
+        asset_source=row[9],
+        asset_sha256=row[10],
+        deprecated_at_utc=row[11],
+        deprecation_reason=row[12],
     )
 
 
 def _egg_type_from_row(row: tuple, elements: tuple[str, ...] = ()) -> EggType:
-    has_v2 = len(row) >= _EGG_V2_COLS
+    # Positions match _EGG_COLS exactly.
     return EggType(
         id=row[0],
         name=row[1],
@@ -137,12 +150,12 @@ def _egg_type_from_row(row: tuple, elements: tuple[str, ...] = ()) -> EggType:
         breeding_time_display=row[3],
         egg_image_path=row[4],
         is_placeholder=bool(row[5]),
-        content_key=row[6] if has_v2 else "",
-        is_deprecated=bool(row[7]) if has_v2 else False,
-        deprecated_at_utc=row[8] if has_v2 else None,
-        deprecation_reason=row[9] if has_v2 else None,
-        source_fingerprint=row[10] if has_v2 else "",
-        asset_source=row[11] if has_v2 else "generated_placeholder",
-        asset_sha256=row[12] if has_v2 else "",
+        content_key=row[6],
+        is_deprecated=bool(row[7]),
+        deprecated_at_utc=row[8],
+        deprecation_reason=row[9],
+        source_fingerprint=row[10],
+        asset_source=row[11],
+        asset_sha256=row[12],
         elements=elements,
     )

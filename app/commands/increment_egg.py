@@ -7,7 +7,6 @@ import sqlite3
 
 from app.commands.base import Command
 from app.db.connection import transaction
-from app.domain.breed_list import derive_breed_list
 from app.repositories import target_repo
 
 logger = logging.getLogger(__name__)
@@ -32,7 +31,8 @@ class IncrementEggCommand(Command):
 
         eligible = [r for r in rows if r.satisfied_count < r.required_count]
         if not eligible:
-            raise RuntimeError(f"No unsatisfied target for egg_type {self._egg_type_id}")
+            logger.warning("No unsatisfied target for egg_type %d", self._egg_type_id)
+            raise RuntimeError("This egg has no remaining targets to credit.")
 
         chosen = eligible[0]
         self._allocated_target_id = chosen.active_target_id

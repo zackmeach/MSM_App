@@ -14,6 +14,7 @@ from app.commands.close_out_target import CloseOutTargetCommand
 from app.commands.increment_egg import IncrementEggCommand
 from app.db.connection import transaction
 from app.domain.models import SortOrder
+from app.domain.reconciliation import reconcile as domain_reconcile
 from app.repositories import monster_repo, settings_repo, target_repo
 from app.services import view_model_builder as vmb
 from app.services.viewmodels import (
@@ -263,6 +264,20 @@ class AppService(QObject):
                             "WHERE active_target_id = ? AND egg_type_id = ?",
                             (target.id, row.egg_type_id),
                         )
+
+            # Final invariant pass: no row may end with
+            # satisfied_count > required_count. The per-requirement clip above
+            # covers the identity-remap path; this enforces the invariant
+            # globally via the canonical domain rule.
+            clips = domain_reconcile(target_repo.fetch_all_progress(self._conn_userstate))
+            for target_id, egg_type_id, clipped in clips:
+                logger.warning(
+                    "Reconciliation clip: target=%d egg=%d -> %d",
+                    target_id, egg_type_id, clipped,
+                )
+                target_repo.set_progress(
+                    self._conn_userstate, target_id, egg_type_id, clipped
+                )
 
     # ── UI preferences ───────────────────────────────────────────────
 

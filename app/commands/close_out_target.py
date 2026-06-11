@@ -29,7 +29,8 @@ class CloseOutTargetCommand(Command):
     def execute(self) -> None:
         target = target_repo.fetch_target_by_id(self._conn, self._target_id)
         if target is None:
-            raise RuntimeError(f"Active target {self._target_id} not found")
+            logger.warning("Active target %d not found", self._target_id)
+            raise RuntimeError("That target is no longer active.")
 
         self._monster_id = target.monster_id
         self._added_at = target.added_at

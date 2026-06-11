@@ -50,9 +50,14 @@ class AppService(QObject):
         self._requirements_cache = monster_repo.fetch_all_requirements(conn_content)
         self._egg_types_map = monster_repo.fetch_egg_types_map(conn_content)
 
-        self._sort_order = SortOrder(
-            settings_repo.get(conn_userstate, "breed_list_sort_order", "time_desc")
-        )
+        # Corrupted/unknown stored value must not crash startup; fall back to
+        # the default (handle_sort_change guards the same way).
+        try:
+            self._sort_order = SortOrder(
+                settings_repo.get(conn_userstate, "breed_list_sort_order", "time_desc")
+            )
+        except ValueError:
+            self._sort_order = SortOrder.TIME_DESC
 
     # ── Command execution ────────────────────────────────────────────
 

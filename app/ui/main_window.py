@@ -283,7 +283,20 @@ class MainWindow(QMainWindow):
         self._service.rebind_content(new_conn)
         self._updater.rebind_content(new_conn)
 
-        self._service.reconcile_after_content_update()
+        # Reconciliation failure must also roll back: the new content.db is
+        # already live, so an exception here would otherwise leave content
+        # and userstate mismatched, the update card stuck on "finalizing",
+        # and staging/backup files behind.
+        try:
+            self._service.reconcile_after_content_update()
+        except Exception as exc:
+            logger.error("Reconciliation failed, rolling back: %s", exc, exc_info=True)
+            try:
+                new_conn.close()
+            except Exception:
+                pass
+            self._rollback_content_update(str(exc))
+            return
 
         self._service.clear_undo_redo()
 

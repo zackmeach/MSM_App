@@ -84,15 +84,21 @@ def open_content_db_readonly(db_path: Path) -> sqlite3.Connection:
 
 def _get_content_version(db_path: Path) -> str:
     """Read content_version from a content.db, returning '' on any failure."""
+    conn = None
     try:
         conn = sqlite3.connect(str(db_path))
         row = conn.execute(
             "SELECT value FROM update_metadata WHERE key = 'content_version'"
         ).fetchone()
-        conn.close()
         return row[0] if row else ""
     except Exception:
         return ""
+    finally:
+        if conn is not None:
+            try:
+                conn.close()
+            except sqlite3.Error:
+                pass
 
 
 def _parse_version(s: str) -> tuple[int, ...] | None:

@@ -29,59 +29,63 @@ class ValidationError(Exception):
 
 
 def validate_content_db(db_path: str) -> None:
-    """Raise ValidationError if the DB does not meet minimum content contract."""
+    """Raise ValidationError if the DB does not meet minimum content contract.
+
+    The connection is closed on every exit path, including early failures:
+    a leaked handle blocks the caller's staged-file cleanup on Windows
+    (WinError 32) on the exact untrusted-download path this guards.
+    """
     try:
         conn = sqlite3.connect(db_path)
-        result = conn.execute("PRAGMA integrity_check").fetchone()
-        if not result or result[0] != "ok":
-            raise ValidationError(f"Integrity check failed: {result}")
+        try:
+            result = conn.execute("PRAGMA integrity_check").fetchone()
+            if not result or result[0] != "ok":
+                raise ValidationError(f"Integrity check failed: {result}")
+
+            tables = {
+                r[0]
+                for r in conn.execute(
+                    "SELECT name FROM sqlite_master WHERE type='table'"
+                ).fetchall()
+            }
+            missing = REQUIRED_TABLES - tables
+            if missing:
+                raise ValidationError(f"Missing tables: {missing}")
+
+            for key in REQUIRED_METADATA_KEYS:
+                row = conn.execute(
+                    "SELECT value FROM update_metadata WHERE key = ?", (key,)
+                ).fetchone()
+                if not row or not row[0]:
+                    raise ValidationError(f"Missing or empty metadata key: {key}")
+
+            monster_count = conn.execute("SELECT COUNT(*) FROM monsters").fetchone()[0]
+            if monster_count < 1:
+                raise ValidationError("No monsters in database")
+
+            egg_count = conn.execute("SELECT COUNT(*) FROM egg_types").fetchone()[0]
+            if egg_count < 1:
+                raise ValidationError("No egg types in database")
+
+            orphan_monsters = conn.execute(
+                "SELECT COUNT(*) FROM monster_requirements mr "
+                "LEFT JOIN monsters m ON mr.monster_id = m.id "
+                "WHERE m.id IS NULL"
+            ).fetchone()[0]
+            if orphan_monsters > 0:
+                raise ValidationError(f"{orphan_monsters} requirement rows reference nonexistent monsters")
+
+            orphan_eggs = conn.execute(
+                "SELECT COUNT(*) FROM monster_requirements mr "
+                "LEFT JOIN egg_types e ON mr.egg_type_id = e.id "
+                "WHERE e.id IS NULL"
+            ).fetchone()[0]
+            if orphan_eggs > 0:
+                raise ValidationError(f"{orphan_eggs} requirement rows reference nonexistent egg types")
+        finally:
+            conn.close()
     except sqlite3.Error as exc:
         raise ValidationError(f"Cannot open database: {exc}") from exc
-
-    try:
-        tables = {
-            r[0]
-            for r in conn.execute(
-                "SELECT name FROM sqlite_master WHERE type='table'"
-            ).fetchall()
-        }
-        missing = REQUIRED_TABLES - tables
-        if missing:
-            raise ValidationError(f"Missing tables: {missing}")
-
-        for key in REQUIRED_METADATA_KEYS:
-            row = conn.execute(
-                "SELECT value FROM update_metadata WHERE key = ?", (key,)
-            ).fetchone()
-            if not row or not row[0]:
-                raise ValidationError(f"Missing or empty metadata key: {key}")
-
-        monster_count = conn.execute("SELECT COUNT(*) FROM monsters").fetchone()[0]
-        if monster_count < 1:
-            raise ValidationError("No monsters in database")
-
-        egg_count = conn.execute("SELECT COUNT(*) FROM egg_types").fetchone()[0]
-        if egg_count < 1:
-            raise ValidationError("No egg types in database")
-
-        orphan_monsters = conn.execute(
-            "SELECT COUNT(*) FROM monster_requirements mr "
-            "LEFT JOIN monsters m ON mr.monster_id = m.id "
-            "WHERE m.id IS NULL"
-        ).fetchone()[0]
-        if orphan_monsters > 0:
-            raise ValidationError(f"{orphan_monsters} requirement rows reference nonexistent monsters")
-
-        orphan_eggs = conn.execute(
-            "SELECT COUNT(*) FROM monster_requirements mr "
-            "LEFT JOIN egg_types e ON mr.egg_type_id = e.id "
-            "WHERE e.id IS NULL"
-        ).fetchone()[0]
-        if orphan_eggs > 0:
-            raise ValidationError(f"{orphan_eggs} requirement rows reference nonexistent egg types")
-
-    finally:
-        conn.close()
 
 
 def validate_checksum(file_path: str | Path, expected_sha256: str) -> None:

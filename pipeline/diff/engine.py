@@ -52,6 +52,7 @@ class DiffSummary:
     new_eggs: int = 0
     changed_eggs: int = 0
     deprecated_eggs: int = 0
+    revived_eggs: int = 0
     requirement_changes: int = 0
     official_to_placeholder_downgrades: int = 0
     placeholder_to_official_upgrades: int = 0
@@ -291,9 +292,9 @@ def diff_assets(
                 cls = "placeholder_to_official"
             elif base.get("status") == "official" and cand.get("status") == "placeholder":
                 cls = "official_to_placeholder"
-            elif hash_changed:
-                cls = "hash_changed"
             else:
+                # Either the hash changed, or only a non-upgrade/downgrade
+                # status change remains; both classify as hash_changed.
                 cls = "hash_changed"
             changes.append(AssetChange(
                 content_key=cand.get("content_key", ""),
@@ -355,6 +356,8 @@ def compute_diff(
             summary.new_eggs += 1
         elif c.change_class == "deprecated":
             summary.deprecated_eggs += 1
+        elif c.change_class == "revived":
+            summary.revived_eggs += 1
         elif c.change_class == "field_change":
             summary.changed_eggs += 1
     summary.requirement_changes = len(req_changes)

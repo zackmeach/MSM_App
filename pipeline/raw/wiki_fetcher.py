@@ -84,38 +84,6 @@ EXTRA_MONSTERS: dict[str, str] = {
     "Monculus": "wublin",  # Aux. Seasonal on Wublin Island
 }
 
-# Fallback classification if a monster's type can't be determined from
-# which category page listed it.
-KNOWN_MONSTER_TYPES: dict[str, str] = {
-    # Wublins (base monsters on Wublin Island)
-    "Zynth": "wublin", "Thwok": "wublin", "Dwumrohl": "wublin",
-    "Zuuker": "wublin", "Tympa": "wublin", "Poewk": "wublin",
-    "Brump": "wublin", "Gheegur": "wublin", "Creepuscule": "wublin",
-    "Blipsqueak": "wublin", "Scargo": "wublin", "Astropod": "wublin",
-    "Pixolotl": "wublin", "Bona-Petite": "wublin", "Dermit": "wublin",
-    "Fleechwurm": "wublin", "Maulch": "wublin",
-    "Screemu": "wublin", "Whajje": "wublin",
-    "Monculus": "wublin",
-    # Celestials (base monsters on Celestial Island)
-    "Attmoz": "celestial", "Blasoom": "celestial", "Furnoss": "celestial",
-    "Galvana": "celestial", "Glaishur": "celestial", "Hornacle": "celestial",
-    "Loodvigg": "celestial", "Plixie": "celestial", "Scaratar": "celestial",
-    "Syncopite": "celestial", "Torrt": "celestial", "Vhamp": "celestial",
-    # Amber Island (Vessels — all 32 base monsters)
-    "Barrb": "amber", "Bisonorus": "amber", "Boskus": "amber",
-    "Bowhead": "amber", "Candelavra": "amber", "Drummidary": "amber",
-    "Edamimi": "amber", "Floogull": "amber", "Flowah": "amber",
-    "Flum Ox": "amber", "Glowl": "amber", "Gnarls": "amber",
-    "Incisaur": "amber", "Kayna": "amber", "Krillby": "amber",
-    "Phangler": "amber", "PongPing": "amber", "Repatillo": "amber",
-    "Rootitoot": "amber", "Sneyser": "amber", "Sooza": "amber",
-    "Stogg": "amber", "Thrumble": "amber", "Tiawa": "amber",
-    "Tring": "amber", "Tuskski": "amber", "Viveine": "amber",
-    "Whaddle": "amber", "Woolabee": "amber", "Wynq": "amber",
-    "Yelmut": "amber", "Ziggurab": "amber",
-}
-
-
 # ── Breeding time lookup ────────────────────────────────────────────
 
 # Authoritative breeding times for all known egg types.
@@ -586,10 +554,9 @@ def fetch_monster_page(
             blocking=False,
         ))
 
-    # Determine monster type — use provided type, fall back to known list
+    # Monster type is provided (and validated) by the caller; the guard below
+    # is a defensive backstop, not a normal path.
     resolved_type = monster_type
-    if not resolved_type:
-        resolved_type = KNOWN_MONSTER_TYPES.get(monster_name, "")
     if not resolved_type:
         review_items.append(_make_review_item(
             "source_payload_incomplete",

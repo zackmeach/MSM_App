@@ -97,6 +97,25 @@ class TestValidator:
         with pytest.raises(ValidationError):
             validate_content_db(str(db))
 
+    def test_failure_path_closes_connection(self, tmp_path):
+        """Regression: the connection must be closed on the failure path too.
+
+        A leaked handle blocks the caller's staged-file ``unlink`` inside its
+        own except handler — on Windows that surfaces as WinError 32, turning a
+        clean "malformed DB rejected" into an unhandled error. This mirrors
+        ``update_service`` removing the staged file while the ValidationError's
+        traceback (and any leaked connection) is still live.
+        """
+        import os
+
+        db = tmp_path / "corrupt.db"
+        db.write_text("this is not a database")
+        try:
+            validate_content_db(str(db))
+        except ValidationError:
+            os.unlink(str(db))  # PermissionError (WinError 32) if conn leaked
+        assert not db.exists()
+
 
 class TestChecksumValidation:
     def test_valid_checksum_passes(self, tmp_path):

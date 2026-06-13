@@ -13,6 +13,7 @@ See ``pipeline/SOURCE_POLICY.md`` for the full acquisition policy.
 
 from __future__ import annotations
 
+import hashlib
 import html
 import logging
 import re
@@ -20,6 +21,7 @@ import time
 import urllib.error
 import urllib.request
 from dataclasses import dataclass
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
@@ -256,11 +258,26 @@ def _make_review_item(
     *,
     blocking: bool = False,
 ) -> dict:
+    # status/review_id/created_at_utc are required for a review item to be
+    # recognized by the queue: the publish gate (has_blocking_items) keys on
+    # status == "open", so an item without them silently bypasses the gate.
+    # The timestamp in the review_id hash keeps identical failures distinct
+    # across runs.
+    now = datetime.now(timezone.utc).isoformat()
+    review_id = (
+        "auto-"
+        + hashlib.sha256(
+            f"{issue_type}:{source_reference}:{notes}:{now}".encode()
+        ).hexdigest()[:12]
+    )
     return {
+        "review_id": review_id,
         "issue_type": issue_type,
         "severity": "error" if blocking else "warning",
         "source_reference": source_reference,
         "blocking": blocking,
+        "created_at_utc": now,
+        "status": "open",
         "notes": notes,
     }
 

@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 import pytest
 
+from pipeline.curation.review_queue import has_blocking_items
 from pipeline.raw.source_cache import SourceCache
 from pipeline.raw.wiki_fetcher import (
     FetchResult,
@@ -19,6 +20,7 @@ from pipeline.raw.wiki_fetcher import (
     _parse_infobox_requirements,
     _parse_requirement_table,
     fetch_egg_data_from_requirements,
+    fetch_monster_list,
     fetch_monster_page,
 )
 
@@ -376,3 +378,25 @@ class TestFetchEggData:
         ]
         eggs = fetch_egg_data_from_requirements(results)
         assert eggs == []
+
+
+class TestBlockingReviewItemsTripGate:
+    """Blocking review items from the fetcher must be visible to the publish gate."""
+
+    def test_blocking_fetch_review_item_trips_publish_gate(self, tmp_path):
+        """Regression (id22): ``has_blocking_items`` keys on ``status == "open"``.
+
+        ``_make_review_item`` never set ``status``, so a ``blocking=True``
+        fetch/parse failure was invisible to the gate and could be published
+        on top of. Drive the real early-return path (unknown monster type, no
+        network) and assert the resulting blocking item trips the gate.
+        """
+        cache = SourceCache(tmp_path / "cache")
+
+        results = fetch_monster_list("not_a_real_type", cache)
+        review_items = [item for r in results for item in r.review_items]
+
+        assert review_items, "expected a blocking review item"
+        assert any(item["blocking"] for item in review_items)
+        assert all(item.get("status") == "open" for item in review_items)
+        assert has_blocking_items(review_items)

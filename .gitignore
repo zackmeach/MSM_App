@@ -9,7 +9,10 @@ venv/
 ENV/
 
 # Distribution / packaging
-build/
+# Anchored to repo root: ignore the PyInstaller build/ output, NOT the
+# pipeline/build/ source package (a bare `build/` matched both and silently
+# kept pipeline/build/db_builder.py out of the repo, reddening CI).
+/build/
 dist/
 *.egg-info/
 *.spec.bak

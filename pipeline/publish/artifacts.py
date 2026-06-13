@@ -108,30 +108,11 @@ def generate_diff_report(
         "next_content_version": diff.next_content_version,
         "generated_by_build_id": build_id,
         "summary": asdict(diff.summary),
-        "entity_changes": [
-            {
-                "entity_type": c.entity_type,
-                "content_key": c.content_key,
-                "change_class": c.change_class,
-                "before": c.before,
-                "after": c.after,
-                "notes": c.notes,
-            }
-            for c in diff.entity_changes
-        ],
-        "asset_changes": [
-            {
-                "content_key": ac.content_key,
-                "relative_path_before": ac.relative_path_before,
-                "relative_path_after": ac.relative_path_after,
-                "change_class": ac.change_class,
-                "sha256_before": ac.sha256_before,
-                "sha256_after": ac.sha256_after,
-                "status_before": ac.status_before,
-                "status_after": ac.status_after,
-            }
-            for ac in diff.asset_changes
-        ],
+        # asdict yields the same keys in dataclass-field order as the prior
+        # hand-listed dicts; both EntityChange and AssetChange are flat
+        # scalar/dict/list dataclasses, so the JSON is byte-identical.
+        "entity_changes": [asdict(c) for c in diff.entity_changes],
+        "asset_changes": [asdict(ac) for ac in diff.asset_changes],
         "manual_review_items": review_items or [],
     }
 

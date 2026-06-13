@@ -299,6 +299,15 @@ class TestComputeDiff:
         assert len(result.entity_changes) == 0
         assert len(result.asset_changes) == 0
 
+    def test_revived_egg_counted_in_summary(self):
+        """A revived egg (deprecated -> active) must be counted in the summary,
+        like revived monsters are — otherwise it is invisible in the
+        diff-report.json rollup a maintainer reads to approve a release."""
+        e_dep = _egg("egg:noggin", "Noggin", is_deprecated=True)
+        e_active = _egg("egg:noggin", "Noggin", is_deprecated=False)
+        result = compute_diff([], [], [e_dep], [e_active], [], [], [], [], "1.0.0", "1.0.1")
+        assert result.summary.revived_eggs == 1
+
 
 # ── Deterministic DB builder tests ──────────────────────────────────
 

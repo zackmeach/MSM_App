@@ -245,3 +245,91 @@ class TestReconcileAtomicity:
         conn_v2.close()
         conn_content.close()
         conn_us.close()
+
+
+def _seed_two_egg_content(path, *, mammott_first: bool, version: str) -> None:
+    """Zynth requires BOTH Mammott and Noggin (qty 2 each).
+
+    ``mammott_first`` controls egg insert order, hence the numeric ids, so a
+    v1/v2 pair can deliberately *swap* the two eggs' numeric ids while their
+    content_keys stay put — the case that makes an in-place egg_type_id remap
+    collide with a sibling row on the (active_target_id, egg_type_id) PK.
+    """
+    conn = sqlite3.connect(str(path))
+    conn.execute("PRAGMA foreign_keys=ON")
+    run_migrations(conn, "content")
+    order = ["Mammott", "Noggin"] if mammott_first else ["Noggin", "Mammott"]
+    for name in order:
+        conn.execute(
+            "INSERT INTO egg_types("
+            "name, breeding_time_seconds, breeding_time_display, egg_image_path, content_key"
+            ") VALUES(?, 5, '5s', ?, ?)",
+            (name, f"images/eggs/{name.lower()}_egg.png", egg_content_key(name)),
+        )
+    conn.execute(
+        "INSERT INTO monsters(name, monster_type, image_path, wiki_slug, content_key) "
+        "VALUES('Zynth', 'wublin', 'images/monsters/zynth.png', 'Zynth', ?)",
+        (monster_content_key("wublin", "Zynth"),),
+    )
+    mon_id = conn.execute("SELECT id FROM monsters WHERE name='Zynth'").fetchone()[0]
+    for name in ("Mammott", "Noggin"):
+        eid = conn.execute("SELECT id FROM egg_types WHERE name=?", (name,)).fetchone()[0]
+        conn.execute(
+            "INSERT INTO monster_requirements(monster_id, egg_type_id, quantity) VALUES(?, ?, 2)",
+            (mon_id, eid),
+        )
+    conn.execute(f"UPDATE update_metadata SET value='{version}' WHERE key='content_version'")
+    conn.execute("UPDATE update_metadata SET value='2026-01-01T00:00:00Z' WHERE key='last_updated_utc'")
+    conn.execute("UPDATE update_metadata SET value='test' WHERE key='source'")
+    conn.commit()
+    conn.close()
+
+
+class TestReconcileEggIdReuse:
+    """A content rebuild that swaps/reuses egg numeric ids within one target
+    must not collide on the progress PRIMARY KEY; progress carries over by
+    stable egg_key."""
+
+    def test_egg_id_swap_preserves_progress_by_key(self, qtbot, tmp_path):
+        from app.commands.add_target import AddTargetCommand
+        from app.repositories import monster_repo
+
+        data_dir = tmp_path / "appdata"
+        data_dir.mkdir()
+        _seed_two_egg_content(data_dir / "content.db", mammott_first=True, version="1.0.0")
+        conn_content = open_content_db(data_dir / "content.db")
+        conn_us = _make_userstate(data_dir / "userstate.db")
+
+        reqs = monster_repo.fetch_all_requirements(conn_content)
+        zynth = conn_content.execute("SELECT id FROM monsters WHERE name='Zynth'").fetchone()[0]
+        mammott_v1 = conn_content.execute("SELECT id FROM egg_types WHERE name='Mammott'").fetchone()[0]
+        noggin_v1 = conn_content.execute("SELECT id FROM egg_types WHERE name='Noggin'").fetchone()[0]
+
+        AddTargetCommand(zynth, conn_content, conn_us, reqs).execute()
+        target = target_repo.fetch_all_targets(conn_us)[0]
+        target_repo.set_progress(conn_us, target.id, mammott_v1, 1)
+        target_repo.set_progress(conn_us, target.id, noggin_v1, 2)
+        conn_us.commit()
+
+        # v2 swaps the two eggs' numeric ids (Noggin inserted first now).
+        _seed_two_egg_content(data_dir / "content_v2.db", mammott_first=False, version="2.0.0")
+        conn_v2 = open_content_db(data_dir / "content_v2.db")
+        mammott_v2 = conn_v2.execute("SELECT id FROM egg_types WHERE name='Mammott'").fetchone()[0]
+        noggin_v2 = conn_v2.execute("SELECT id FROM egg_types WHERE name='Noggin'").fetchone()[0]
+        assert {mammott_v1, noggin_v1} == {mammott_v2, noggin_v2}
+        assert mammott_v1 == noggin_v2 and noggin_v1 == mammott_v2  # genuinely swapped
+
+        svc = AppService(conn_content, conn_us)
+        svc.rebind_content(conn_v2)
+        svc.reconcile_after_content_update()  # must not raise IntegrityError
+
+        rows = {r.egg_key: r for r in target_repo.fetch_progress_for_target(conn_us, target.id)}
+        assert set(rows) == {egg_content_key("Mammott"), egg_content_key("Noggin")}
+        assert rows[egg_content_key("Mammott")].egg_type_id == mammott_v2
+        assert rows[egg_content_key("Mammott")].satisfied_count == 1
+        assert rows[egg_content_key("Noggin")].egg_type_id == noggin_v2
+        assert rows[egg_content_key("Noggin")].satisfied_count == 2
+
+        conn_v2.close()
+        conn_content.close()
+        conn_us.close()

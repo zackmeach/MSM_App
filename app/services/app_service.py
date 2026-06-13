@@ -166,10 +166,10 @@ class AppService(QObject):
         Walks every active target:
           - Drop targets whose monster_key no longer exists or is deprecated.
           - Re-link targets whose numeric monster_id changed but content_key still resolves.
-          - Insert progress rows for newly-required eggs.
-          - Clip satisfied_count to the new required quantity.
-          - Update progress identity (egg_type_id + egg_key) when egg IDs shifted.
-          - Delete progress rows for eggs no longer required.
+          - Rebuild each target's progress from the new requirements
+            (delete-then-insert), carrying satisfied_count over by stable
+            egg_key and clipping it to the new required quantity. Newly required
+            eggs start at 0; eggs no longer required are dropped.
 
         Must be called AFTER rebind_content() so the new requirements_cache and
         egg_types_map are in scope.
@@ -209,61 +209,44 @@ class AppService(QObject):
                         monster.content_key,
                     )
 
+                # Rebuild this target's progress from the new requirements via
+                # delete-then-insert rather than in-place egg_type_id remaps.
+                # (active_target_id, egg_type_id) is a PRIMARY KEY, so a content
+                # rebuild that swaps or reuses egg ids within one target makes an
+                # in-place UPDATE collide with a sibling row and abort the whole
+                # reconcile. Satisfied counts carry over by stable egg_key.
                 progress_rows = target_repo.fetch_progress_for_target(
                     self._conn_userstate, target.id
                 )
-                progress_by_key = {
-                    row.egg_key: row for row in progress_rows if row.egg_key
+                satisfied_by_key = {
+                    row.egg_key: row.satisfied_count
+                    for row in progress_rows
+                    if row.egg_key
                 }
-                progress_by_id = {
-                    row.egg_type_id: row for row in progress_rows if not row.egg_key
+                satisfied_by_id = {
+                    row.egg_type_id: row.satisfied_count
+                    for row in progress_rows
+                    if not row.egg_key
                 }
+                target_repo.delete_progress_for_target(self._conn_userstate, target.id)
 
-                required_keys: set[str] = set()
                 for requirement in requirements_map.get(monster.id, []):
                     egg_key = egg_keys_by_id.get(requirement.egg_type_id, "")
                     if not egg_key:
                         continue
-                    required_keys.add(egg_key)
-                    existing = progress_by_key.get(egg_key)
-                    if existing is None:
-                        existing = progress_by_id.get(requirement.egg_type_id)
-
-                    if existing is None:
-                        target_repo.insert_progress_row(
-                            self._conn_userstate,
-                            target.id,
-                            requirement.egg_type_id,
-                            requirement.quantity,
-                            egg_key=egg_key,
-                        )
-                        continue
-
-                    satisfied_count = min(existing.satisfied_count, requirement.quantity)
-                    target_repo.update_progress_identity(
+                    prior = satisfied_by_key.get(egg_key)
+                    if prior is None:
+                        # Legacy rows without an egg_key re-link only when the
+                        # numeric id is unchanged — same limitation as before.
+                        prior = satisfied_by_id.get(requirement.egg_type_id, 0)
+                    target_repo.insert_progress_row(
                         self._conn_userstate,
                         target.id,
-                        existing.egg_type_id,
                         requirement.egg_type_id,
                         requirement.quantity,
-                        egg_key,
+                        satisfied_count=min(prior, requirement.quantity),
+                        egg_key=egg_key,
                     )
-                    if satisfied_count != existing.satisfied_count:
-                        target_repo.set_progress(
-                            self._conn_userstate,
-                            target.id,
-                            requirement.egg_type_id,
-                            satisfied_count,
-                        )
-
-                for row in progress_rows:
-                    row_key = row.egg_key or egg_keys_by_id.get(row.egg_type_id, "")
-                    if row_key not in required_keys:
-                        self._conn_userstate.execute(
-                            "DELETE FROM target_requirement_progress "
-                            "WHERE active_target_id = ? AND egg_type_id = ?",
-                            (target.id, row.egg_type_id),
-                        )
 
             # Final invariant pass: no row may end with
             # satisfied_count > required_count. The per-requirement clip above

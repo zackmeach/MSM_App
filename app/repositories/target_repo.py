@@ -181,22 +181,6 @@ def update_target_identity(
     )
 
 
-def update_progress_identity(
-    conn: sqlite3.Connection,
-    target_id: int,
-    old_egg_type_id: int,
-    new_egg_type_id: int,
-    required_count: int,
-    egg_key: str,
-) -> None:
-    conn.execute(
-        "UPDATE target_requirement_progress "
-        "SET egg_type_id = ?, required_count = ?, egg_key = ? "
-        "WHERE active_target_id = ? AND egg_type_id = ?",
-        (new_egg_type_id, required_count, egg_key, target_id, old_egg_type_id),
-    )
-
-
 # ── Row-mapping helpers ──────────────────────────────────────────────
 
 def _target_from_row(row: tuple) -> ActiveTarget:

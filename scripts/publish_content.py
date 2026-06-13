@@ -31,9 +31,8 @@ sys.path.insert(0, str(ROOT))
 
 from pipeline.build.db_builder import build_content_db  # noqa: E402
 from pipeline.curation.review_queue import has_blocking_items, load_review_queue  # noqa: E402
-from pipeline.diff.engine import DiffResult, DiffSummary, compute_diff  # noqa: E402
+from pipeline.diff.engine import compute_diff  # noqa: E402
 from pipeline.publish.artifacts import (  # noqa: E402
-    ValidationCheck,
     generate_diff_report,
     generate_manifest,
     generate_validation_report,

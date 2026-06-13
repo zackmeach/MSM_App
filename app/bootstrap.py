@@ -251,11 +251,6 @@ def backfill_stable_keys(
             if skipped:
                 logger.warning("Skipped %d monster(s) due to duplicate content_key", skipped)
 
-        # Backfill wiki_slug as source_slug stand-in (source_fingerprint stays empty for seed data).
-        conn_content.execute(
-            "UPDATE monsters SET source_fingerprint = '' WHERE source_fingerprint = ''"
-        )
-
     # ── Content DB: backfill content_key on egg_types ────────────────
     if _has_column(conn_content, "egg_types", "content_key"):
         rows = conn_content.execute(

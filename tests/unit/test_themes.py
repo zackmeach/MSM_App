@@ -198,3 +198,24 @@ class TestFontSizeOptions:
     def test_offsets_are_ascending(self):
         offsets = [o for _, o in FONT_SIZE_OPTIONS]
         assert offsets == sorted(offsets)
+
+
+class TestFontSizeHelpers:
+    """font_offset_for_label / label_for_font_offset centralize the
+    FONT_SIZE_OPTIONS lookups, with asymmetric fallbacks."""
+
+    def test_offset_for_known_label(self):
+        from app.ui.themes import font_offset_for_label
+        assert font_offset_for_label("Large") == 4
+
+    def test_offset_for_unknown_label_falls_back_to_zero(self):
+        from app.ui.themes import font_offset_for_label
+        assert font_offset_for_label("Nonexistent") == 0
+
+    def test_label_for_known_offset(self):
+        from app.ui.themes import label_for_font_offset
+        assert label_for_font_offset(4) == "Large"
+
+    def test_label_for_unknown_offset_falls_back_to_default(self):
+        from app.ui.themes import label_for_font_offset
+        assert label_for_font_offset(99) == "Default"

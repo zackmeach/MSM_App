@@ -126,25 +126,29 @@ class SettingsPanel(QWidget):
 
     # ── Content Updates card ──────────────────────────────────────────
 
-    def _build_update_card(self) -> SurfaceCard:
-        card = SurfaceCard()
-        lay = card.card_layout()
-
+    def _card_header(self, lay: QVBoxLayout, glyph: str, title: str) -> None:
+        """Add the standard icon + title header row to a settings card layout."""
         header = QHBoxLayout()
         header.setSpacing(12)
 
-        icon = QLabel("\u2193")
+        icon = QLabel(glyph)
         icon.setObjectName("settingsCardIcon")
         icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
         icon.setFixedSize(scaled(40), scaled(40))
         icon.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
         header.addWidget(icon)
 
-        title = QLabel("Content Updates")
-        title.setObjectName("settingsCardTitle")
-        header.addWidget(title)
+        title_label = QLabel(title)
+        title_label.setObjectName("settingsCardTitle")
+        header.addWidget(title_label)
         header.addStretch()
         lay.addLayout(header)
+
+    def _build_update_card(self) -> SurfaceCard:
+        card = SurfaceCard()
+        lay = card.card_layout()
+
+        self._card_header(lay, "\u2193", "Content Updates")
 
         desc = QLabel(
             "Updates replace your local content database with the latest "
@@ -201,21 +205,7 @@ class SettingsPanel(QWidget):
         card = SurfaceCard()
         lay = card.card_layout()
 
-        header = QHBoxLayout()
-        header.setSpacing(12)
-
-        icon = QLabel("\u25a6")
-        icon.setObjectName("settingsCardIcon")
-        icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        icon.setFixedSize(scaled(40), scaled(40))
-        icon.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
-        header.addWidget(icon)
-
-        title = QLabel("Database Information")
-        title.setObjectName("settingsCardTitle")
-        header.addWidget(title)
-        header.addStretch()
-        lay.addLayout(header)
+        self._card_header(lay, "\u25a6", "Database Information")
 
         self._row_version = InfoRowWidget("Database Version", "\u2014")
         self._row_schema = InfoRowWidget("Schema Version", "\u2014")
@@ -234,21 +224,7 @@ class SettingsPanel(QWidget):
         card = SurfaceCard()
         lay = card.card_layout()
 
-        header = QHBoxLayout()
-        header.setSpacing(12)
-
-        icon = QLabel("\u2699")
-        icon.setObjectName("settingsCardIcon")
-        icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        icon.setFixedSize(scaled(40), scaled(40))
-        icon.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
-        header.addWidget(icon)
-
-        title = QLabel("UI Options")
-        title.setObjectName("settingsCardTitle")
-        header.addWidget(title)
-        header.addStretch()
-        lay.addLayout(header)
+        self._card_header(lay, "\u2699", "UI Options")
 
         desc = QLabel(
             "Customize the app\u2019s visual appearance. "
@@ -387,21 +363,7 @@ class SettingsPanel(QWidget):
         card = SurfaceCard()
         lay = card.card_layout()
 
-        header = QHBoxLayout()
-        header.setSpacing(12)
-
-        icon = QLabel("\u2696")
-        icon.setObjectName("settingsCardIcon")
-        icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        icon.setFixedSize(scaled(40), scaled(40))
-        icon.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
-        header.addWidget(icon)
-
-        title = QLabel("Fan Content Policy")
-        title.setObjectName("settingsCardTitle")
-        header.addWidget(title)
-        header.addStretch()
-        lay.addLayout(header)
+        self._card_header(lay, "\u2696", "Fan Content Policy")
 
         self._disclaimer_label = QLabel()
         self._disclaimer_label.setObjectName("settingsSupportingText")
@@ -495,6 +457,9 @@ class SettingsPanel(QWidget):
         self._data_table.setSortingEnabled(False)
         self._data_table.setRowCount(len(rows))
 
+        from app.ui.themes import THEMES, get_active_theme
+        t = THEMES[get_active_theme()]
+
         for row_idx, row in enumerate(rows):
             thumb = _SettingsDataThumb(
                 row.monster_name,
@@ -519,8 +484,6 @@ class SettingsPanel(QWidget):
             eggs_item.setTextAlignment(alignment)
             duration_item.setTextAlignment(alignment)
 
-            from app.ui.themes import THEMES, get_active_theme
-            t = THEMES[get_active_theme()]
             name_item.setForeground(QColor(t["text1"]))
             eggs_item.setForeground(QColor(t["text2"]))
             duration_item.setForeground(QColor(t["text2"]))

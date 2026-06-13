@@ -22,7 +22,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from app.domain.models import canonical_slug, monster_content_key, egg_content_key  # noqa: E402
+from app.domain.models import monster_content_key, egg_content_key  # noqa: E402
 from pipeline.schemas.normalized import (  # noqa: E402
     save_json_records,
     validate_monsters_file,
@@ -43,18 +43,6 @@ def _provenance() -> dict:
         "retrieved_at_utc": SEED_TIMESTAMP,
         "raw_snapshot_id": "seed-baseline",
     }
-
-
-def _asset_path_for_monster(name: str, mtype: str) -> str:
-    slug = canonical_slug(name)
-    if mtype == "amber":
-        return f"images/monsters/{slug}.png"
-    return f"images/monsters/{slug}.png"
-
-
-def _asset_path_for_egg(name: str) -> str:
-    slug = canonical_slug(name)
-    return f"images/eggs/{slug}_egg.png"
 
 
 def export() -> None:

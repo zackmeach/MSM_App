@@ -53,13 +53,6 @@ def fetch_monster_by_key(conn: sqlite3.Connection, content_key: str) -> Monster 
     return _monster_from_row(row) if row else None
 
 
-def monster_exists_and_active(conn: sqlite3.Connection, monster_id: int) -> bool:
-    row = conn.execute(
-        "SELECT 1 FROM monsters WHERE id = ? AND is_deprecated = 0", (monster_id,)
-    ).fetchone()
-    return row is not None
-
-
 def fetch_all_egg_types(conn: sqlite3.Connection) -> list[EggType]:
     rows = conn.execute(f"SELECT {_EGG_COLS} FROM egg_types ORDER BY name").fetchall()
     elements_by_id = _fetch_egg_elements(conn)

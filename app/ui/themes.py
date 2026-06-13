@@ -260,14 +260,25 @@ FONT_SIZE_OPTIONS: list[tuple[str, int]] = [
 ]
 
 
+def font_offset_for_label(label: str) -> int:
+    """Return the font-size offset for a menu label, or 0 if unknown."""
+    for option_label, offset in FONT_SIZE_OPTIONS:
+        if option_label == label:
+            return offset
+    return 0
+
+
+def label_for_font_offset(offset: int) -> str:
+    """Return the menu label for a font-size offset, or 'Default' if unknown."""
+    for option_label, option_offset in FONT_SIZE_OPTIONS:
+        if option_offset == offset:
+            return option_label
+    return "Default"
+
+
 def scaled(base: int) -> int:
     """Scale a fixed pixel dimension by the active font offset."""
     return base + _active_font_offset
-
-
-def _sz(base: int) -> str:
-    """Return a px font-size string adjusted by the active offset."""
-    return f"{base + _active_font_offset}px"
 
 
 # ── Stylesheet generator ────────────────────────────────────────────
@@ -857,13 +868,6 @@ def build_stylesheet(theme: str | None = None, font_offset: int | None = None) -
             font-size: {sz(12)};
             font-weight: 700;
         }}
-
-        /* ── MonsterCard (compact in-work cards) ── */
-        #monsterCard {{
-            background-color: {t['interactive']}; border-radius: {r_md};
-        }}
-        #monsterCard:hover {{ background-color: {t['elevated']}; }}
-        #cardLabel {{ font-size: {sz(11)}; color: {t['text1']}; }}
 
         /* ── Catalog: active-count badge ── */
         #catalogBadge {{

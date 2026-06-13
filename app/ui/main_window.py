@@ -208,11 +208,7 @@ class MainWindow(QMainWindow):
 
     def _current_font_size_label(self) -> str:
         """Map the active font offset back to its display label."""
-        offset = themes.get_active_font_offset()
-        for label, value in themes.FONT_SIZE_OPTIONS:
-            if value == offset:
-                return label
-        return "Default"
+        return themes.label_for_font_offset(themes.get_active_font_offset())
 
     def _navigate_to(self, index: int) -> None:
         if index == 2:
@@ -326,22 +322,11 @@ class MainWindow(QMainWindow):
         """Load saved theme/font preferences and activate them."""
         saved_theme = self._service.get_ui_pref("ui_theme", themes.DEFAULT_THEME)
         saved_font = self._service.get_ui_pref("ui_font_size", "Default")
-        font_offset = 0
-        for label, offset in themes.FONT_SIZE_OPTIONS:
-            if label == saved_font:
-                font_offset = offset
-                break
-        themes.set_active(saved_theme, font_offset)
+        themes.set_active(saved_theme, themes.font_offset_for_label(saved_font))
 
     def _on_ui_options_apply(self, theme_name: str, font_size_label: str) -> None:
         """Persist UI prefs and reapply the stylesheet."""
-        font_offset = 0
-        for label, offset in themes.FONT_SIZE_OPTIONS:
-            if label == font_size_label:
-                font_offset = offset
-                break
-
-        themes.set_active(theme_name, font_offset)
+        themes.set_active(theme_name, themes.font_offset_for_label(font_size_label))
 
         self._service.set_ui_pref("ui_theme", theme_name)
         self._service.set_ui_pref("ui_font_size", font_size_label)

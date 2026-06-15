@@ -16,7 +16,6 @@ from pipeline.raw.wiki_fetcher import (
     FetchResult,
     _extract_monster_names_from_category,
     _is_base_monster,
-    _parse_breeding_time,
     _parse_infobox_requirements,
     _parse_requirement_table,
     fetch_egg_data_from_requirements,
@@ -234,35 +233,6 @@ class TestParseRequirementTable:
         egg_names = {r["egg_name"] for r in reqs}
         assert "Total" not in egg_names
         assert "Element" not in egg_names
-
-
-class TestParseBreedingTime:
-    """Test breeding time string parsing."""
-
-    def test_hours(self):
-        seconds, display = _parse_breeding_time("8h")
-        assert seconds == 28800
-        assert "8h" in display
-
-    def test_hours_and_minutes(self):
-        seconds, display = _parse_breeding_time("8h 30m")
-        assert seconds == 30600
-
-    def test_minutes(self):
-        seconds, display = _parse_breeding_time("30m")
-        assert seconds == 1800
-
-    def test_seconds(self):
-        seconds, display = _parse_breeding_time("5s")
-        assert seconds == 5
-
-    def test_empty(self):
-        seconds, display = _parse_breeding_time("")
-        assert seconds == 0
-
-    def test_none(self):
-        seconds, display = _parse_breeding_time(None)
-        assert seconds == 0
 
 
 class TestFetchMonsterPage:

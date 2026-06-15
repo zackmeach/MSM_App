@@ -113,8 +113,6 @@ class TestEggIconIncrement:
             egg_image_path="",
             bred_count=0,
             total_needed=4,
-            remaining=4,
-            progress_fraction=0.0,
         )
         row = EggRowWidget(vm)
         row.show()
@@ -138,8 +136,6 @@ class TestEggIconIncrement:
             egg_image_path="",
             bred_count=0,
             total_needed=4,
-            remaining=4,
-            progress_fraction=0.0,
         )
         row = EggRowWidget(vm)
         row.show()

@@ -10,17 +10,6 @@ from dataclasses import dataclass, field
 from typing import Any
 
 
-ENTITY_CHANGE_CLASSES = {
-    "new", "rename", "field_change", "requirements_change",
-    "deprecated", "revived", "replacement",
-}
-
-ASSET_CHANGE_CLASSES = {
-    "new", "removed", "hash_changed", "placeholder_to_official",
-    "official_to_placeholder", "path_changed",
-}
-
-
 @dataclass
 class EntityChange:
     entity_type: str

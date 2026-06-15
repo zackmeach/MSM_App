@@ -65,7 +65,7 @@ name are verified by running that script; manual items require a human sign-off.
 | 4.5 | `dist/MSMAwakeningTracker/resources/audio/ding.wav` exists | File inspection | |
 | 4.6 | Application icon is embedded in the `.exe` | File inspection | |
 
-| 4.7 | `installer/msm_tracker.iss` (Inno Setup) compiles the per-user installer | `iscc installer/msm_tracker.iss` → `installer/Output/` | |
+| 4.7 | `installer/msm_tracker.iss` (Inno Setup) compiles the per-user installer | `iscc installer/msm_tracker.iss` → `dist/` | |
 
 ---
 

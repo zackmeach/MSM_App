@@ -14,7 +14,7 @@ the normalized JSON files under ``pipeline/normalized/``.
 
 Run:  python scripts/import_content.py
       python scripts/import_content.py --dry-run
-      python scripts/import_content.py --source wiki --delay 2.0
+      python scripts/import_content.py --delay 2.0
 """
 
 from __future__ import annotations
@@ -95,10 +95,6 @@ def main() -> int:
         description="Import content from external sources into normalized pipeline data.",
     )
     parser.add_argument(
-        "--source", default="wiki", choices=["wiki"],
-        help="Data source to fetch from (default: wiki)",
-    )
-    parser.add_argument(
         "--cache-dir", default=str(DEFAULT_CACHE_DIR),
         help="Directory for raw source cache",
     )
@@ -166,7 +162,7 @@ def main() -> int:
 
     # ── Step 3: Fetch source data ────────────────────────────────────
     print(f"\n{'='*60}")
-    print(f"  Step 3: Fetching from source: {args.source}")
+    print("  Step 3: Fetching from source: wiki")
     print(f"{'='*60}")
 
     cache = SourceCache(cache_dir)

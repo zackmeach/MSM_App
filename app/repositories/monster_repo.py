@@ -30,15 +30,6 @@ def fetch_all_monsters(conn: sqlite3.Connection, *, include_deprecated: bool = F
     return [_monster_from_row(r) for r in rows]
 
 
-def fetch_monsters_by_type(conn: sqlite3.Connection, monster_type: MonsterType) -> list[Monster]:
-    rows = conn.execute(
-        f"SELECT {_MONSTER_COLS} FROM monsters "
-        "WHERE monster_type = ? AND is_deprecated = 0 ORDER BY name",
-        (monster_type.value,),
-    ).fetchall()
-    return [_monster_from_row(r) for r in rows]
-
-
 def fetch_monster_by_id(conn: sqlite3.Connection, monster_id: int) -> Monster | None:
     row = conn.execute(
         f"SELECT {_MONSTER_COLS} FROM monsters WHERE id = ?", (monster_id,)
@@ -80,24 +71,6 @@ def _fetch_egg_elements(conn: sqlite3.Connection) -> dict[int, tuple[str, ...]]:
     for eid, key in rows:
         out.setdefault(eid, []).append(key)
     return {eid: tuple(keys) for eid, keys in out.items()}
-
-
-def fetch_egg_type_by_key(conn: sqlite3.Connection, content_key: str) -> EggType | None:
-    row = conn.execute(
-        f"SELECT {_EGG_COLS} FROM egg_types WHERE content_key = ?", (content_key,)
-    ).fetchone()
-    if not row:
-        return None
-    elements = _fetch_egg_elements(conn).get(row[0], ())
-    return _egg_type_from_row(row, elements)
-
-
-def fetch_requirements_for_monster(conn: sqlite3.Connection, monster_id: int) -> list[MonsterRequirement]:
-    rows = conn.execute(
-        "SELECT monster_id, egg_type_id, quantity FROM monster_requirements WHERE monster_id = ?",
-        (monster_id,),
-    ).fetchall()
-    return [MonsterRequirement(monster_id=r[0], egg_type_id=r[1], quantity=r[2]) for r in rows]
 
 
 def fetch_all_requirements(conn: sqlite3.Connection) -> dict[int, list[MonsterRequirement]]:

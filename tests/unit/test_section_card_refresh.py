@@ -32,7 +32,6 @@ def _vm(monster_id: int, name: str) -> InWorkMonsterRowViewModel:
         image_path="",
         is_placeholder=True,
         count=1,
-        display_name=name,
     )
 
 

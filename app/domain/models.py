@@ -111,10 +111,6 @@ class TargetRequirementProgress:
     satisfied_count: int
     egg_key: str = ""
 
-    @property
-    def remaining(self) -> int:
-        return self.required_count - self.satisfied_count
-
 
 @dataclass(frozen=True)
 class BreedListRow:

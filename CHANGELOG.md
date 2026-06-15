@@ -28,6 +28,17 @@ For changes prior to the introduction of this changelog, see the git log.
 - `docs/improvement-plan-2026-05-04.md`: prioritized plan from a multi-agent
   software audit.
 
+### Removed
+
+- Dead code surfaced by a whole-repo over-engineering audit and confirmed by
+  adversarial review (−239 lines): the wiki breeding-time parser, two unread
+  diff change-class sets, an unused `normalizer` `aliases` parameter, three
+  never-called repository accessors (`fetch_monsters_by_type`,
+  `fetch_egg_type_by_key`, `fetch_requirements_for_monster`), several
+  write-once/never-read command and viewmodel fields, the empty
+  `TYPE_CHECKING` guards in `bootstrap`/`update_service`, the single-choice
+  `--source` CLI flag, and two dead tests. No observable app behavior changed.
+
 ### Changed
 
 - Migrations now run inside an explicit `BEGIN; ... COMMIT;` so a partial
@@ -60,3 +71,7 @@ For changes prior to the introduction of this changelog, see the git log.
 - Stale documentation: dropped the `(359 tests)` parenthetical from
   `CLAUDE.md`, `AGENTS.md`, and `README.md` (count drifts as tests are
   added).
+- Corrected the installer output path in `README.md` and
+  `RELEASE_CHECKLIST.md` (and removed the dead `.gitignore` entry): the Inno
+  Setup build writes the installer to `dist/`, not the phantom
+  `installer/Output/`.

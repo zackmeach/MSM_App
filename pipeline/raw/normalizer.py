@@ -40,7 +40,6 @@ def normalize_monster_payload(
     content_hash: str,
     retrieved_at_utc: str,
     existing_keys: set[str] | None = None,
-    aliases: dict[str, str] | None = None,
     overrides: dict[str, dict] | None = None,
 ) -> tuple[dict | None, list[dict]]:
     """Normalize a single raw monster payload into a canonical record.
@@ -49,7 +48,6 @@ def normalize_monster_payload(
     """
     review_items: list[dict] = []
     keys = existing_keys or set()
-    alias_map = aliases or {}
     override_map = overrides or {}
 
     name = raw_payload.get("name", "").strip()
@@ -68,9 +66,6 @@ def normalize_monster_payload(
         return None, review_items
 
     key = monster_content_key(monster_type, name)
-
-    if key in alias_map:
-        key = alias_map[key]
 
     override_key = f"monster:{monster_type}:{canonical_slug(name)}"
     applied_overrides: list[str] = []

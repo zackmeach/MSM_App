@@ -341,46 +341,6 @@ def _parse_requirement_table(page_html: str) -> list[dict[str, Any]]:
     return requirements
 
 
-def _parse_breeding_time(time_str: str | None) -> tuple[int, str]:
-    """Parse a breeding time string like '8h' or '24h' into seconds and display.
-
-    Returns (seconds, display_string).
-    """
-    if not time_str:
-        return 0, ""
-
-    time_str = time_str.strip().lower()
-    total_seconds = 0
-    parts = []
-
-    hours_match = re.search(r"(\d+)\s*h", time_str)
-    minutes_match = re.search(r"(\d+)\s*m", time_str)
-    seconds_match = re.search(r"(\d+)\s*s", time_str)
-
-    if hours_match:
-        h = int(hours_match.group(1))
-        total_seconds += h * 3600
-        parts.append(f"{h}h")
-    if minutes_match:
-        m = int(minutes_match.group(1))
-        total_seconds += m * 60
-        parts.append(f"{m}m")
-    if seconds_match:
-        s = int(seconds_match.group(1))
-        total_seconds += s
-        parts.append(f"{s}s")
-
-    # Try plain number as seconds
-    if total_seconds == 0:
-        try:
-            total_seconds = int(time_str)
-            parts = [f"{total_seconds}s"]
-        except ValueError:
-            pass
-
-    return total_seconds, " ".join(parts)
-
-
 # ── Public API ──────────────────────────────────────────────────────
 
 

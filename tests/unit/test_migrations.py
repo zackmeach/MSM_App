@@ -363,7 +363,8 @@ class TestRepositoryV2Fields:
     def test_egg_by_key(self):
         conn = _make_content_db()
         _seed_egg(conn, "Mammott", content_key="egg:mammott")
-        e = monster_repo.fetch_egg_type_by_key(conn, "egg:mammott")
+        eggs = {e.content_key: e for e in monster_repo.fetch_all_egg_types(conn)}
+        e = eggs.get("egg:mammott")
         assert e is not None
         assert e.name == "Mammott"
 

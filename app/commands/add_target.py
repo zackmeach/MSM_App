@@ -7,7 +7,7 @@ import sqlite3
 
 from app.commands.base import Command
 from app.db.connection import transaction
-from app.domain.models import MonsterRequirement, TargetRequirementProgress
+from app.domain.models import MonsterRequirement
 from app.repositories import monster_repo, target_repo
 
 logger = logging.getLogger(__name__)
@@ -26,7 +26,6 @@ class AddTargetCommand(Command):
         self._conn_userstate = conn_userstate
         self._requirements_cache = requirements_cache
         self._inserted_target_id: int | None = None
-        self._materialized_rows: list[TargetRequirementProgress] = []
 
     def execute(self) -> None:
         monster = monster_repo.fetch_monster_by_id(self._conn_content, self._monster_id)

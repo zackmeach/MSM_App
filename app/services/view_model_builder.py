@@ -58,8 +58,6 @@ def build_breed_list_vms(
             egg_image_path=resolver.resolve(r.egg_image_path),
             bred_count=r.bred_count,
             total_needed=r.total_needed,
-            remaining=r.remaining,
-            progress_fraction=r.bred_count / r.total_needed if r.total_needed else 0,
             elements=r.elements,
             consumer_cards=consumer_cards_by_egg.get(r.egg_type_id, ()),
         )
@@ -115,7 +113,6 @@ def build_inwork_vms(
         m = monster_repo.fetch_monster_by_id(conn_content, mid)
         if m is None:
             continue
-        display = f"{m.name} × {count}" if count > 1 else m.name
         by_type.setdefault(m.monster_type.value, []).append(
             InWorkMonsterRowViewModel(
                 monster_id=m.id,
@@ -124,7 +121,6 @@ def build_inwork_vms(
                 image_path=resolver.resolve(m.image_path),
                 is_placeholder=m.is_placeholder,
                 count=count,
-                display_name=display,
             )
         )
     return by_type

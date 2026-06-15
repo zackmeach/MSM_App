@@ -25,8 +25,6 @@ class BreedListRowViewModel:
     egg_image_path: str
     bred_count: int
     total_needed: int
-    remaining: int
-    progress_fraction: float
     elements: tuple[str, ...] = ()
     consumer_cards: tuple[ConsumerCardViewModel, ...] = ()
 
@@ -39,7 +37,6 @@ class InWorkMonsterRowViewModel:
     image_path: str
     is_placeholder: bool
     count: int
-    display_name: str
 
 
 @dataclass(frozen=True)

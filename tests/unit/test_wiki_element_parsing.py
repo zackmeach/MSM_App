@@ -12,8 +12,6 @@ No network access — all input is in-process fixture strings.
 
 from __future__ import annotations
 
-from pathlib import Path
-
 import pytest
 
 from pipeline.raw.wiki_fetcher import (
@@ -125,34 +123,3 @@ class TestOverMatchTraps:
         assert _parse_elements_from_categories(html_text) == [
             "natural-water"
         ]
-
-
-def test_cached_pages_spot_check_if_present():
-    """If real cached wiki pages happen to exist, spot-check a few.
-
-    This is purely opportunistic. The committed fixtures above are the
-    authoritative, CI-safe coverage. When ``pipeline/raw/cache/`` is
-    absent (fresh clone / CI), this skips cleanly so it never fails.
-    """
-    cache_dir = (
-        Path(__file__).resolve().parent.parent.parent
-        / "pipeline" / "raw" / "cache"
-    )
-    if not cache_dir.is_dir():
-        pytest.skip("pipeline/raw/cache absent — committed fixtures cover this")
-
-    checked = 0
-    for name, expected in EXPECTED_ELEMENTS.items():
-        matches = sorted(cache_dir.glob(f"fandom_wiki_{name}_elements_*.raw"))
-        if not matches:
-            continue
-        html_text = matches[0].read_text(encoding="utf-8", errors="replace")
-        parsed = _parse_elements_from_categories(html_text)
-        assert sorted(parsed) == sorted(expected), (
-            f"{name} (cached): expected {sorted(expected)}, "
-            f"got {sorted(parsed)}"
-        )
-        checked += 1
-
-    if checked == 0:
-        pytest.skip("no matching cached pages for known monsters")

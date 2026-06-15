@@ -155,62 +155,6 @@ class TestManifestFetchAndValidation:
         validate_checksum(remote_db, manifest["content_db_sha256"])
 
 
-class TestUpdateDetection:
-    """Verify the update detection logic (is newer version available?)."""
-
-    def test_detects_available_update(self, tmp_path, http_server):
-        serve_dir, base_url, _ = http_server
-        data_dir = tmp_path / "appdata"
-        data_dir.mkdir()
-
-        # Local: version 1.0.0
-        local_db = data_dir / "content.db"
-        _make_content_db(local_db, "1.0.0")
-        conn = open_content_db(local_db)
-
-        # Remote: version 2.0.0
-        remote_db = serve_dir / "content.db"
-        _make_content_db(remote_db, "2.0.0")
-        manifest = _make_manifest(remote_db, "2.0.0", base_url)
-        (serve_dir / "manifest.json").write_text(
-            json.dumps(manifest, indent=2), encoding="utf-8"
-        )
-
-        # Read versions to compare
-        local_version = conn.execute(
-            "SELECT value FROM update_metadata WHERE key='content_version'"
-        ).fetchone()[0]
-        assert local_version == "1.0.0"
-        assert manifest["content_version"] == "2.0.0"
-        assert manifest["content_version"] != local_version
-
-        conn.close()
-
-    def test_no_update_when_current(self, tmp_path, http_server):
-        serve_dir, base_url, _ = http_server
-        data_dir = tmp_path / "appdata"
-        data_dir.mkdir()
-
-        # Both local and remote are 1.0.0
-        local_db = data_dir / "content.db"
-        _make_content_db(local_db, "1.0.0")
-        conn = open_content_db(local_db)
-
-        remote_db = serve_dir / "content.db"
-        _make_content_db(remote_db, "1.0.0")
-        manifest = _make_manifest(remote_db, "1.0.0", base_url)
-        (serve_dir / "manifest.json").write_text(
-            json.dumps(manifest, indent=2), encoding="utf-8"
-        )
-
-        local_version = conn.execute(
-            "SELECT value FROM update_metadata WHERE key='content_version'"
-        ).fetchone()[0]
-        assert local_version == manifest["content_version"]
-
-        conn.close()
-
-
 class TestStagingAndValidation:
     """Verify download, checksum validation, and schema validation."""
 

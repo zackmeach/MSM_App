@@ -286,7 +286,7 @@ python scripts/build.py
 
 Runs the full pipeline: tests, seed, asset generation, bundle verification, then PyInstaller packaging. The distributable is written to `dist/MSMAwakeningTracker/`.
 
-An Inno Setup script lives at [`installer/msm_tracker.iss`](installer/msm_tracker.iss) for producing a per-user Windows installer. Built artifacts land in `installer/Output/`. See `RELEASE_CHECKLIST.md` section 4 for packaging gates.
+An Inno Setup script lives at [`installer/msm_tracker.iss`](installer/msm_tracker.iss) for producing a per-user Windows installer. The built installer lands in `dist/`. See `RELEASE_CHECKLIST.md` section 4 for packaging gates.
 
 ---
 

@@ -23,7 +23,6 @@ import urllib.error
 import urllib.request
 from dataclasses import dataclass
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 from PySide6.QtCore import QObject, QThread, Signal
 
@@ -34,9 +33,6 @@ from app.updater.validator import (
     validate_checksum,
     validate_manifest_contract,
 )
-
-if TYPE_CHECKING:
-    pass
 
 logger = logging.getLogger(__name__)
 

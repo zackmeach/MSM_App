@@ -12,7 +12,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Extract version from tag
         id: version
@@ -20,7 +20,7 @@ jobs:
         run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: pip
@@ -54,7 +54,7 @@ jobs:
           & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" /DMyAppVersion=${{ steps.version.outputs.VERSION }} installer\msm_tracker.iss
 
       - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           name: "MSM Awakening Tracker v${{ steps.version.outputs.VERSION }}"
           draft: false
